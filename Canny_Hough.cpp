@@ -98,7 +98,7 @@ int main()
     double denominator{sumX2 - sumX * xMean};
     
     double slope{(sumXY - sumX * yMean) / denominator};
-    double yInt{yMean - _slope * xMean};
+    double yInt{yMean - slope * xMean};
 
     line( color_dst, Point(0, yInt), Point(SCREEN_SIZE_X, SCREEN_SIZE_X*slope + yInt), Scalar(0,0,255), 3, 8 );
 
@@ -106,7 +106,7 @@ int main()
     /*
     std::cout << "\n\n\n\n\n\n\n\n\n\n";
 
-    std::cout << "slope = " << _slope << " yint = " << _yInt;
+    std::cout << "slope = " << slope << " yint = " << _yInt;
     
     //std::cout << "\n\n\n\n\n\n\n\n\n\n";
     //for (int i{0}; i < possible_vp.size(); i++)
