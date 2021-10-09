@@ -1,6 +1,3 @@
-/* This is a standalone program. Pass an image name as the first parameter
-of the program. Switch between standard and probabilistic Hough transform
-by changing "#if 1" to "#if 0" and back */
 #include <vector>
 #include <utility>
 #include <iostream>
