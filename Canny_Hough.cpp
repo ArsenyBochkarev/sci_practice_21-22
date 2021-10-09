@@ -11,6 +11,7 @@ by changing "#if 1" to "#if 0" and back */
 using namespace std;
 using namespace cv;
 
+// в будущем буду поправлять
 long long SCREEN_SIZE_X{1920};
 long long SCREEN_SIZE_Y{1080};
 
@@ -55,6 +56,8 @@ int main()
 
         //line( color_dst, pt1, pt2, Scalar(0,0,255), 3, 8 );
     }
+    
+    // на данный момент не придумал ничего лучше, чем просто найти персечения всех со всеми, отсекая только совсем уж нереалистичные варианты
     if ((lines_num > 3))
         for (long long i {0}; i < lines_num; i++)
             for (long long j{1}; j < lines_num; j++)
@@ -80,30 +83,30 @@ int main()
                         possible_vp.push_back(cross);
                 }
             }
+    
     // используем метод наименьших квадратов чтобы найти горизонт 
     unsigned long long count{possible_vp.size()};
-    double sumX=0, sumY=0, sumXY=0, sumX2=0;
-    for(int i=0; i < count; i++) 
+    double sumX{0}, sumY{0}, sumXY{0}, sumX2{0};
+    
+    for(int i{0}; i < count; i++) 
     {
         sumX += possible_vp[i].x;
         sumY += possible_vp[i].y;
         sumXY += possible_vp[i].x * possible_vp[i].y;
         sumX2 += possible_vp[i].x * possible_vp[i].x;
     }
-    double xMean = sumX / count;
-    double yMean = sumY / count;
-    double denominator = sumX2 - sumX * xMean;
-    // You can tune the eps (1e-7) below for your specific task
-    if( std::fabs(denominator) < 1e-7 ) 
-    {
-        // Fail: it seems a vertical line
-        return false;
-    }
-    double _slope = (sumXY - sumX * yMean) / denominator;
-    double _yInt = yMean - _slope * xMean;
+    
+    double xMean{sumX / count};
+    double yMean{sumY / count};
+    double denominator{sumX2 - sumX * xMean};
+    
+    double slope{(sumXY - sumX * yMean) / denominator};
+    double yInt{yMean - _slope * xMean};
 
-    line( color_dst, Point(0, _yInt), Point(SCREEN_SIZE_X, SCREEN_SIZE_X*_slope + _yInt), Scalar(0,0,255), 3, 8 );
+    line( color_dst, Point(0, yInt), Point(SCREEN_SIZE_X, SCREEN_SIZE_X*slope + yInt), Scalar(0,0,255), 3, 8 );
 
+    
+    /*
     std::cout << "\n\n\n\n\n\n\n\n\n\n";
 
     std::cout << "slope = " << _slope << " yint = " << _yInt;
@@ -112,8 +115,11 @@ int main()
     //for (int i{0}; i < possible_vp.size(); i++)
         //std::cout << possible_vp[i].x << " " << possible_vp[i].y << "\n";
     std::cout << "\n\n\n\n\n\n\n\n\n\n";
+    */
 
     #else
+    // пока что ненужный пример с probabilistic Hough transform
+    
     vector<Vec4i> lines;
     HoughLinesP( dst, lines, 1, CV_PI/180, 80, 30, 10 );
     for( size_t i = 0; i < lines.size(); i++ )
