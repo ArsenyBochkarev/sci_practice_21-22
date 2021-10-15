@@ -9,9 +9,8 @@
  ### 3. Set up the VS Code.
   (Windows 10) Follow all the steps from [this](https://www.youtube.com/watch?v=m9HBM1m_EMU) video.
  ### 3. Open the cloned repo in VS Code.
- ### 4. Change the include directories to yours.
- ### 5. Click on the "build" button.
- ### 6. Click on the "run" button.
+ ### 4. Click on the "build" button.
+ ### 5. Click on the "run" button.
 
 # License
  Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for the full license text.

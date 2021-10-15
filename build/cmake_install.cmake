@@ -1,8 +1,8 @@
-# Install script for directory: C:/opencv_practice
+# Install script for directory: C:/sci_practice_21-22
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files/opencv_sci_practice")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files/sci_practice_21-22")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/opencv_practice/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/sci_practice_21-22/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -1,0 +1,12 @@
+[
+{
+  "directory": "C:/sci_practice_21-22/build",
+  "command": "C:/Users/mexan/gcc/bin/x86_64-w64-mingw32-g++.exe  @CMakeFiles/sci_practice.dir/includes_CXX.rsp -g -o CMakeFiles/sci_practice.dir/Canny_Hough.cpp.obj -c C:/sci_practice_21-22/Canny_Hough.cpp",
+  "file": "C:/sci_practice_21-22/Canny_Hough.cpp"
+},
+{
+  "directory": "C:/sci_practice_21-22/build",
+  "command": "C:/Users/mexan/gcc/bin/x86_64-w64-mingw32-g++.exe  @CMakeFiles/sci_practice2.dir/includes_CXX.rsp -g -o CMakeFiles/sci_practice2.dir/Gauss_threshold.cpp.obj -c C:/sci_practice_21-22/Gauss_threshold.cpp",
+  "file": "C:/sci_practice_21-22/Gauss_threshold.cpp"
+}
+]

@@ -11,8 +11,9 @@ int main()
 {
     Mat src, dst, grey_dst, blurred_dst, thres_dst, closed_dst;
     
-    src = imread("C:/opencv_practice2/build/sample1.jpg");
+    src = imread("C:/sci_practice_21-22/build/sample1.jpg");
 
+    /*
     cvtColor(src, grey_dst, COLOR_GRAY2BGR);
 
     GaussianBlur(grey_dst, blurred_dst, Size(3, 3), 0);
@@ -25,7 +26,6 @@ int main()
     morphologyEx(thres_dst, closed_dst, MORPH_CLOSE, kernel);
 
     
-    /*
     Size s{grey_dst.size()};
     long long horizon_x1{0};
     long long horizon_y1;
@@ -77,6 +77,6 @@ int main()
 
     */
 
-    imshow("grey_dst", grey_dst);
+    imshow("grey_dst", src);
 
 }

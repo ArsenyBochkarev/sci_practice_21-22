@@ -18,7 +18,7 @@ int main()
 {
     Mat src, dst, color_dst;
     
-    src = imread("C:/opencv_practice/build/sample4.jpg");
+    src = imread("C:/sci_practice_21-22/build/sample4.jpg");
 
 
     Canny( src, dst, 50, 200, 3 );
