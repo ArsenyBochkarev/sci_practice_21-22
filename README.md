@@ -1,4 +1,4 @@
-# sci_practice_21-22
+# Science practise at SPBU 21-22
  Horizon marking based on the video stream.
 
 # How to run
