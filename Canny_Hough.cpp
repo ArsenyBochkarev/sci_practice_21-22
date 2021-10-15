@@ -1,6 +1,3 @@
-/* This is a standalone program. Pass an image name as the first parameter
-of the program. Switch between standard and probabilistic Hough transform
-by changing "#if 1" to "#if 0" and back */
 #include <vector>
 #include <utility>
 #include <iostream>
@@ -25,37 +22,35 @@ int main()
     cvtColor( dst, color_dst, COLOR_GRAY2BGR );
 
     #if 1
+    // массив линий для HoughLines
     vector<Vec2f> lines;
+    HoughLines( dst, lines, 1, CV_PI/180, 180 );
+    long long lines_num{lines.size()};
+    // не забыть подумать, как нужно регулировать последний параметр в HoughLines так, чтобы line_pts получился не слишком большим
 
+    
     // массив пар точек, определяющих каждую из линий
     vector<std::pair<Point2f, Point2f> >line_pts; 
+    
     // массив возможных vanishing points
     vector<Point2f> possible_vp;
     
-    HoughLines( dst, lines, 1, CV_PI/180, 180 );
 
-    long long lines_num = lines.size();
-
-    // не забыть отрегулировать последний параметр в HoughLines так, \
-    // чтобы line_pts получился не слишком большим
-    for( long long i = 0; i < lines_num; i++ )
+    for( long long i{0}; i < lines_num; i++ )
     {
-        float rho = lines[i][0];
-        float theta = lines[i][1];  
+        float rho{lines[i][0]};
+        float theta{lines[i][1]};  
 
-        double a = cos(theta), b = sin(theta);
-        double x0 = a*rho, y0 = b*rho;
+        double a{cos(theta)}, b{sin(theta)};
+        double x0{a*rho}, y0{b*rho};
 
-        Point2f pt1(cvRound(x0 + 1000*(-b)),
-                  cvRound(y0 + 1000*(a)));
-        Point2f pt2(cvRound(x0 - 1000*(-b)),
-                  cvRound(y0 - 1000*(a)));
+        Point2f pt1(cvRound(x0 + 1000*(-b)), cvRound(y0 + 1000*(a)));
+        Point2f pt2(cvRound(x0 - 1000*(-b)), cvRound(y0 - 1000*(a)));
 
         line_pts.push_back(std::make_pair(pt1, pt2));
-
-        //line( color_dst, pt1, pt2, Scalar(0,0,255), 3, 8 );
     }
     if ((lines_num > 3))
+    // пока ничего лучше, чем нахождение пересечений всех со всеми (пусть и с некоторыми ограничениями), мною не было придумано
         for (long long i {0}; i < lines_num; i++)
             for (long long j{1}; j < lines_num; j++)
             {
@@ -76,42 +71,30 @@ int main()
 
                     cross.y = (cross.x - x1)/(x2 - x1) * (y2 - y1) + y1;
 
-                    if ( (abs(cross.x) < abs(5*SCREEN_SIZE_X)) && (abs(cross.y) < abs(5*SCREEN_SIZE_Y)))
+                    if ( (abs(cross.x) < abs(2*SCREEN_SIZE_X)) && (abs(cross.y) < abs(2*SCREEN_SIZE_Y)))
                         possible_vp.push_back(cross);
                 }
             }
     // используем метод наименьших квадратов чтобы найти горизонт 
     unsigned long long count{possible_vp.size()};
-    double sumX=0, sumY=0, sumXY=0, sumX2=0;
-    for(int i=0; i < count; i++) 
+    double sumX{0}, sumY{0}, sumXY{0}, sumXX{0};
+    for(int i{0}; i < count; i++) 
     {
         sumX += possible_vp[i].x;
         sumY += possible_vp[i].y;
         sumXY += possible_vp[i].x * possible_vp[i].y;
-        sumX2 += possible_vp[i].x * possible_vp[i].x;
+        sumXX += possible_vp[i].x * possible_vp[i].x;
     }
-    double xMean = sumX / count;
-    double yMean = sumY / count;
-    double denominator = sumX2 - sumX * xMean;
-    // You can tune the eps (1e-7) below for your specific task
-    if( std::fabs(denominator) < 1e-7 ) 
-    {
-        // Fail: it seems a vertical line
-        return false;
-    }
-    double _slope = (sumXY - sumX * yMean) / denominator;
-    double _yInt = yMean - _slope * xMean;
+    double xMean {sumX / count};
+    double yMean {sumY / count};
+    double denom{sumXX - sumX * xMean};
+     
+    double slope {(sumXY - sumX * yMean) / denom};
+    double yInt {yMean - slope * xMean};
 
-    line( color_dst, Point(0, _yInt), Point(SCREEN_SIZE_X, SCREEN_SIZE_X*_slope + _yInt), Scalar(0,0,255), 3, 8 );
 
-    std::cout << "\n\n\n\n\n\n\n\n\n\n";
-
-    std::cout << "slope = " << _slope << " yint = " << _yInt;
-    
-    //std::cout << "\n\n\n\n\n\n\n\n\n\n";
-    //for (int i{0}; i < possible_vp.size(); i++)
-        //std::cout << possible_vp[i].x << " " << possible_vp[i].y << "\n";
-    std::cout << "\n\n\n\n\n\n\n\n\n\n";
+    // координаты получены, рисуем линию
+    line( color_dst, Point(0, yInt), Point(SCREEN_SIZE_X, SCREEN_SIZE_X*slope + yInt), Scalar(0,0,255), 3, 8 ); 
 
     #else
     vector<Vec4i> lines;
@@ -121,10 +104,7 @@ int main()
         line( color_dst, Point(lines[i][0], lines[i][1]),
         Point(lines[i][2], lines[i][3]), Scalar(0,0,255), 3, 8 );
     }
-    
     #endif
-    //namedWindow( "Source", 1 );
-    //imshow( "Source", src );
 
     namedWindow( "Detected Lines", 0.5 );
     imshow( "Detected Lines", color_dst );
