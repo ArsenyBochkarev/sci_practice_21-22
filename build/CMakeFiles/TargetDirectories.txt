@@ -1,0 +1,10 @@
+C:/opencv_practice/build/CMakeFiles/NightlyMemoryCheck.dir
+C:/opencv_practice/build/CMakeFiles/Experimental.dir
+C:/opencv_practice/build/CMakeFiles/Continuous.dir
+C:/opencv_practice/build/CMakeFiles/Nightly.dir
+C:/opencv_practice/build/CMakeFiles/RUN_TESTS.dir
+C:/opencv_practice/build/CMakeFiles/opencv_practice.dir
+C:/opencv_practice/build/CMakeFiles/opencv_practice2.dir
+C:/opencv_practice/build/CMakeFiles/PACKAGE.dir
+C:/opencv_practice/build/CMakeFiles/ALL_BUILD.dir
+C:/opencv_practice/build/CMakeFiles/ZERO_CHECK.dir
