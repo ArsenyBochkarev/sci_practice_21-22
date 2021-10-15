@@ -13,4 +13,4 @@
  ### 5. Click on the "run" button.
 
 # License
- Licensed under the Apache License, Version 2.0. See LICENSE for the full license text.
+ Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for the full license text.
