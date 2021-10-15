@@ -11,3 +11,6 @@
  ### 3. Open the cloned repo in VS Code.
  ### 4. Click on the "build" button.
  ### 5. Click on the "run" button.
+
+# License
+ Licensed under the Apache License, Version 2.0. See LICENSE for the full license text.
