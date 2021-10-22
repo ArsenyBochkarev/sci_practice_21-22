@@ -6,5 +6,6 @@ C:/sci_practice_21-22/build/CMakeFiles/Nightly.dir
 C:/sci_practice_21-22/build/CMakeFiles/RUN_TESTS.dir
 C:/sci_practice_21-22/build/CMakeFiles/sci_practice2.dir
 C:/sci_practice_21-22/build/CMakeFiles/PACKAGE.dir
+C:/sci_practice_21-22/build/CMakeFiles/sci_practice3.dir
 C:/sci_practice_21-22/build/CMakeFiles/ALL_BUILD.dir
 C:/sci_practice_21-22/build/CMakeFiles/ZERO_CHECK.dir
