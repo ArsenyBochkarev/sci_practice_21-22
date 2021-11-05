@@ -11,26 +11,12 @@ using namespace cv;
 double SCREEN_SIZE_X{1920};
 double SCREEN_SIZE_Y{1080};
 
-
-// функция, которая ищет "хорошие" feature points, т.е. такие, у которых status == 1, 
-// и передаёт их массив good
-void find_good_fp(Mat& status, Mat& prev, Mat& good)
-{
-    Size s{prev.size()};
-    good = Mat::zeros(Size(s.width, s.height), CV_16U);
-    for (long long i{0}; i < s.width; i++)
-        for (long long j{0}; j < s.height; j++)
-        {
-            if (status.at<unsigned char>(i, j) == 1)
-                good.at<unsigned char>(i, j) = prev.at<unsigned char>(i, j); 
-        }
-}
-
+ 
 int main()
 {
-    Mat first_frame, first_gray_frame, prev_frame, next_frame, current_frame, gray_current_frame, 
-        prev_pts, next_pts, status, err, good_old_fp, good_new_fp;
+    Mat prev_frame, prev_gray_frame, current_frame, current_gray_frame, status, err;
     
+ 
     VideoCapture cap("video_in.AVI");
 
 
@@ -40,61 +26,64 @@ int main()
         return -1;
     }
 
+    // Считываем первый кадр, затем меняем цвет
+    cap.read(prev_frame);
+    cvtColor(prev_frame, prev_gray_frame, COLOR_BGR2GRAY); 
 
-    cap.read(first_frame);
-    cvtColor(first_frame, first_gray_frame, COLOR_BGR2GRAY);
 
-    //goodFeaturesToTrack(first_gray_frame, prev_pts, 300, 0.2, 2);
+    // Векторы, хранящие в себе "фичи" - feature points
+    std::vector<Point2f> prev_found_fp;
+    std::vector<Point2f> current_found_fp;
+    std::vector<Point2f> current_changed_fp;
 
-    double horizon_x1{0}, horizon_y1{SCREEN_SIZE_Y/2};
-    double horizon_x2{SCREEN_SIZE_X}, horizon_y2{SCREEN_SIZE_Y/2};
-    // как-то определяем изначальный горизонт (нынешние значения по дефолту стоят на середние экрана)
+    // Ищем "фичи" на первом кадре
+    goodFeaturesToTrack(prev_gray_frame, prev_found_fp, 300, 0.2, 2);
 
-    Mat horizon_pts;
-    horizon_pts = Mat::zeros(Size(2, 2), CV_16U);
-    horizon_pts.at<double>(0, 0) = horizon_x1;
-    horizon_pts.at<double>(1, 0) = horizon_y1;
-    horizon_pts.at<double>(0, 1) = horizon_x2;
-    horizon_pts.at<double>(1, 1) = horizon_y2;
-
+    // Счётчик кадров
+    unsigned long long frame_num{0};
 
     while(cap.isOpened())
     {
+        frame_num++;
+
         cap.read(current_frame);
         if (current_frame.empty())
             break;
 
-        cvtColor(current_frame, gray_current_frame, COLOR_BGR2GRAY);
 
-        //calcOpticalFlowPyrLK(first_gray_frame, gray_current_frame, prev_pts, next_pts, status, err);
-
-        //find_good_fp(status, prev_pts, good_old_fp);
-        //find_good_fp(status, next_pts, good_new_fp);
-
-        calcOpticalFlowPyrLK(first_gray_frame, gray_current_frame, horizon_pts, next_pts, status, err);
-
-        //std::cout << "new horizon_x1 == " << next_pts.at<unsigned char>(0, 0) << 
-        //    " new horizon_y1 == " << next_pts.at<unsigned char>(0, 1) << "\n";
-        //std::cout << "new horizon_x2 == " << next_pts.at<unsigned char>(0, 1) << 
-        //    " new horizon_y2 == " << next_pts.at<unsigned char>(1, 1) << "\n\n\n";
+        // Меняем цвет, затем считаем optical flow
+        // Насколько я понимаю, current_changed_fp имеет тот же размер, что и prev_found_fp
+        // Но если нет - посмотреть в документации, там, кажется, был подходящий флаг
+        cvtColor(current_frame, current_gray_frame, COLOR_BGR2GRAY);
+        calcOpticalFlowPyrLK(prev_gray_frame, current_gray_frame, prev_found_fp, current_changed_fp, status, err); 
 
 
-        line( current_frame, 
-        Point(next_pts.at<unsigned char>(0, 0), next_pts.at<unsigned char>(1, 0)),
-        Point(next_pts.at<unsigned char>(0, 1), next_pts.at<unsigned char>(1, 1)),
-        Scalar(0,0,255), 3, 8 ); 
+        // Ещё раз ищем "фичи", только уже на новом кадре
+        goodFeaturesToTrack(current_gray_frame, current_found_fp, 300, 0.2, 2);
 
-        imshow("video_in.AVI", current_frame);
 
-        horizon_pts.at<double>(0, 0) = next_pts.at<unsigned char>(0, 0);
-        horizon_pts.at<double>(1, 0) = next_pts.at<unsigned char>(1, 0);
+        // Сравниваем старые и новые "фичи"
+        // Если положение фич и/или их число лишь немного изменилось, то менять горизонт смысла нет, иначе - пересчитываем
+        // some code
 
-        horizon_pts.at<double>(0, 1) = next_pts.at<unsigned char>(0, 1);
-        horizon_pts.at<double>(1, 1) = next_pts.at<unsigned char>(1, 1);
+        std::cout << "frame number " << frame_num << "\n";
+        std::cout << "prev found fp num " << prev_found_fp.size() << "\n";
+        std::cout << "current changed fp num " << current_changed_fp.size() << "\n";
+        std::cout << "current found fp num " << current_found_fp.size() << "\n";
 
+
+        // Показываем картинку
+        imshow("video_in.AVI", current_frame); 
+
+        // Новые "фичи" - теперь старые 
+        prev_found_fp.resize(current_found_fp.size());
+        for (long long i{0}; i < current_found_fp.size(); i++)
+            prev_found_fp[i] = current_found_fp[i]; 
+
+        // Если пользователь нажмет клавишу "Escape" - цикл прервётся и программа завершится 
         char c{(char)waitKey(25)};
         if (c == 27)
-            break;
+            break; 
 
     }
 
