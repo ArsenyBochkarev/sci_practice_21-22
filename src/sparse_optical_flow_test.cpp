@@ -1,5 +1,6 @@
 #include <iostream> 
 #include <vector> 
+#include <cmath>
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
@@ -26,8 +27,26 @@ int main()
         return -1;
     }
 
-    // Считываем первый кадр, затем меняем цвет
+
+    double horizon_x1, horizon_y1;
+    double horizon_x2, horizon_y2;
+
+
+    // Считываем первый кадр
     cap.read(prev_frame);
+
+    // Вычисляем горизонт
+    // some code
+
+    // ВРЕМЕННО !!! Выставляю дефолтные значения примерно посередине кадра
+    horizon_x1 = 0;
+    horizon_y1 = prev_frame.size().height/2 - 1;
+
+    horizon_x2 = prev_frame.size().width;
+    horizon_y2 = prev_frame.size().height/2 + 1;
+
+
+    // Меняем цвет
     cvtColor(prev_frame, prev_gray_frame, COLOR_BGR2GRAY); 
 
 
@@ -36,11 +55,29 @@ int main()
     std::vector<Point2f> current_found_fp;
     std::vector<Point2f> current_changed_fp;
 
+
     // Ищем "фичи" на первом кадре
     goodFeaturesToTrack(prev_gray_frame, prev_found_fp, 300, 0.2, 2);
 
+
     // Счётчик кадров
     unsigned long long frame_num{0};
+
+
+    // Раз в сколько кадров будет возможно пересчитывание горизонта - сделано в угоду производительности
+    // В дальнейшем сделать регулируемым
+    int change_rate{3};
+
+
+    // Наибольшая разрешенная разница между суммированными расстояниями от "фич" до горизонта на прошлом и текущем кадре
+    // В дальнейшем сделать регулируемым
+    long double dist_diff{600};
+
+
+    // Наибольшая разрешенная разница между количеством старых feature points и новых
+    // В дальнейшем сделать регулируемым
+    int fp_diff{10};
+
 
     while(cap.isOpened())
     {
@@ -50,35 +87,90 @@ int main()
         if (current_frame.empty())
             break;
 
-
-        // Меняем цвет, затем считаем optical flow
-        // Насколько я понимаю, current_changed_fp имеет тот же размер, что и prev_found_fp
-        // Но если нет - посмотреть в документации, там, кажется, был подходящий флаг
-        cvtColor(current_frame, current_gray_frame, COLOR_BGR2GRAY);
-        calcOpticalFlowPyrLK(prev_gray_frame, current_gray_frame, prev_found_fp, current_changed_fp, status, err); 
-
-
-        // Ещё раз ищем "фичи", только уже на новом кадре
-        goodFeaturesToTrack(current_gray_frame, current_found_fp, 300, 0.2, 2);
+        if (frame_num % change_rate == 0)
+        {
+            // Меняем цвет, затем считаем optical flow 
+            cvtColor(current_frame, current_gray_frame, COLOR_BGR2GRAY);
+            calcOpticalFlowPyrLK(prev_gray_frame, current_gray_frame, prev_found_fp, current_changed_fp, status, err); 
 
 
-        // Сравниваем старые и новые "фичи"
-        // Если положение фич и/или их число лишь немного изменилось, то менять горизонт смысла нет, иначе - пересчитываем
-        // some code
+            // Ещё раз ищем "фичи", только уже на новом кадре
+            goodFeaturesToTrack(current_gray_frame, current_found_fp, 300, 0.2, 2);
 
-        std::cout << "frame number " << frame_num << "\n";
-        std::cout << "prev found fp num " << prev_found_fp.size() << "\n";
-        std::cout << "current changed fp num " << current_changed_fp.size() << "\n";
-        std::cout << "current found fp num " << current_found_fp.size() << "\n";
+
+            // Сравниваем старые "фичи" на новом кадре и только что найденные "фичи"
+            // Если положение "фич" и/или их число лишь немного изменилось, то менять горизонт смысла нет, иначе - пересчитываем
+            bool rebuild_horizon{0};
+
+            // Сначала сравним их количество
+            if (abs(prev_found_fp.size() - current_found_fp.size()) <= fp_diff)
+            {
+                // Если количество прошло - сравним суммарные расстояния до горизонта, отмеченного на предыдущем кадре
+                // Считаем коэффициенты в уравнении прямой горизонта
+                double A{1/(horizon_x1 - horizon_x2)};
+                double B{1/(horizon_y2 - horizon_y1)};
+                double C{1/(horizon_y1 - horizon_y2) - 1/(horizon_x1 - horizon_x2)};
+
+
+                double old_dist{1};
+                double new_dist{1};
+
+
+                // Старые точки
+                for (long long i{0}; i < current_changed_fp.size(); i++) 
+                    old_dist += abs( (A*current_changed_fp[i].x + B*current_changed_fp[i].y + C) / sqrt(A*A + B*B) ); 
+
+                // Новые точки
+                for (long long i{0}; i < current_found_fp.size(); i++)
+                    new_dist += abs( (A*current_found_fp[i].x + B*current_found_fp[i].y + C) / sqrt(A*A + B*B) );
+
+                /*
+                std::cout << "\n\nframe_num == " << frame_num << "\n";
+                std::cout << "old_dist == " << old_dist << "\n";
+                std::cout << "new_dist == " << new_dist << "\n";
+                */
+
+
+                if (abs(old_dist - new_dist) > dist_diff)
+                {
+                    rebuild_horizon = 1;
+                }
+
+            }
+            else
+                rebuild_horizon = 1;
+
+
+            if (rebuild_horizon)
+            {
+                std::cout << "frame number " << frame_num << " has found the difference !\n\n";
+                // some code
+                
+                // ВРЕМЕННО !!! Выставляю значения примерно посередине кадра
+                horizon_x1 = 0;
+                horizon_y1 = prev_frame.size().height/2 - 1;
+
+                horizon_x2 = prev_frame.size().width;
+                horizon_y2 = prev_frame.size().height/2 + 1;
+            }
+
+
+            // Новые "фичи" - теперь старые 
+            prev_found_fp.resize(current_found_fp.size());
+            for (long long i{0}; i < current_found_fp.size(); i++)
+                prev_found_fp[i] = current_found_fp[i]; 
+        }
+
+        
+
+        // Рисуем горизонт
+        line(current_frame, Point2f(horizon_x1, horizon_y1), Point2f(horizon_x2, horizon_y2), Scalar(0,0,255), 3, 8 );
+
 
 
         // Показываем картинку
         imshow("video_in.AVI", current_frame); 
 
-        // Новые "фичи" - теперь старые 
-        prev_found_fp.resize(current_found_fp.size());
-        for (long long i{0}; i < current_found_fp.size(); i++)
-            prev_found_fp[i] = current_found_fp[i]; 
 
         // Если пользователь нажмет клавишу "Escape" - цикл прервётся и программа завершится 
         char c{(char)waitKey(25)};
