@@ -7,9 +7,9 @@ enable_testing()
 find_package( OpenCV REQUIRED )
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 
-add_executable(sci_practice Canny_Hough.cpp)
-add_executable(sci_practice2 Gauss_threshold.cpp)
-add_executable(sci_practice3 sparse_optical_flow_test.cpp)
+add_executable(sci_practice src/Canny_Hough.cpp)
+add_executable(sci_practice2 src/Gauss_threshold.cpp)
+add_executable(sci_practice3 src/sparse_optical_flow_test.cpp)
 
 target_link_libraries( sci_practice ${OpenCV_LIBS} )
 target_link_libraries( sci_practice2 ${OpenCV_LIBS} )
