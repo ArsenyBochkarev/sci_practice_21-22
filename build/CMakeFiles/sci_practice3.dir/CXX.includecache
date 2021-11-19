@@ -11,6 +11,8 @@ iostream
 -
 vector
 -
+cmath
+-
 opencv2/opencv.hpp
 -
 opencv2/imgproc.hpp
