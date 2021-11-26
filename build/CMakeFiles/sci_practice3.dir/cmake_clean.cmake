@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/sci_practice3.dir/src/sparse_optical_flow_test.cpp.o"
+  "CMakeFiles/sci_practice3.dir/src/shake_compensation.cpp.o"
   "sci_practice3.pdb"
   "sci_practice3"
 )

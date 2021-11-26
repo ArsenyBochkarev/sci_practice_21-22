@@ -6,5 +6,5 @@ CXX_FLAGS =   -std=gnu++11
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -isystem /usr/local/include/opencv4 
+CXX_INCLUDES = -isystem /usr/local/include/opencv4 -I/home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/shake_compensation.h -I/home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/shake_compensation.cpp 
 

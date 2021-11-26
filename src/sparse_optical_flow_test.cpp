@@ -5,6 +5,7 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/video/tracking.hpp>
+#include "shake_compensation.h"
 
 using namespace std;
 using namespace cv;
@@ -15,11 +16,15 @@ double SCREEN_SIZE_Y{1080};
  
 int main()
 {
-    Mat prev_frame, prev_gray_frame, current_frame, current_gray_frame, status, err;
+    Mat prev_frame, prev_gray_frame, current_frame, current_gray_frame;
+    std::vector <unsigned char> status;
+    std::vector <float> err;
     
  
-    // VideoCapture cap("video_in2.mp4");
-    VideoCapture cap("video_in.AVI");
+    VideoCapture cap("video_in2.mp4");
+    VideoCapture pre_cap("video_in2.mp4");
+    //VideoCapture cap("video_in.AVI");
+    //VideoCapture pre_cap("video_in.AVI");
 
     if(!cap.isOpened())
     {
@@ -32,8 +37,45 @@ int main()
     double horizon_x2, horizon_y2;
 
 
+ 
+    // Пре-проход по всем кадрам для построения матриц перехода и "сглаженных" матриц перехода между кадрами
+    // Нужен для стабилизации видео (shake compensation)
+    // Узнаем общее количество кадров в видео
+    long long all_frames_num{static_cast<long long>(pre_cap.get(CAP_PROP_FRAME_COUNT))};
+    
+    // Строим матрицу изменений между кадрами
+    std::vector<transform_parameters> transforms;
+    transforms = transf_build(pre_cap, all_frames_num);
+
+    // Строим "траекторию" для каждого кадра - промежуточные суммы изменений по x, y и углу
+    std::vector<trajectory> traj;
+    traj = cumulative_sum(transforms);
+
+    // Строим "сглаженную" траекторию - к промежуточным суммам применяются moving average filter
+    std::vector<trajectory> smooth_trajectory;
+
+    // Радиус для moving average filter 
+    // В дальнейшем сделать регулируемым
+    int radius{5}; 
+
+    smooth_trajectory = smooth(traj, radius);
+
+    // Строим "сглаженные" матрицы изменений между кадрами, которые в дальнейшем будем применять к каждому отдельно взятому кадру
+    std::vector<transform_parameters> smooth_transforms;
+    smooth_transforms = get_smooth_transforms(smooth_trajectory, traj, transforms);
+
+    std::cout << "\n\n\n\nall frames number == " << all_frames_num << "\n";
+    std::cout << "smooth_transforms size == " << smooth_transforms.size() << "\n\n\n\n";
+    
+
+
     // Считываем первый кадр
     cap.read(prev_frame);
+    if (prev_frame.empty())
+    {
+        std::cout << "unable to read prev_frame ! \n";
+        return -1;
+    }
 
     // Вычисляем горизонт
     // some code
@@ -56,7 +98,7 @@ int main()
 
 
     // Ищем "фичи" на первом кадре
-    goodFeaturesToTrack(prev_gray_frame, prev_found_fp, 300, 0.2, 2);
+    goodFeaturesToTrack(prev_gray_frame, prev_found_fp, 300, 0.2, 2); 
 
 
     // Счётчик кадров
@@ -86,20 +128,34 @@ int main()
     // Наибольшая разрешенная разница между общим количеством "фич" и числом точек, сместившихся в конкретном направлении (вверх или вниз)
     // В дальнейшем сделать регулируемым
     long long max_horizon_correctness_diff{10};
+ 
+
+
 
 
     while(cap.isOpened())
     {
-        frame_num++;
+        frame_num++; 
 
-        cap.read(current_frame);
-        if (current_frame.empty())
-            break;
-
-        cvtColor(current_frame, current_gray_frame, COLOR_BGR2GRAY);
 
         if (frame_num % change_rate == 0)
-        { 
+        {  
+            cap.read(current_frame);
+            if (current_frame.empty())
+            {
+                std::cout << "unable to read current_frame ! \n";
+                break;
+            }
+
+
+            // Стабилизируем текущий кадр относительно предыдущего (shake compensation)
+            // Проверить, будет ли разница, если мы возьмем frame_num на один больше
+            get_stabilized_frame(current_frame, smooth_transforms[frame_num]);
+
+
+            cvtColor(current_frame, current_gray_frame, COLOR_BGR2GRAY);
+ 
+
             // Считаем optical flow
             calcOpticalFlowPyrLK(prev_gray_frame, current_gray_frame, prev_found_fp, current_changed_fp, status, err); 
 
@@ -185,7 +241,7 @@ int main()
             else
                 // Если можем определить конкретное направление корректировки - делаем ее относительно средней разницы расстояний
                 if ( (abs(horizon_correctness) > fp_num - max_horizon_correctness_diff) && (!rebuild_horizon) )
-                {
+                { 
                     std::cout << "frame number " << frame_num << " asked to correct the horizon !\n\n";
 
                     if (horizon_correctness > 0)
@@ -203,7 +259,7 @@ int main()
 
 
             if (rebuild_horizon)
-            {
+            { 
                 std::cout << "frame number " << frame_num << " asked to rebuild the horizon !\n\n";
                 // some code
                 
@@ -224,25 +280,47 @@ int main()
             std::cout << "old_avg_single_p_dist == " << old_avg_single_p_dist << "\n";
             std::cout << "new_avg_single_p_dist == " << new_avg_single_p_dist << "\n";
             std::cout << "horizon_correctness == " << horizon_correctness << "\n\n";
+            std::cout << "correct_horizon_number == " << correct_horizon_number << "\n\n\n\n";
+            
+
+
+            // Рисуем горизонт
+            line(current_frame, Point2f(horizon_x1, horizon_y1), Point2f(horizon_x2, horizon_y2), Scalar(0,0,255), 3, 8 );
+
+
+
+            // Показываем картинку
+            imshow("video_in.AVI", current_frame); 
 
         }
         else  
         {
+            cap.read(prev_frame);
+
+            // Стабилизируем текущий кадр относительно предыдущего (shake compensation)
+            // Проверить, будет ли разница, если мы возьмем frame_num на один больше
+            get_stabilized_frame(prev_frame, smooth_transforms[frame_num]);
+
+            cvtColor(prev_frame, prev_gray_frame, COLOR_BGR2GRAY);
+
             // Обновляем данные
             prev_found_fp.clear(); 
-            goodFeaturesToTrack(current_gray_frame, prev_found_fp, 300, 0.2, 2);
+            goodFeaturesToTrack(prev_gray_frame, prev_found_fp, 300, 0.2, 2);
+
+
+
+            // Рисуем горизонт
+            line(prev_frame, Point2f(horizon_x1, horizon_y1), Point2f(horizon_x2, horizon_y2), Scalar(0,0,255), 3, 8 );
+
+
+
+            // Показываем картинку
+            imshow("video_in.AVI", prev_frame);  
         }
 
 
         
 
-        // Рисуем горизонт
-        line(current_frame, Point2f(horizon_x1, horizon_y1), Point2f(horizon_x2, horizon_y2), Scalar(0,0,255), 3, 8 );
-
-
-
-        // Показываем картинку
-        imshow("video_in.AVI", current_frame); 
 
 
         // Если пользователь нажмет клавишу "Escape" - цикл прервётся и программа завершится 

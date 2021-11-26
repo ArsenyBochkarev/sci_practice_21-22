@@ -600,6 +600,33 @@ src/Gauss_threshold.cpp.s:
 	$(MAKE) -f CMakeFiles/sci_practice2.dir/build.make CMakeFiles/sci_practice2.dir/src/Gauss_threshold.cpp.s
 .PHONY : src/Gauss_threshold.cpp.s
 
+src/shake_compensation.o: src/shake_compensation.cpp.o
+
+.PHONY : src/shake_compensation.o
+
+# target to build an object file
+src/shake_compensation.cpp.o:
+	$(MAKE) -f CMakeFiles/sci_practice3.dir/build.make CMakeFiles/sci_practice3.dir/src/shake_compensation.cpp.o
+.PHONY : src/shake_compensation.cpp.o
+
+src/shake_compensation.i: src/shake_compensation.cpp.i
+
+.PHONY : src/shake_compensation.i
+
+# target to preprocess a source file
+src/shake_compensation.cpp.i:
+	$(MAKE) -f CMakeFiles/sci_practice3.dir/build.make CMakeFiles/sci_practice3.dir/src/shake_compensation.cpp.i
+.PHONY : src/shake_compensation.cpp.i
+
+src/shake_compensation.s: src/shake_compensation.cpp.s
+
+.PHONY : src/shake_compensation.s
+
+# target to generate assembly for a file
+src/shake_compensation.cpp.s:
+	$(MAKE) -f CMakeFiles/sci_practice3.dir/build.make CMakeFiles/sci_practice3.dir/src/shake_compensation.cpp.s
+.PHONY : src/shake_compensation.cpp.s
+
 src/sparse_optical_flow_test.o: src/sparse_optical_flow_test.cpp.o
 
 .PHONY : src/sparse_optical_flow_test.o
@@ -675,6 +702,9 @@ help:
 	@echo "... src/Gauss_threshold.o"
 	@echo "... src/Gauss_threshold.i"
 	@echo "... src/Gauss_threshold.s"
+	@echo "... src/shake_compensation.o"
+	@echo "... src/shake_compensation.i"
+	@echo "... src/shake_compensation.s"
 	@echo "... src/sparse_optical_flow_test.o"
 	@echo "... src/sparse_optical_flow_test.i"
 	@echo "... src/sparse_optical_flow_test.s"
