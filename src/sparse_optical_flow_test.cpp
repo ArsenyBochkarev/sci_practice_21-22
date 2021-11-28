@@ -280,7 +280,6 @@ int main()
             std::cout << "old_avg_single_p_dist == " << old_avg_single_p_dist << "\n";
             std::cout << "new_avg_single_p_dist == " << new_avg_single_p_dist << "\n";
             std::cout << "horizon_correctness == " << horizon_correctness << "\n\n";
-            std::cout << "correct_horizon_number == " << correct_horizon_number << "\n\n\n\n";
             
 
 

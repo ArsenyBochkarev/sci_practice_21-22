@@ -216,7 +216,7 @@ std::vector<transform_parameters> get_smooth_transforms(std::vector<trajectory> 
 // Функция, убирающая черные полосы, которые могут появиться при преобразовании кадра
 void fixBorder(Mat &frame_stabilized)
 {
-	Mat T = getRotationMatrix2D(Point2f(frame_stabilized.cols/2, frame_stabilized.rows/2), 0, 1.04); 
+	Mat T {getRotationMatrix2D(Point2f(frame_stabilized.cols/2, frame_stabilized.rows/2), 0, 1.04)}; 
 	warpAffine(frame_stabilized, frame_stabilized, T, frame_stabilized.size()); 
 }
 
@@ -227,8 +227,7 @@ void fixBorder(Mat &frame_stabilized)
 // Функция для применения "сглаженных" изменений к текущему кадру
 void get_stabilized_frame(Mat& current_frame, transform_parameters current_frame_transf_smooth)
 {
-	Mat transforms(2,3,CV_64F);
-	Mat current_stabilized_frame;
+	Mat transforms(2, 3, CV_64F); 
 
 	// По "сглаженным" преобразованиям строим матрицу перехода между кадрами 
 	current_frame_transf_smooth.get_transf_mat(transforms); 
@@ -237,5 +236,4 @@ void get_stabilized_frame(Mat& current_frame, transform_parameters current_frame
 	warpAffine(current_frame, current_frame, transforms, current_frame.size());
 
 	fixBorder(current_frame); 
- 
 }
