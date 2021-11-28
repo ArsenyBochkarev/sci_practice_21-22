@@ -3,15 +3,15 @@
 
 # How to run
  Follow these steps to run the project.
- ## Clone the repo.
- ### Windows 10.
+ ### First, clone the repo.
+ ### If you're on Windows 10.
  ##### Download the Visual Studio Code editor.
  ##### Set up the VS Code.
   Follow all the steps from [this](https://www.youtube.com/watch?v=m9HBM1m_EMU) video.
  ##### Open the cloned repo in VS Code.
  ##### Click on the "build" button.
  ##### Click on the "run" button.
- ### Ubuntu.
+ ### If you're on Ubuntu.
  ##### Install OpenCV library on your computer.
   Follow all the steps from [this](http://www.codebind.com/python/install-opencv-ubuntu-16-04-lts-python/) site.
  ##### Move to /build directory on your local repo.
