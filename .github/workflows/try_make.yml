@@ -4,6 +4,6 @@ jobs:
   run_make:
     runs-on: ubuntu-latest
     steps:
-        working-directory: ./app
+        working-directory: /build
       - uses: egor-tensin/setup-gcc@v1  
       - run: make
