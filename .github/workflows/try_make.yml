@@ -13,7 +13,7 @@ jobs:
       - name: Remove /build directory
         uses: JesseTG/rm@v1.0.0
         with:
-          ${{ github.workspace }}/build
+          path: ${{ github.workspace }}/build
       - name: Try make
         run: |
           mkdir build
