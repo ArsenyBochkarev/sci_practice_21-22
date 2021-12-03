@@ -9,7 +9,7 @@ jobs:
       - name: Install GCC
         uses: egor-tensin/setup-gcc@v1
       - name: Install CMake
-        uses: jwlawson/actions-setup-cmake@v1.11
+        uses: lukka/run-cmake@v10.0
       - name: Try make
         run: |
           cd ${{ github.workspace }}/build
