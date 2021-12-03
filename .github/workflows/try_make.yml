@@ -3,7 +3,9 @@ on: [push]
 jobs:
   run_make:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./build
     steps:
-        working-directory: /build
       - uses: egor-tensin/setup-gcc@v1  
-      - run: make
+      run: make
