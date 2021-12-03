@@ -12,6 +12,8 @@ jobs:
         uses: jwlawson/actions-setup-cmake@v1.11
       - name: Try make
         run: |
+          rm ${{ github.workspace }}/build
+          mkdir build
           cd ${{ github.workspace }}/build
           cmake ..
           make
