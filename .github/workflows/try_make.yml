@@ -2,11 +2,9 @@ name: try_make
 on: [push]
 jobs:
   run_make:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./build
+    runs-on: ubuntu-latest 
     steps:
       - uses: egor-tensin/setup-gcc@v1  
       - name: try_make
+        working-directory: ./build
         run: make
