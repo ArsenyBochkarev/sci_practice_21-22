@@ -13,5 +13,5 @@ jobs:
         run: cd build
       - name: list files in /build
         run: |
-          ls ${{ github.workspace }}
+          ls ${{ github.workspace }}/build
       - run: echo "🍏 This job's status is ${{ job.status }}."
