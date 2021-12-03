@@ -6,5 +6,5 @@ jobs:
     steps:
       - uses: egor-tensin/setup-gcc@v1  
       - name: try_make
-        working-directory: Mexanobar/sci_practice_21-22/build
+        working-directory: ./.github/actions/build
         run: make
