@@ -7,8 +7,8 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
       - name: List files in the repository
-      - run: cd build
-      - run: ls ${{ github.workspace }}
+        run: cd build
+        run: ls ${{ github.workspace }}
       - name: Install GCC
         uses: egor-tensin/setup-gcc@v1
       - name: try_make
