@@ -1,17 +1,12 @@
-name: GitHub Actions Demo
+name: try_make
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  run_make:
     runs-on: ubuntu-latest
     steps: 
       - name: Check out repository code
         uses: actions/checkout@v2  
-      - name: List files in the repository
+      - name: try_make
         run: |
-          ls ${{ github.workspace }}
-      - name: move to /build
-        run: cd build
-      - name: list files in /build
-        run: |
-          ls ${{ github.workspace }}/build
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+          cd ${{ github.workspace }}/build
+          make
