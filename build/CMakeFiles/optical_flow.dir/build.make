@@ -57,28 +57,28 @@ include CMakeFiles/optical_flow.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/optical_flow.dir/flags.make
 
-CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.o: CMakeFiles/optical_flow.dir/flags.make
-CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.o: ../src/sparse_optical_flow_test.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.o -c /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/src/sparse_optical_flow_test.cpp
+CMakeFiles/optical_flow.dir/src/optical_flow.cpp.o: CMakeFiles/optical_flow.dir/flags.make
+CMakeFiles/optical_flow.dir/src/optical_flow.cpp.o: ../src/optical_flow.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/optical_flow.dir/src/optical_flow.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/optical_flow.dir/src/optical_flow.cpp.o -c /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/src/optical_flow.cpp
 
-CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/src/sparse_optical_flow_test.cpp > CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.i
+CMakeFiles/optical_flow.dir/src/optical_flow.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/optical_flow.dir/src/optical_flow.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/src/optical_flow.cpp > CMakeFiles/optical_flow.dir/src/optical_flow.cpp.i
 
-CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/src/sparse_optical_flow_test.cpp -o CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.s
+CMakeFiles/optical_flow.dir/src/optical_flow.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/optical_flow.dir/src/optical_flow.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/src/optical_flow.cpp -o CMakeFiles/optical_flow.dir/src/optical_flow.cpp.s
 
-CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.o.requires:
+CMakeFiles/optical_flow.dir/src/optical_flow.cpp.o.requires:
 
-.PHONY : CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.o.requires
+.PHONY : CMakeFiles/optical_flow.dir/src/optical_flow.cpp.o.requires
 
-CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.o.provides: CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.o.requires
-	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.o.provides.build
-.PHONY : CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.o.provides
+CMakeFiles/optical_flow.dir/src/optical_flow.cpp.o.provides: CMakeFiles/optical_flow.dir/src/optical_flow.cpp.o.requires
+	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/optical_flow.cpp.o.provides.build
+.PHONY : CMakeFiles/optical_flow.dir/src/optical_flow.cpp.o.provides
 
-CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.o.provides.build: CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.o
+CMakeFiles/optical_flow.dir/src/optical_flow.cpp.o.provides.build: CMakeFiles/optical_flow.dir/src/optical_flow.cpp.o
 
 
 CMakeFiles/optical_flow.dir/src/shake_compensation.cpp.o: CMakeFiles/optical_flow.dir/flags.make
@@ -107,13 +107,13 @@ CMakeFiles/optical_flow.dir/src/shake_compensation.cpp.o.provides.build: CMakeFi
 
 # Object files for target optical_flow
 optical_flow_OBJECTS = \
-"CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.o" \
+"CMakeFiles/optical_flow.dir/src/optical_flow.cpp.o" \
 "CMakeFiles/optical_flow.dir/src/shake_compensation.cpp.o"
 
 # External object files for target optical_flow
 optical_flow_EXTERNAL_OBJECTS =
 
-optical_flow: CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.o
+optical_flow: CMakeFiles/optical_flow.dir/src/optical_flow.cpp.o
 optical_flow: CMakeFiles/optical_flow.dir/src/shake_compensation.cpp.o
 optical_flow: CMakeFiles/optical_flow.dir/build.make
 optical_flow: /usr/local/lib/libopencv_gapi.so.4.5.4
@@ -178,7 +178,7 @@ CMakeFiles/optical_flow.dir/build: optical_flow
 
 .PHONY : CMakeFiles/optical_flow.dir/build
 
-CMakeFiles/optical_flow.dir/requires: CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.o.requires
+CMakeFiles/optical_flow.dir/requires: CMakeFiles/optical_flow.dir/src/optical_flow.cpp.o.requires
 CMakeFiles/optical_flow.dir/requires: CMakeFiles/optical_flow.dir/src/shake_compensation.cpp.o.requires
 
 .PHONY : CMakeFiles/optical_flow.dir/requires

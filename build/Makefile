@@ -600,6 +600,33 @@ src/Gauss_threshold.cpp.s:
 	$(MAKE) -f CMakeFiles/horizon_detect2.dir/build.make CMakeFiles/horizon_detect2.dir/src/Gauss_threshold.cpp.s
 .PHONY : src/Gauss_threshold.cpp.s
 
+src/optical_flow.o: src/optical_flow.cpp.o
+
+.PHONY : src/optical_flow.o
+
+# target to build an object file
+src/optical_flow.cpp.o:
+	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/optical_flow.cpp.o
+.PHONY : src/optical_flow.cpp.o
+
+src/optical_flow.i: src/optical_flow.cpp.i
+
+.PHONY : src/optical_flow.i
+
+# target to preprocess a source file
+src/optical_flow.cpp.i:
+	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/optical_flow.cpp.i
+.PHONY : src/optical_flow.cpp.i
+
+src/optical_flow.s: src/optical_flow.cpp.s
+
+.PHONY : src/optical_flow.s
+
+# target to generate assembly for a file
+src/optical_flow.cpp.s:
+	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/optical_flow.cpp.s
+.PHONY : src/optical_flow.cpp.s
+
 src/shake_compensation.o: src/shake_compensation.cpp.o
 
 .PHONY : src/shake_compensation.o
@@ -626,33 +653,6 @@ src/shake_compensation.s: src/shake_compensation.cpp.s
 src/shake_compensation.cpp.s:
 	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/shake_compensation.cpp.s
 .PHONY : src/shake_compensation.cpp.s
-
-src/sparse_optical_flow_test.o: src/sparse_optical_flow_test.cpp.o
-
-.PHONY : src/sparse_optical_flow_test.o
-
-# target to build an object file
-src/sparse_optical_flow_test.cpp.o:
-	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.o
-.PHONY : src/sparse_optical_flow_test.cpp.o
-
-src/sparse_optical_flow_test.i: src/sparse_optical_flow_test.cpp.i
-
-.PHONY : src/sparse_optical_flow_test.i
-
-# target to preprocess a source file
-src/sparse_optical_flow_test.cpp.i:
-	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.i
-.PHONY : src/sparse_optical_flow_test.cpp.i
-
-src/sparse_optical_flow_test.s: src/sparse_optical_flow_test.cpp.s
-
-.PHONY : src/sparse_optical_flow_test.s
-
-# target to generate assembly for a file
-src/sparse_optical_flow_test.cpp.s:
-	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.s
-.PHONY : src/sparse_optical_flow_test.cpp.s
 
 # Help Target
 help:
@@ -702,12 +702,12 @@ help:
 	@echo "... src/Gauss_threshold.o"
 	@echo "... src/Gauss_threshold.i"
 	@echo "... src/Gauss_threshold.s"
+	@echo "... src/optical_flow.o"
+	@echo "... src/optical_flow.i"
+	@echo "... src/optical_flow.s"
 	@echo "... src/shake_compensation.o"
 	@echo "... src/shake_compensation.i"
 	@echo "... src/shake_compensation.s"
-	@echo "... src/sparse_optical_flow_test.o"
-	@echo "... src/sparse_optical_flow_test.i"
-	@echo "... src/sparse_optical_flow_test.s"
 .PHONY : help
 
 
