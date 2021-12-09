@@ -34,13 +34,7 @@ int main()
     long long horizon_x2{s.width - 1};
     long long horizon_y2{0};
     
-
-    //в оригинале было так: horizon_y1 = max(np.where(image_closed[:, horizon_x1] == 0)[0])
-
-
-    //в оригинале было так: horizon_y2 = max(np.where(image_closed[:, horizon_x2] == 0)[0])
-
-
+  
     uint8_t* pixel_map{static_cast<uint8_t*> (closed_dst.data)};
     long long channels{closed_dst.channels()};
     uint8_t current_pixel[3];

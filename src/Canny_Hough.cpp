@@ -21,7 +21,6 @@ int main()
     Canny( src, dst, 50, 200, 3 );
     cvtColor( dst, color_dst, COLOR_GRAY2BGR );
 
-    #if 0
     // массив линий для HoughLines
     vector<Vec2f> lines;
     HoughLines( dst, lines, 1, CV_PI/180, 180 );
@@ -49,8 +48,7 @@ int main()
 
         line_pts.push_back(std::make_pair(pt1, pt2));
     }
-    if ((lines_num > 3))
-    // пока ничего лучше, чем нахождение пересечений всех со всеми (пусть и с некоторыми ограничениями), мною не было придумано
+    if ((lines_num > 3)) 
         for (long long i {0}; i < lines_num; i++)
             for (long long j{1}; j < lines_num; j++)
             {
@@ -95,19 +93,10 @@ int main()
 
     // координаты получены, рисуем линию
     line( color_dst, Point(0, yInt), Point(SCREEN_SIZE_X, SCREEN_SIZE_X*slope + yInt), Scalar(0,0,255), 3, 8 ); 
-
-    #elif 0
-    vector<Vec4i> lines;
-    HoughLinesP( dst, lines, 1, CV_PI/180, 80, 30, 10 );
-    for( size_t i = 0; i < lines.size(); i++ )
-    {
-        line( color_dst, Point(lines[i][0], lines[i][1]),
-        Point(lines[i][2], lines[i][3]), Scalar(0,0,255), 3, 8 );
-    }
-    #endif
+ 
 
     //namedWindow( "Detected Lines", 0.5 );
-    //imshow( "Detected Lines", color_dst );
+    imshow( "Detected Lines", color_dst );
 
     waitKey(0);
 }

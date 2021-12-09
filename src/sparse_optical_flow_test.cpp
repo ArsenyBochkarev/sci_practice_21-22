@@ -45,7 +45,7 @@ int main()
     
     // Строим матрицу изменений между кадрами
     std::vector<transform_parameters> transforms;
-    transforms = transf_build(pre_cap, all_frames_num);
+    transforms = transf_build(pre_cap, all_frames_num-1);
 
     // Строим "траекторию" для каждого кадра - промежуточные суммы изменений по x, y и углу
     std::vector<trajectory> traj;
@@ -102,7 +102,7 @@ int main()
 
 
     // Счётчик кадров
-    unsigned long long frame_num{0};
+    unsigned long long frame_num{1};
 
 
     // Раз в сколько кадров будет возможно пересчитывание горизонта - сделано в угоду производительности
@@ -133,29 +133,28 @@ int main()
 
 
 
-    while(cap.isOpened())
+    for(;frame_num < all_frames_num-1; frame_num++)
     {
-        frame_num++; 
+        
+
+
+        cap.read(current_frame);
+        if (current_frame.empty())
+        {
+            std::cout << "unable to read current_frame ! \n";
+            break;
+        }
+
+
+        // Стабилизируем текущий кадр относительно предыдущего (shake compensation) 
+        get_stabilized_frame(current_frame, smooth_transforms[frame_num]);
+
+
+        cvtColor(current_frame, current_gray_frame, COLOR_BGR2GRAY);
 
 
         if (frame_num % change_rate == 0)
         {  
-            cap.read(current_frame);
-            if (current_frame.empty())
-            {
-                std::cout << "unable to read current_frame ! \n";
-                break;
-            }
-
-
-            // Стабилизируем текущий кадр относительно предыдущего (shake compensation)
-            // Проверить, будет ли разница, если мы возьмем frame_num на один больше
-            get_stabilized_frame(current_frame, smooth_transforms[frame_num]);
-
-
-            cvtColor(current_frame, current_gray_frame, COLOR_BGR2GRAY);
- 
-
             // Считаем optical flow
             calcOpticalFlowPyrLK(prev_gray_frame, current_gray_frame, prev_found_fp, current_changed_fp, status, err); 
 
@@ -272,6 +271,7 @@ int main()
             }
 
 
+            // Вывод технических параметров
             std::cout << "frame number == " << frame_num << "\n\n";
             std::cout << "fp_num == " << fp_num << "\n";
             std::cout << "wrong_fp_num == " << wrong_fp_num << "\n";
@@ -280,25 +280,12 @@ int main()
             std::cout << "old_avg_single_p_dist == " << old_avg_single_p_dist << "\n";
             std::cout << "new_avg_single_p_dist == " << new_avg_single_p_dist << "\n";
             std::cout << "horizon_correctness == " << horizon_correctness << "\n\n";
-            
 
-
-            // Рисуем горизонт
-            line(current_frame, Point2f(horizon_x1, horizon_y1), Point2f(horizon_x2, horizon_y2), Scalar(0,0,255), 3, 8 );
-
-
-
-            // Показываем картинку
-            imshow("video_in.AVI", current_frame); 
 
         }
         else  
         {
-            cap.read(prev_frame);
-
-            // Стабилизируем текущий кадр относительно предыдущего (shake compensation)
-            // Проверить, будет ли разница, если мы возьмем frame_num на один больше
-            get_stabilized_frame(prev_frame, smooth_transforms[frame_num]);
+            current_frame.copyTo(prev_frame);
 
             cvtColor(prev_frame, prev_gray_frame, COLOR_BGR2GRAY);
 
@@ -306,18 +293,15 @@ int main()
             prev_found_fp.clear(); 
             goodFeaturesToTrack(prev_gray_frame, prev_found_fp, 300, 0.2, 2);
 
-
-
-            // Рисуем горизонт
-            line(prev_frame, Point2f(horizon_x1, horizon_y1), Point2f(horizon_x2, horizon_y2), Scalar(0,0,255), 3, 8 );
-
-
-
-            // Показываем картинку
-            imshow("video_in.AVI", prev_frame);  
         }
 
+        // Рисуем горизонт
+        line(current_frame, Point2f(horizon_x1, horizon_y1), Point2f(horizon_x2, horizon_y2), Scalar(0,0,255), 3, 8 );
 
+
+
+        // Показываем картинку
+        imshow("video_in.AVI", current_frame); 
         
 
 

@@ -39,7 +39,7 @@ std::vector<transform_parameters> transf_build(VideoCapture cap, long long frame
 
 
 
-	for(int i{0}; i < frame_num-1; i++)
+	for(int i{0}; i < frame_num; i++)
 	{  
 		std::cout << "transf_build is on the frame number " << i << "\n";
 	    std::vector<Point2f> prev_found_fp;
@@ -47,7 +47,7 @@ std::vector<transform_parameters> transf_build(VideoCapture cap, long long frame
 
 
 		// Ищем "фичи" на первом кадре
-		goodFeaturesToTrack(prev_gray_frame, prev_found_fp, 200, 0.01, 30); // С характеристиками можно поиграть !!!
+		goodFeaturesToTrack(prev_gray_frame, prev_found_fp, 200, 0.01, 30); // С характеристиками можно поэкспериментировать
 
 		
         cap.read(current_frame);
@@ -191,7 +191,7 @@ std::vector<transform_parameters> get_smooth_transforms(std::vector<trajectory> 
 	double dy;
 	double da;
 
-	for(size_t i=0; i < transforms.size(); i++)
+	for(size_t i{0}; i < transforms.size(); i++)
 	{
 		// Ищем разницу между сглаженной и изначальной траекторией
 		diff_x = smoothed_trajectory[i].x - original_trajectory[i].x;

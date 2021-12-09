@@ -144,30 +144,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named sci_practice3
+# Target rules for targets named horizon_detect1
 
 # Build rule for target.
-sci_practice3: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 sci_practice3
-.PHONY : sci_practice3
+horizon_detect1: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 horizon_detect1
+.PHONY : horizon_detect1
 
 # fast build rule for target.
-sci_practice3/fast:
-	$(MAKE) -f CMakeFiles/sci_practice3.dir/build.make CMakeFiles/sci_practice3.dir/build
-.PHONY : sci_practice3/fast
-
-#=============================================================================
-# Target rules for targets named sci_practice
-
-# Build rule for target.
-sci_practice: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 sci_practice
-.PHONY : sci_practice
-
-# fast build rule for target.
-sci_practice/fast:
-	$(MAKE) -f CMakeFiles/sci_practice.dir/build.make CMakeFiles/sci_practice.dir/build
-.PHONY : sci_practice/fast
+horizon_detect1/fast:
+	$(MAKE) -f CMakeFiles/horizon_detect1.dir/build.make CMakeFiles/horizon_detect1.dir/build
+.PHONY : horizon_detect1/fast
 
 #=============================================================================
 # Target rules for targets named ContinuousSubmit
@@ -339,19 +326,6 @@ NightlyMemCheck/fast:
 .PHONY : NightlyMemCheck/fast
 
 #=============================================================================
-# Target rules for targets named sci_practice2
-
-# Build rule for target.
-sci_practice2: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 sci_practice2
-.PHONY : sci_practice2
-
-# fast build rule for target.
-sci_practice2/fast:
-	$(MAKE) -f CMakeFiles/sci_practice2.dir/build.make CMakeFiles/sci_practice2.dir/build
-.PHONY : sci_practice2/fast
-
-#=============================================================================
 # Target rules for targets named ExperimentalStart
 
 # Build rule for target.
@@ -415,6 +389,19 @@ ExperimentalConfigure: cmake_check_build_system
 ExperimentalConfigure/fast:
 	$(MAKE) -f CMakeFiles/ExperimentalConfigure.dir/build.make CMakeFiles/ExperimentalConfigure.dir/build
 .PHONY : ExperimentalConfigure/fast
+
+#=============================================================================
+# Target rules for targets named optical_flow
+
+# Build rule for target.
+optical_flow: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 optical_flow
+.PHONY : optical_flow
+
+# fast build rule for target.
+optical_flow/fast:
+	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/build
+.PHONY : optical_flow/fast
 
 #=============================================================================
 # Target rules for targets named ExperimentalCoverage
@@ -521,6 +508,19 @@ ExperimentalSubmit/fast:
 .PHONY : ExperimentalSubmit/fast
 
 #=============================================================================
+# Target rules for targets named horizon_detect2
+
+# Build rule for target.
+horizon_detect2: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 horizon_detect2
+.PHONY : horizon_detect2
+
+# fast build rule for target.
+horizon_detect2/fast:
+	$(MAKE) -f CMakeFiles/horizon_detect2.dir/build.make CMakeFiles/horizon_detect2.dir/build
+.PHONY : horizon_detect2/fast
+
+#=============================================================================
 # Target rules for targets named ContinuousStart
 
 # Build rule for target.
@@ -552,7 +552,7 @@ src/Canny_Hough.o: src/Canny_Hough.cpp.o
 
 # target to build an object file
 src/Canny_Hough.cpp.o:
-	$(MAKE) -f CMakeFiles/sci_practice.dir/build.make CMakeFiles/sci_practice.dir/src/Canny_Hough.cpp.o
+	$(MAKE) -f CMakeFiles/horizon_detect1.dir/build.make CMakeFiles/horizon_detect1.dir/src/Canny_Hough.cpp.o
 .PHONY : src/Canny_Hough.cpp.o
 
 src/Canny_Hough.i: src/Canny_Hough.cpp.i
@@ -561,7 +561,7 @@ src/Canny_Hough.i: src/Canny_Hough.cpp.i
 
 # target to preprocess a source file
 src/Canny_Hough.cpp.i:
-	$(MAKE) -f CMakeFiles/sci_practice.dir/build.make CMakeFiles/sci_practice.dir/src/Canny_Hough.cpp.i
+	$(MAKE) -f CMakeFiles/horizon_detect1.dir/build.make CMakeFiles/horizon_detect1.dir/src/Canny_Hough.cpp.i
 .PHONY : src/Canny_Hough.cpp.i
 
 src/Canny_Hough.s: src/Canny_Hough.cpp.s
@@ -570,7 +570,7 @@ src/Canny_Hough.s: src/Canny_Hough.cpp.s
 
 # target to generate assembly for a file
 src/Canny_Hough.cpp.s:
-	$(MAKE) -f CMakeFiles/sci_practice.dir/build.make CMakeFiles/sci_practice.dir/src/Canny_Hough.cpp.s
+	$(MAKE) -f CMakeFiles/horizon_detect1.dir/build.make CMakeFiles/horizon_detect1.dir/src/Canny_Hough.cpp.s
 .PHONY : src/Canny_Hough.cpp.s
 
 src/Gauss_threshold.o: src/Gauss_threshold.cpp.o
@@ -579,7 +579,7 @@ src/Gauss_threshold.o: src/Gauss_threshold.cpp.o
 
 # target to build an object file
 src/Gauss_threshold.cpp.o:
-	$(MAKE) -f CMakeFiles/sci_practice2.dir/build.make CMakeFiles/sci_practice2.dir/src/Gauss_threshold.cpp.o
+	$(MAKE) -f CMakeFiles/horizon_detect2.dir/build.make CMakeFiles/horizon_detect2.dir/src/Gauss_threshold.cpp.o
 .PHONY : src/Gauss_threshold.cpp.o
 
 src/Gauss_threshold.i: src/Gauss_threshold.cpp.i
@@ -588,7 +588,7 @@ src/Gauss_threshold.i: src/Gauss_threshold.cpp.i
 
 # target to preprocess a source file
 src/Gauss_threshold.cpp.i:
-	$(MAKE) -f CMakeFiles/sci_practice2.dir/build.make CMakeFiles/sci_practice2.dir/src/Gauss_threshold.cpp.i
+	$(MAKE) -f CMakeFiles/horizon_detect2.dir/build.make CMakeFiles/horizon_detect2.dir/src/Gauss_threshold.cpp.i
 .PHONY : src/Gauss_threshold.cpp.i
 
 src/Gauss_threshold.s: src/Gauss_threshold.cpp.s
@@ -597,7 +597,7 @@ src/Gauss_threshold.s: src/Gauss_threshold.cpp.s
 
 # target to generate assembly for a file
 src/Gauss_threshold.cpp.s:
-	$(MAKE) -f CMakeFiles/sci_practice2.dir/build.make CMakeFiles/sci_practice2.dir/src/Gauss_threshold.cpp.s
+	$(MAKE) -f CMakeFiles/horizon_detect2.dir/build.make CMakeFiles/horizon_detect2.dir/src/Gauss_threshold.cpp.s
 .PHONY : src/Gauss_threshold.cpp.s
 
 src/shake_compensation.o: src/shake_compensation.cpp.o
@@ -606,7 +606,7 @@ src/shake_compensation.o: src/shake_compensation.cpp.o
 
 # target to build an object file
 src/shake_compensation.cpp.o:
-	$(MAKE) -f CMakeFiles/sci_practice3.dir/build.make CMakeFiles/sci_practice3.dir/src/shake_compensation.cpp.o
+	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/shake_compensation.cpp.o
 .PHONY : src/shake_compensation.cpp.o
 
 src/shake_compensation.i: src/shake_compensation.cpp.i
@@ -615,7 +615,7 @@ src/shake_compensation.i: src/shake_compensation.cpp.i
 
 # target to preprocess a source file
 src/shake_compensation.cpp.i:
-	$(MAKE) -f CMakeFiles/sci_practice3.dir/build.make CMakeFiles/sci_practice3.dir/src/shake_compensation.cpp.i
+	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/shake_compensation.cpp.i
 .PHONY : src/shake_compensation.cpp.i
 
 src/shake_compensation.s: src/shake_compensation.cpp.s
@@ -624,7 +624,7 @@ src/shake_compensation.s: src/shake_compensation.cpp.s
 
 # target to generate assembly for a file
 src/shake_compensation.cpp.s:
-	$(MAKE) -f CMakeFiles/sci_practice3.dir/build.make CMakeFiles/sci_practice3.dir/src/shake_compensation.cpp.s
+	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/shake_compensation.cpp.s
 .PHONY : src/shake_compensation.cpp.s
 
 src/sparse_optical_flow_test.o: src/sparse_optical_flow_test.cpp.o
@@ -633,7 +633,7 @@ src/sparse_optical_flow_test.o: src/sparse_optical_flow_test.cpp.o
 
 # target to build an object file
 src/sparse_optical_flow_test.cpp.o:
-	$(MAKE) -f CMakeFiles/sci_practice3.dir/build.make CMakeFiles/sci_practice3.dir/src/sparse_optical_flow_test.cpp.o
+	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.o
 .PHONY : src/sparse_optical_flow_test.cpp.o
 
 src/sparse_optical_flow_test.i: src/sparse_optical_flow_test.cpp.i
@@ -642,7 +642,7 @@ src/sparse_optical_flow_test.i: src/sparse_optical_flow_test.cpp.i
 
 # target to preprocess a source file
 src/sparse_optical_flow_test.cpp.i:
-	$(MAKE) -f CMakeFiles/sci_practice3.dir/build.make CMakeFiles/sci_practice3.dir/src/sparse_optical_flow_test.cpp.i
+	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.i
 .PHONY : src/sparse_optical_flow_test.cpp.i
 
 src/sparse_optical_flow_test.s: src/sparse_optical_flow_test.cpp.s
@@ -651,7 +651,7 @@ src/sparse_optical_flow_test.s: src/sparse_optical_flow_test.cpp.s
 
 # target to generate assembly for a file
 src/sparse_optical_flow_test.cpp.s:
-	$(MAKE) -f CMakeFiles/sci_practice3.dir/build.make CMakeFiles/sci_practice3.dir/src/sparse_optical_flow_test.cpp.s
+	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/sparse_optical_flow_test.cpp.s
 .PHONY : src/sparse_optical_flow_test.cpp.s
 
 # Help Target
@@ -661,9 +661,8 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
-	@echo "... sci_practice3"
 	@echo "... rebuild_cache"
-	@echo "... sci_practice"
+	@echo "... horizon_detect1"
 	@echo "... ContinuousSubmit"
 	@echo "... ContinuousCoverage"
 	@echo "... ContinuousTest"
@@ -679,13 +678,13 @@ help:
 	@echo "... NightlyMemoryCheck"
 	@echo "... NightlyMemCheck"
 	@echo "... package_source"
-	@echo "... sci_practice2"
 	@echo "... ExperimentalStart"
 	@echo "... ContinuousConfigure"
 	@echo "... NightlyCoverage"
 	@echo "... ExperimentalUpdate"
 	@echo "... test"
 	@echo "... ExperimentalConfigure"
+	@echo "... optical_flow"
 	@echo "... ExperimentalCoverage"
 	@echo "... ExperimentalBuild"
 	@echo "... NightlyConfigure"
@@ -694,6 +693,7 @@ help:
 	@echo "... Experimental"
 	@echo "... NightlySubmit"
 	@echo "... ExperimentalSubmit"
+	@echo "... horizon_detect2"
 	@echo "... ContinuousStart"
 	@echo "... ContinuousUpdate"
 	@echo "... src/Canny_Hough.o"
