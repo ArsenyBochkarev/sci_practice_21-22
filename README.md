@@ -14,7 +14,7 @@
  ### If you're on Ubuntu.
  ##### Install OpenCV library on your computer.
    Follow all the steps from [this](http://www.codebind.com/python/install-opencv-ubuntu-16-04-lts-python/) site.
- ##### Move to /build directory on your local repo.
+ ##### Move to cloned repo directory.
  ##### Use the following commands:
   ```console
   $ rm build

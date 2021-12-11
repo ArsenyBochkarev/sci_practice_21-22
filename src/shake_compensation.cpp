@@ -232,7 +232,7 @@ void get_stabilized_frame(Mat& current_frame, transform_parameters current_frame
 	// По "сглаженным" преобразованиям строим матрицу перехода между кадрами 
 	current_frame_transf_smooth.get_transf_mat(transforms); 
 
-	// Применяем аффинные преобразования по построенной матрицу к текущему кадру
+	// Применяем аффинные преобразования по построенной матрице к текущему кадру
 	warpAffine(current_frame, current_frame, transforms, current_frame.size());
 
 	fixBorder(current_frame); 
