@@ -7,9 +7,9 @@ enable_testing()
 find_package( OpenCV REQUIRED )
 include_directories( ${OpenCV_INCLUDE_DIRS} ) 
  
-add_executable(optical_flow src/optical_flow.cpp src/shake_compensation.cpp src/Canny_Hough.cpp src/Gauss_threshold.cpp)
+add_executable(main src/main.cpp src/shake_compensation.cpp src/Canny_Hough.cpp src/Gauss_threshold.cpp)
  
-target_link_libraries( optical_flow ${OpenCV_LIBS} ) 
+target_link_libraries( main ${OpenCV_LIBS} ) 
 
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
