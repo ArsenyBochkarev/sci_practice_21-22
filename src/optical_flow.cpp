@@ -1,17 +1,18 @@
-#include <iostream> 
-#include <vector> 
-#include <cmath>
-#include <opencv2/opencv.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/video/tracking.hpp>
+#include <iostream>  
+#include <cmath> 
 #include "shake_compensation.h"
+#include "Canny_Hough.h"
+#include "Gauss_threshold.h"
 
-using namespace std;
 using namespace cv;
 
-double SCREEN_SIZE_X{1920};
-double SCREEN_SIZE_Y{1080};
+// Функция первоначально определения горизонта
+std::vector<std::pair<double, double> > get_horizon_coordinates(Mat src, bool way_to_get_horizon, int thres_for_canny_hough)
+{
+    // 0 - метод через Canny/Hough
+    // 1 - метод через Gauss/threshold
+    return (way_to_get_horizon == 0 ? get_coordinates_Canny_Hough(src, thres_for_canny_hough) : get_coordinates_Gauss_threshold(src));
+}
 
  
 int main()
@@ -69,6 +70,10 @@ int main()
     
 
 
+    // Способе построения горизонта
+    // В дальнейшем сделать регулируемым
+    bool horizon_detection_method{0};
+
     // Считываем первый кадр
     cap.read(prev_frame);
     if (prev_frame.empty())
@@ -78,16 +83,15 @@ int main()
     }
 
     // Вычисляем горизонт
-    // some code
+    std::vector<std::pair<double, double> > coords{get_horizon_coordinates(prev_frame, horizon_detection_method, 180)};
+    horizon_x1 = coords[0].first;
+    horizon_y1 = coords[0].second   ;
 
-    // ВРЕМЕННО !!! Выставляю дефолтные значения примерно посередине кадра
-    horizon_x1 = 0;
-    horizon_y1 = prev_frame.size().height/2 - 1;
+    horizon_x2 = coords[1].first;
+    horizon_y2 = coords[1].second; 
 
-    horizon_x2 = prev_frame.size().width;
-    horizon_y2 = prev_frame.size().height/2 + 1;
-
-
+                std::cout << "horizon_x1 == " << horizon_x1 << " horizon_y1 == " << horizon_y1 << "\n";
+                std::cout << "horizon_x2 == " << horizon_x2 << " horizon_y2 == " << horizon_y2 << "\n\n\n\n\n\n\n\n";
     // Меняем цвет
     cvtColor(prev_frame, prev_gray_frame, COLOR_BGR2GRAY); 
 
@@ -128,8 +132,6 @@ int main()
     // Наибольшая разрешенная разница между общим количеством "фич" и числом точек, сместившихся в конкретном направлении (вверх или вниз)
     // В дальнейшем сделать регулируемым
     long long max_horizon_correctness_diff{20};
- 
-
 
 
 
@@ -158,7 +160,7 @@ int main()
             // Считаем optical flow
             calcOpticalFlowPyrLK(prev_gray_frame, current_gray_frame, prev_found_fp, current_changed_fp, status, err); 
 
-            long long fp_num{prev_found_fp.size()};
+            unsigned long long fp_num{prev_found_fp.size()};
 
 
             
@@ -260,14 +262,17 @@ int main()
             if (rebuild_horizon)
             { 
                 std::cout << "frame number " << frame_num << " asked to rebuild the horizon !\n\n";
-                // some code
                 
-                // ВРЕМЕННО !!! Выставляю значения примерно посередине кадра
-                horizon_x1 = 0;
-                horizon_y1 = prev_frame.size().height/2 - 1;
+                std::vector<std::pair<double, double> > coords{get_horizon_coordinates(current_frame, horizon_detection_method, 100)};
+                horizon_x1 = coords[0].first;
+                horizon_y1 = coords[0].second;
 
-                horizon_x2 = prev_frame.size().width;
-                horizon_y2 = prev_frame.size().height/2 + 1;
+                horizon_x2 = coords[1].first;
+                horizon_y2 = coords[1].second;
+
+                std::cout << "horizon_x1 == " << horizon_x1 << " horizon_y1 == " << horizon_y1 << "\n";
+                std::cout << "horizon_x2 == " << horizon_x2 << " horizon_y2 == " << horizon_y2 << "\n\n\n\n\n\n\n\n";
+
             }
 
 

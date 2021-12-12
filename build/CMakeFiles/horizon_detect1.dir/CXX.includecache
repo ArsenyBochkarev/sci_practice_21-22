@@ -19,6 +19,22 @@ opencv2/imgproc.hpp
 -
 opencv2/highgui.hpp
 -
+Canny_Hough.h
+/home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/src/Canny_Hough.h
+
+/home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/src/Canny_Hough.h
+vector
+-
+utility
+-
+iostream
+-
+math.h
+-
+opencv2/imgproc.hpp
+-
+opencv2/highgui.hpp
+-
 
 /usr/local/include/opencv4/opencv2/./imgproc/segmentation.hpp
 opencv2/imgproc.hpp

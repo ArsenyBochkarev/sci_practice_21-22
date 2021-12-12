@@ -105,16 +105,68 @@ CMakeFiles/optical_flow.dir/src/shake_compensation.cpp.o.provides: CMakeFiles/op
 CMakeFiles/optical_flow.dir/src/shake_compensation.cpp.o.provides.build: CMakeFiles/optical_flow.dir/src/shake_compensation.cpp.o
 
 
+CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.o: CMakeFiles/optical_flow.dir/flags.make
+CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.o: ../src/Canny_Hough.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.o -c /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/src/Canny_Hough.cpp
+
+CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/src/Canny_Hough.cpp > CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.i
+
+CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/src/Canny_Hough.cpp -o CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.s
+
+CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.o.requires:
+
+.PHONY : CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.o.requires
+
+CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.o.provides: CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.o.requires
+	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.o.provides.build
+.PHONY : CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.o.provides
+
+CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.o.provides.build: CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.o
+
+
+CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.o: CMakeFiles/optical_flow.dir/flags.make
+CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.o: ../src/Gauss_threshold.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.o -c /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/src/Gauss_threshold.cpp
+
+CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/src/Gauss_threshold.cpp > CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.i
+
+CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/src/Gauss_threshold.cpp -o CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.s
+
+CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.o.requires:
+
+.PHONY : CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.o.requires
+
+CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.o.provides: CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.o.requires
+	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.o.provides.build
+.PHONY : CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.o.provides
+
+CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.o.provides.build: CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.o
+
+
 # Object files for target optical_flow
 optical_flow_OBJECTS = \
 "CMakeFiles/optical_flow.dir/src/optical_flow.cpp.o" \
-"CMakeFiles/optical_flow.dir/src/shake_compensation.cpp.o"
+"CMakeFiles/optical_flow.dir/src/shake_compensation.cpp.o" \
+"CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.o" \
+"CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.o"
 
 # External object files for target optical_flow
 optical_flow_EXTERNAL_OBJECTS =
 
 optical_flow: CMakeFiles/optical_flow.dir/src/optical_flow.cpp.o
 optical_flow: CMakeFiles/optical_flow.dir/src/shake_compensation.cpp.o
+optical_flow: CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.o
+optical_flow: CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.o
 optical_flow: CMakeFiles/optical_flow.dir/build.make
 optical_flow: /usr/local/lib/libopencv_gapi.so.4.5.4
 optical_flow: /usr/local/lib/libopencv_stitching.so.4.5.4
@@ -170,7 +222,7 @@ optical_flow: /usr/local/lib/libopencv_flann.so.4.5.4
 optical_flow: /usr/local/lib/libopencv_imgproc.so.4.5.4
 optical_flow: /usr/local/lib/libopencv_core.so.4.5.4
 optical_flow: CMakeFiles/optical_flow.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable optical_flow"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable optical_flow"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/optical_flow.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -180,6 +232,8 @@ CMakeFiles/optical_flow.dir/build: optical_flow
 
 CMakeFiles/optical_flow.dir/requires: CMakeFiles/optical_flow.dir/src/optical_flow.cpp.o.requires
 CMakeFiles/optical_flow.dir/requires: CMakeFiles/optical_flow.dir/src/shake_compensation.cpp.o.requires
+CMakeFiles/optical_flow.dir/requires: CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.o.requires
+CMakeFiles/optical_flow.dir/requires: CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.o.requires
 
 .PHONY : CMakeFiles/optical_flow.dir/requires
 

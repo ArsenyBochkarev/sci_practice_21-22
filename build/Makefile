@@ -144,19 +144,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named horizon_detect1
-
-# Build rule for target.
-horizon_detect1: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 horizon_detect1
-.PHONY : horizon_detect1
-
-# fast build rule for target.
-horizon_detect1/fast:
-	$(MAKE) -f CMakeFiles/horizon_detect1.dir/build.make CMakeFiles/horizon_detect1.dir/build
-.PHONY : horizon_detect1/fast
-
-#=============================================================================
 # Target rules for targets named ContinuousSubmit
 
 # Build rule for target.
@@ -508,19 +495,6 @@ ExperimentalSubmit/fast:
 .PHONY : ExperimentalSubmit/fast
 
 #=============================================================================
-# Target rules for targets named horizon_detect2
-
-# Build rule for target.
-horizon_detect2: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 horizon_detect2
-.PHONY : horizon_detect2
-
-# fast build rule for target.
-horizon_detect2/fast:
-	$(MAKE) -f CMakeFiles/horizon_detect2.dir/build.make CMakeFiles/horizon_detect2.dir/build
-.PHONY : horizon_detect2/fast
-
-#=============================================================================
 # Target rules for targets named ContinuousStart
 
 # Build rule for target.
@@ -552,7 +526,7 @@ src/Canny_Hough.o: src/Canny_Hough.cpp.o
 
 # target to build an object file
 src/Canny_Hough.cpp.o:
-	$(MAKE) -f CMakeFiles/horizon_detect1.dir/build.make CMakeFiles/horizon_detect1.dir/src/Canny_Hough.cpp.o
+	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.o
 .PHONY : src/Canny_Hough.cpp.o
 
 src/Canny_Hough.i: src/Canny_Hough.cpp.i
@@ -561,7 +535,7 @@ src/Canny_Hough.i: src/Canny_Hough.cpp.i
 
 # target to preprocess a source file
 src/Canny_Hough.cpp.i:
-	$(MAKE) -f CMakeFiles/horizon_detect1.dir/build.make CMakeFiles/horizon_detect1.dir/src/Canny_Hough.cpp.i
+	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.i
 .PHONY : src/Canny_Hough.cpp.i
 
 src/Canny_Hough.s: src/Canny_Hough.cpp.s
@@ -570,7 +544,7 @@ src/Canny_Hough.s: src/Canny_Hough.cpp.s
 
 # target to generate assembly for a file
 src/Canny_Hough.cpp.s:
-	$(MAKE) -f CMakeFiles/horizon_detect1.dir/build.make CMakeFiles/horizon_detect1.dir/src/Canny_Hough.cpp.s
+	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/Canny_Hough.cpp.s
 .PHONY : src/Canny_Hough.cpp.s
 
 src/Gauss_threshold.o: src/Gauss_threshold.cpp.o
@@ -579,7 +553,7 @@ src/Gauss_threshold.o: src/Gauss_threshold.cpp.o
 
 # target to build an object file
 src/Gauss_threshold.cpp.o:
-	$(MAKE) -f CMakeFiles/horizon_detect2.dir/build.make CMakeFiles/horizon_detect2.dir/src/Gauss_threshold.cpp.o
+	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.o
 .PHONY : src/Gauss_threshold.cpp.o
 
 src/Gauss_threshold.i: src/Gauss_threshold.cpp.i
@@ -588,7 +562,7 @@ src/Gauss_threshold.i: src/Gauss_threshold.cpp.i
 
 # target to preprocess a source file
 src/Gauss_threshold.cpp.i:
-	$(MAKE) -f CMakeFiles/horizon_detect2.dir/build.make CMakeFiles/horizon_detect2.dir/src/Gauss_threshold.cpp.i
+	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.i
 .PHONY : src/Gauss_threshold.cpp.i
 
 src/Gauss_threshold.s: src/Gauss_threshold.cpp.s
@@ -597,7 +571,7 @@ src/Gauss_threshold.s: src/Gauss_threshold.cpp.s
 
 # target to generate assembly for a file
 src/Gauss_threshold.cpp.s:
-	$(MAKE) -f CMakeFiles/horizon_detect2.dir/build.make CMakeFiles/horizon_detect2.dir/src/Gauss_threshold.cpp.s
+	$(MAKE) -f CMakeFiles/optical_flow.dir/build.make CMakeFiles/optical_flow.dir/src/Gauss_threshold.cpp.s
 .PHONY : src/Gauss_threshold.cpp.s
 
 src/optical_flow.o: src/optical_flow.cpp.o
@@ -662,7 +636,6 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... horizon_detect1"
 	@echo "... ContinuousSubmit"
 	@echo "... ContinuousCoverage"
 	@echo "... ContinuousTest"
@@ -693,7 +666,6 @@ help:
 	@echo "... Experimental"
 	@echo "... NightlySubmit"
 	@echo "... ExperimentalSubmit"
-	@echo "... horizon_detect2"
 	@echo "... ContinuousStart"
 	@echo "... ContinuousUpdate"
 	@echo "... src/Canny_Hough.o"

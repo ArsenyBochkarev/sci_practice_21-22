@@ -1,10 +1,5 @@
-#include <iostream> 
-#include <vector> 
-#include <cmath>
-#include <opencv2/opencv.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/video/tracking.hpp> 
+#include <iostream>  
+#include <cmath> 
 #include "shake_compensation.h"
 
 using namespace std;

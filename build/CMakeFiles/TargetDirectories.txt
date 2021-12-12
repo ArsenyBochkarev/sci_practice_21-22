@@ -1,6 +1,5 @@
 /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/build/CMakeFiles/edit_cache.dir
 /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/build/CMakeFiles/rebuild_cache.dir
-/home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/build/CMakeFiles/horizon_detect1.dir
 /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/build/CMakeFiles/ContinuousSubmit.dir
 /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/build/CMakeFiles/ContinuousCoverage.dir
 /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/build/CMakeFiles/ContinuousTest.dir
@@ -31,6 +30,5 @@
 /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/build/CMakeFiles/Experimental.dir
 /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/build/CMakeFiles/NightlySubmit.dir
 /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/build/CMakeFiles/ExperimentalSubmit.dir
-/home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/build/CMakeFiles/horizon_detect2.dir
 /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/build/CMakeFiles/ContinuousStart.dir
 /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/build/CMakeFiles/ContinuousUpdate.dir

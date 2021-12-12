@@ -1,17 +1,13 @@
-#include <vector>
-#include <utility>
 #include <iostream>
 #include <math.h>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/highgui.hpp>
+#include "Gauss_threshold.h"
 
 using namespace cv;
 
-int main()
+std::vector<std::pair<double, double> > get_coordinates_Gauss_threshold(Mat src)
 {
-    Mat src, dst, grey_dst, blurred_dst, thres_dst, closed_dst;
+    Mat dst, grey_dst, blurred_dst, thres_dst, closed_dst;
     
-    src = imread("C:/sci_practice_21-22/build/sample3.jpg", IMREAD_COLOR);
 
     cvtColor( src, grey_dst, COLOR_BGR2GRAY );
 
@@ -78,10 +74,18 @@ int main()
             break;
     }
 
-    line(closed_dst, Point(horizon_x1, horizon_y1), Point(horizon_x2, horizon_y2), Scalar(100, 0, 255, 255));
+    // line(closed_dst, Point(horizon_x1, horizon_y1), Point(horizon_x2, horizon_y2), Scalar(100, 0, 255, 255));
 
 
-    imshow("src", closed_dst);
-    waitKey(0);
+    // imshow("src", closed_dst);
+    // waitKey(0);
+
+
+    std::vector<std::pair<double, double> > result = {
+        std::make_pair(horizon_x1, horizon_y1),
+        std::make_pair(horizon_x2, horizon_y2)
+    };
+
+    return result;
 
 }
