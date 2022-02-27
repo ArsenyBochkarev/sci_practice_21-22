@@ -114,5 +114,5 @@ std::vector<std::pair<double, double> > get_coordinates_Canny_Hough(Mat src, int
         std::make_pair(horizon_x2, horizon_y2)
     };
 
-    return result;
+    return std::move(result);
 }

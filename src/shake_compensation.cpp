@@ -102,7 +102,7 @@ std::vector<transform_parameters> transf_build(VideoCapture cap, long long frame
 	}
 
 
-	return transforms;
+	return std::move(transforms);
 }
 
 
@@ -129,7 +129,7 @@ std::vector<trajectory> cumulative_sum(std::vector<transform_parameters> &transf
 		traj.push_back(trajectory(x,y,a));
 	}
 
-	return traj; 
+	return std::move(traj); 
 }
 
 
@@ -166,7 +166,7 @@ std::vector<trajectory> smooth(std::vector <trajectory>& traj, int radius)
 		smoothed_trajectory.push_back(trajectory(avg_x, avg_y, avg_a));
 	}
 
-	return smoothed_trajectory; 
+	return std::move(smoothed_trajectory); 
 }
 
 
@@ -201,7 +201,7 @@ std::vector<transform_parameters> get_smooth_transforms(std::vector<trajectory> 
 		transforms_smooth.push_back(transform_parameters(dx, dy, da));
 	}
 
-	return transforms_smooth;	
+	return std::move(transforms_smooth);	
 }
 
 

@@ -11,7 +11,7 @@ std::vector<std::pair<double, double> > get_horizon_coordinates(Mat src, bool wa
 {
     // 0 - метод через Canny/Hough
     // 1 - метод через Gauss/threshold
-    return (way_to_get_horizon == 0 ? get_coordinates_Canny_Hough(src, thres_for_canny_hough) : get_coordinates_Gauss_threshold(src));
+    return std::move((way_to_get_horizon == 0 ? get_coordinates_Canny_Hough(src, thres_for_canny_hough) : get_coordinates_Gauss_threshold(src)));
 }
 
  

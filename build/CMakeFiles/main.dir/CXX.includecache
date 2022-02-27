@@ -1,4 +1,4 @@
-#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
 
 #IncludeRegexScan: ^.*$
 
@@ -23,14 +23,6 @@ opencv2/imgproc.hpp
 -
 opencv2/highgui.hpp
 -
-
-/home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/src/Gauss_threshold.cpp
-iostream
--
-math.h
--
-Gauss_threshold.h
-/home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/src/Gauss_threshold.h
 
 /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/src/Gauss_threshold.h
 vector
@@ -77,10 +69,6 @@ opencv2/highgui.hpp
 -
 opencv2/video/tracking.hpp
 -
-
-/usr/local/include/opencv4/opencv2/./imgproc/segmentation.hpp
-opencv2/imgproc.hpp
-/usr/local/include/opencv4/opencv2/./imgproc/opencv2/imgproc.hpp
 
 /usr/local/include/opencv4/opencv2/calib3d.hpp
 opencv2/core.hpp
@@ -900,7 +888,11 @@ opencv2/core.hpp
 opencv2/core.hpp
 /usr/local/include/opencv4/opencv2/opencv2/core.hpp
 ./imgproc/segmentation.hpp
-/usr/local/include/opencv4/opencv2/./imgproc/segmentation.hpp
+/usr/local/include/opencv4/opencv2/imgproc/segmentation.hpp
+
+/usr/local/include/opencv4/opencv2/imgproc/segmentation.hpp
+opencv2/imgproc.hpp
+/usr/local/include/opencv4/opencv2/imgproc/opencv2/imgproc.hpp
 
 /usr/local/include/opencv4/opencv2/ml.hpp
 opencv2/core.hpp
