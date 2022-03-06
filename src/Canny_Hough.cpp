@@ -169,7 +169,7 @@ double* GetVanishingPoint(std::vector<std::vector<double>> Lines, bool first_tim
 
 
 
-std::vector<std::pair<double, double> > get_coordinates_Canny_Hough(Mat src, int thres)
+std::vector<std::pair<double, double> > get_coordinates_Canny_Hough(Mat src)
 {
     std::vector<std::pair<double, double> > result;
 
@@ -195,21 +195,7 @@ std::vector<std::pair<double, double> > get_coordinates_Canny_Hough(Mat src, int
 
     result.push_back(std::make_pair(0, VanishingPoint1[1]));
     result.push_back(std::make_pair(SCREEN_SIZE_X, VanishingPoint2[1]));
-
-
-
-
-    // Drawing linesand vanishing point
-    for (int i = 0; i < Lines.size(); i++)
-    {
-        std::vector<double> Line = Lines[i];
-        cv::line(src, cv::Point((int)Line[0], (int)Line[1]), cv::Point((int)Line[2], (int)Line[3]), cv::Scalar(0, 255, 0), 2);
-    }
-    cv::line(src, cv::Point(result[0].first, result[0].second), cv::Point(result[1].first, result[1].second), cv::Scalar(0, 255, 0), 2);
-    
-    cv::circle(src, cv::Point(VanishingPoint1[0], VanishingPoint1[1]), 10, cv::Scalar(0, 0, 255), -1);
-    cv::circle(src, cv::Point(VanishingPoint2[0], VanishingPoint2[1]), 10, cv::Scalar(0, 255, 255), -1);
-
+ 
 
     return std::move(result);
 }

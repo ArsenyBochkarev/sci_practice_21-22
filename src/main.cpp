@@ -7,11 +7,11 @@
 using namespace cv;
 
 // Функция первоначально определения горизонта
-std::vector<std::pair<double, double> > get_horizon_coordinates(Mat src, bool way_to_get_horizon, int thres_for_canny_hough)
+std::vector<std::pair<double, double> > get_horizon_coordinates(Mat src, bool way_to_get_horizon)
 {
     // 0 - метод через Canny/Hough
     // 1 - метод через Gauss/threshold
-    return std::move((way_to_get_horizon == 0 ? get_coordinates_Canny_Hough(src, thres_for_canny_hough) : get_coordinates_Gauss_threshold(src)));
+    return std::move((way_to_get_horizon == 0 ? get_coordinates_Canny_Hough(src) : get_coordinates_Gauss_threshold(src)));
 }
 
  
@@ -83,7 +83,7 @@ int main()
     }
 
     // Вычисляем горизонт
-    std::vector<std::pair<double, double> > coords{get_horizon_coordinates(prev_frame, horizon_detection_method, 180)};
+    std::vector<std::pair<double, double> > coords{get_horizon_coordinates(prev_frame, horizon_detection_method)};
     horizon_x1 = coords[0].first;
     horizon_y1 = coords[0].second   ;
 
@@ -263,7 +263,7 @@ int main()
             { 
                 std::cout << "frame number " << frame_num << " asked to rebuild the horizon !\n\n";
                 
-                std::vector<std::pair<double, double> > coords{get_horizon_coordinates(current_frame, horizon_detection_method, 100)};
+                std::vector<std::pair<double, double> > coords{get_horizon_coordinates(current_frame, horizon_detection_method)};
                 horizon_x1 = coords[0].first;
                 horizon_y1 = coords[0].second;
 

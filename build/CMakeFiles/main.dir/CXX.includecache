@@ -6,6 +6,14 @@
 
 #IncludeRegexTransform: 
 
+/home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/src/Canny_Hough.cpp
+iostream
+-
+math.h
+-
+Canny_Hough.h
+/home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/src/Canny_Hough.h
+
 /home/mexanobar/programming/C++/sci_practice_21-22/sci_practice_21-22/src/Canny_Hough.h
 vector
 -
