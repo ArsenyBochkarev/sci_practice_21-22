@@ -67,15 +67,15 @@ int main()
 
     std::cout << "\n\n\n\nall frames number == " << all_frames_num << "\n";
     std::cout << "smooth_transforms size == " << smooth_transforms.size() << "\n\n\n\n";
-    
+ 
 
 
-    // Способе построения горизонта
+    // Способ построения горизонта
     // В дальнейшем сделать регулируемым
     bool horizon_detection_method{0};
 
     // Считываем первый кадр
-    cap.read(prev_frame);
+    cap.read(prev_frame); 
     if (prev_frame.empty())
     {
         std::cout << "unable to read prev_frame ! \n";
