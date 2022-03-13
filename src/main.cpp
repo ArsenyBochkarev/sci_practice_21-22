@@ -75,7 +75,7 @@ int main()
     bool horizon_detection_method{0};
 
     // Считываем первый кадр
-    cap.read(prev_frame); 
+    cap.read(prev_frame);  
     if (prev_frame.empty())
     {
         std::cout << "unable to read prev_frame ! \n";
@@ -85,7 +85,7 @@ int main()
     // Вычисляем горизонт
     std::vector<std::pair<double, double> > coords{get_horizon_coordinates(prev_frame, horizon_detection_method)};
     horizon_x1 = coords[0].first;
-    horizon_y1 = coords[0].second   ;
+    horizon_y1 = coords[0].second;
 
     horizon_x2 = coords[1].first;
     horizon_y2 = coords[1].second; 
@@ -111,27 +111,27 @@ int main()
 
     // Раз в сколько кадров будет возможно пересчитывание горизонта - сделано в угоду производительности
     // В дальнейшем сделать регулируемым
-    unsigned int change_rate{3};
+    unsigned int change_rate{5};
 
 
     // Наибольшая разрешенная разница между суммированными расстояниями до горизонта между "фичами" на прошлом и текущем кадре
     // В дальнейшем сделать регулируемым
-    double max_sum_horizon_diff{1200};
+    double max_sum_horizon_diff{1100};
 
 
     // Наибольшая разрешенная разница между соответствующими расстояниями до горизонта у одной конкретной "фичи" на прошлом и текущем кадре
     // В дальнейшем сделать регулируемым
-    double max_single_point_horizon_diff{400};
+    double max_single_point_horizon_diff{300};
 
 
     // Наибольшее разрешенное число точек, разница между соответствующими расстояниями до горизонта на первом и втором кадре превышает max_single_point_horizon_diff
     // В дальнейшем сделать регулируемым
-    unsigned int max_wrong_fp_num{5};
+    unsigned int max_wrong_fp_num{3};
 
 
     // Наибольшая разрешенная разница между общим количеством "фич" и числом точек, сместившихся в конкретном направлении (вверх или вниз)
     // В дальнейшем сделать регулируемым
-    long long max_horizon_correctness_diff{20};
+    long long max_horizon_correctness_diff{10};
 
 
 
@@ -286,6 +286,18 @@ int main()
             std::cout << "new_avg_single_p_dist == " << new_avg_single_p_dist << "\n";
             std::cout << "horizon_correctness == " << horizon_correctness << "\n\n";
 
+            if (change_rate == 1)
+            {
+                current_frame.copyTo(prev_frame);
+
+                cvtColor(prev_frame, prev_gray_frame, COLOR_BGR2GRAY);
+
+                // Обновляем данные
+                prev_found_fp.clear(); 
+                goodFeaturesToTrack(prev_gray_frame, prev_found_fp, 300, 0.2, 2);
+
+            }
+
 
         }
         else  
@@ -301,12 +313,14 @@ int main()
         }
 
         // Рисуем горизонт
-        line(current_frame, Point2f(horizon_x1, horizon_y1), Point2f(horizon_x2, horizon_y2), Scalar(0,0,255), 3, 8 );
+        Mat painted_frame;
+        current_frame.copyTo(painted_frame);
+        line(painted_frame, Point2f(horizon_x1, horizon_y1), Point2f(horizon_x2, horizon_y2), Scalar(0,0,255), 3, 8 );
 
 
 
         // Показываем картинку
-        imshow("video_in.AVI", current_frame); 
+        imshow("video_in.AVI", painted_frame); 
         
 
 
