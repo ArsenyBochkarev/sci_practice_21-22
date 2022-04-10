@@ -124,6 +124,7 @@ main: CMakeFiles/main.dir/src/shake_compensation.cpp.o
 main: CMakeFiles/main.dir/src/Canny_Hough.cpp.o
 main: CMakeFiles/main.dir/src/Gauss_threshold.cpp.o
 main: CMakeFiles/main.dir/build.make
+main: /usr/lib/x86_64-linux-gnu/libQt5Widgets.so.5.12.8
 main: /usr/local/lib/libopencv_gapi.so.4.5.5
 main: /usr/local/lib/libopencv_stitching.so.4.5.5
 main: /usr/local/lib/libopencv_aruco.so.4.5.5
@@ -157,6 +158,8 @@ main: /usr/local/lib/libopencv_wechat_qrcode.so.4.5.5
 main: /usr/local/lib/libopencv_xfeatures2d.so.4.5.5
 main: /usr/local/lib/libopencv_xobjdetect.so.4.5.5
 main: /usr/local/lib/libopencv_xphoto.so.4.5.5
+main: /usr/lib/x86_64-linux-gnu/libQt5Gui.so.5.12.8
+main: /usr/lib/x86_64-linux-gnu/libQt5Core.so.5.12.8
 main: /usr/local/lib/libopencv_shape.so.4.5.5
 main: /usr/local/lib/libopencv_highgui.so.4.5.5
 main: /usr/local/lib/libopencv_datasets.so.4.5.5

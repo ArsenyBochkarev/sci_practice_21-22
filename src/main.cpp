@@ -23,9 +23,8 @@ int main()
     
  
     VideoCapture cap("video_in2.mp4");
-    VideoCapture pre_cap("video_in2.mp4");
-    //VideoCapture cap("video_in.AVI");
-    //VideoCapture pre_cap("video_in.AVI");
+    VideoCapture pre_cap1("video_in2.mp4");
+    VideoCapture pre_cap2("video_in2.mp4");
 
     if(!cap.isOpened())
     {
@@ -34,19 +33,20 @@ int main()
     }
 
 
-    double horizon_x1, horizon_y1;
-    double horizon_x2, horizon_y2;
+    double horizon_x1, horizon_y1{0};
+    double horizon_x2, horizon_y2{0};
 
 
- 
+
+
     // Пре-проход по всем кадрам для построения матриц перехода и "сглаженных" матриц перехода между кадрами
     // Нужен для стабилизации видео (shake compensation)
     // Узнаем общее количество кадров в видео
-    long long all_frames_num{static_cast<long long>(pre_cap.get(CAP_PROP_FRAME_COUNT))};
+    long long all_frames_num{static_cast<long long>(pre_cap1.get(CAP_PROP_FRAME_COUNT))};
     
     // Строим матрицу изменений между кадрами
     std::vector<transform_parameters> transforms;
-    transforms = transf_build(pre_cap, all_frames_num-1);
+    transforms = transf_build(pre_cap1, all_frames_num-1);
 
     // Строим "траекторию" для каждого кадра - промежуточные суммы изменений по x, y и углу
     std::vector<trajectory> traj;
@@ -67,20 +67,49 @@ int main()
 
     std::cout << "\n\n\n\nall frames number == " << all_frames_num << "\n";
     std::cout << "smooth_transforms size == " << smooth_transforms.size() << "\n\n\n\n";
- 
+
+
+
+
+    // Второй пре-проход по всем кадрам: сохраняем их в массив.
+    // Также создаём массив с соответствующими парами y-координат горизонта (x-координаты -- левая и правая границы кадра)
+    // Причём неважно, что мы проходим по не стабилизированным кадрам -- стабилизация влияет лишь на работу по отслеживанию перемещений горизонта
+    Mat pre_cap_frame;
+    std::vector<Mat> all_frames_vec(all_frames_num);
+    std::vector<std::pair<double, double> > all_frames_coords_vec(all_frames_num);
+
+    std::cout << "Saving all frames...\n";
+
+    for(long long i{0}; i < all_frames_num; i++)
+    {
+        pre_cap2.read(pre_cap_frame);
+        if (pre_cap_frame.empty())
+        {
+            std::cout << "unable to read pre_cap_frame on frame number " << i << "\n";
+            return -1;
+        }
+        pre_cap_frame.copyTo(all_frames_vec[i]);
+
+        // Пока что не важно, чем они инициализируются
+        all_frames_coords_vec[i].first = horizon_y1;
+        all_frames_coords_vec[i].second = horizon_y2;
+    }
+
+
 
 
     // Способ построения горизонта
     // В дальнейшем сделать регулируемым
     bool horizon_detection_method{0};
 
-    // Считываем первый кадр
-    cap.read(prev_frame);  
-    if (prev_frame.empty())
-    {
-        std::cout << "unable to read prev_frame ! \n";
-        return -1;
-    }
+
+
+
+    // Берём первый кадр для того, чтобы пометить горизонт на нём
+    all_frames_vec[0].copyTo(prev_frame);
+
+
+
 
     // Вычисляем горизонт
     std::vector<std::pair<double, double> > coords{get_horizon_coordinates(prev_frame, horizon_detection_method)};
@@ -90,8 +119,9 @@ int main()
     horizon_x2 = coords[1].first;
     horizon_y2 = coords[1].second; 
 
-                std::cout << "horizon_x1 == " << horizon_x1 << " horizon_y1 == " << horizon_y1 << "\n";
-                std::cout << "horizon_x2 == " << horizon_x2 << " horizon_y2 == " << horizon_y2 << "\n\n\n\n\n\n\n\n";
+    std::cout << "horizon_x1 == " << horizon_x1 << " horizon_y1 == " << horizon_y1 << "\n";
+    std::cout << "horizon_x2 == " << horizon_x2 << " horizon_y2 == " << horizon_y2 << "\n\n\n\n\n\n\n\n";
+
     // Меняем цвет
     cvtColor(prev_frame, prev_gray_frame, COLOR_BGR2GRAY); 
 
@@ -135,18 +165,12 @@ int main()
 
 
 
+
     for(;frame_num < all_frames_num-1; frame_num++)
     {
         
-
-
-        cap.read(current_frame);
-        if (current_frame.empty())
-        {
-            std::cout << "unable to read current_frame ! \n";
-            break;
-        }
-
+        all_frames_vec[frame_num].copyTo(current_frame);
+ 
 
         // Стабилизируем текущий кадр относительно предыдущего (shake compensation) 
         get_stabilized_frame(current_frame, smooth_transforms[frame_num]);
@@ -233,7 +257,8 @@ int main()
 
 
 
-            // Если разница в расстояниях до горизонта велика (что равносильно большому количеству "плохих фич") - это основание для полной перестройки горизонта
+            // Если разница в расстояниях до горизонта велика (что равносильно большому количеству "плохих фич") - 
+            // это основание для полной перестройки горизонта
             if ( (abs(new_sum_horizon_dist - old_sum_horizon_dist) > max_sum_horizon_diff) || (wrong_fp_num > max_wrong_fp_num) )
             {
                 std::cout << "rebuild !!! \n";
@@ -286,7 +311,7 @@ int main()
             std::cout << "new_avg_single_p_dist == " << new_avg_single_p_dist << "\n";
             std::cout << "horizon_correctness == " << horizon_correctness << "\n\n";
 
-            if (change_rate == 1)
+            if (change_rate == 1) // иначе данные не будут обновляться в случае change_rate == 1
             {
                 current_frame.copyTo(prev_frame);
 
@@ -296,9 +321,7 @@ int main()
                 prev_found_fp.clear(); 
                 goodFeaturesToTrack(prev_gray_frame, prev_found_fp, 300, 0.2, 2);
 
-            }
-
-
+            }  
         }
         else  
         {
@@ -335,6 +358,4 @@ int main()
 
     cap.release();
     destroyAllWindows();
-
-
 }

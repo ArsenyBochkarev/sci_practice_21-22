@@ -151,13 +151,13 @@ CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 CMAKE_PROJECT_NAME:STATIC=sci_practice_21-22
 
 //Value Computed by CMake
-CMAKE_PROJECT_VERSION:STATIC=0.1.0
+CMAKE_PROJECT_VERSION:STATIC=1.0.0
 
 //Value Computed by CMake
-CMAKE_PROJECT_VERSION_MAJOR:STATIC=0
+CMAKE_PROJECT_VERSION_MAJOR:STATIC=1
 
 //Value Computed by CMake
-CMAKE_PROJECT_VERSION_MINOR:STATIC=1
+CMAKE_PROJECT_VERSION_MINOR:STATIC=0
 
 //Value Computed by CMake
 CMAKE_PROJECT_VERSION_PATCH:STATIC=0
@@ -308,6 +308,18 @@ OpenCV_DIR:PATH=/usr/local/lib/cmake/opencv4
 //Path to a program.
 P4COMMAND:FILEPATH=P4COMMAND-NOTFOUND
 
+//The directory containing a CMake configuration file for Qt5Core.
+Qt5Core_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/Qt5Core
+
+//The directory containing a CMake configuration file for Qt5Gui.
+Qt5Gui_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui
+
+//The directory containing a CMake configuration file for Qt5Widgets.
+Qt5Widgets_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets
+
+//The directory containing a CMake configuration file for Qt5.
+Qt5_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/Qt5
+
 //Path to scp command, used by CTest for submitting results to
 // a Dart server
 SCPCOMMAND:FILEPATH=/usr/bin/scp
@@ -355,8 +367,6 @@ CMAKE_COLOR_MAKEFILE-ADVANCED:INTERNAL=1
 CMAKE_COMMAND:INTERNAL=/usr/bin/cmake
 //Path to cpack program executable.
 CMAKE_CPACK_COMMAND:INTERNAL=/usr/bin/cpack
-//ADVANCED property for variable: CMAKE_CTEST_COMMAND
-CMAKE_CTEST_COMMAND-ADVANCED:INTERNAL=1
 //Path to ctest program executable.
 CMAKE_CTEST_COMMAND:INTERNAL=/usr/bin/ctest
 //ADVANCED property for variable: CMAKE_CXX_COMPILER
