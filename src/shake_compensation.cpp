@@ -36,7 +36,7 @@ std::vector<transform_parameters> transf_build(VideoCapture cap, long long frame
 
 	for(int i{0}; i < frame_num; i++)
 	{  
-		std::cout << "transf_build is on the frame number " << i << "\n";
+		//std::cout << "transf_build is on the frame number " << i << "\n";
 	    std::vector<Point2f> prev_found_fp;
 	    std::vector<Point2f> current_changed_fp;
 
