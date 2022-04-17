@@ -1,5 +1,12 @@
 #include <iostream>  
 #include <cmath> 
+
+#include <QApplication>
+#include <QPushButton>
+#include <QMainWindow>
+
+//#include "window.h"
+
 #include "shake_compensation.h"
 #include "Canny_Hough.h"
 #include "Gauss_threshold.h"
@@ -302,7 +309,7 @@ void show_and_detect_cycle(long long frame_num,
 
 
 
-int main()
+int main(int argc, char **argv)
 {
     Mat prev_frame;
     
@@ -333,8 +340,8 @@ int main()
     std::cout << "Doing shake compensation...\n";
     std::vector<transform_parameters> smooth_transforms{get_smooth_transforms_func(all_frames_num, pre_cap1)};
 
-    std::cout << "\n\n\n\nall frames number == " << all_frames_num << "\n";
-    std::cout << "smooth_transforms size == " << smooth_transforms.size() << "\n\n\n\n";
+    //std::cout << "\n\n\n\nall frames number == " << all_frames_num << "\n";
+    //std::cout << "smooth_transforms size == " << smooth_transforms.size() << "\n\n\n\n";
 
 
 
@@ -397,18 +404,16 @@ int main()
     horizon_x2 = coords[1].first;
     horizon_y2 = coords[1].second; 
 
-    std::cout << "horizon_x1 == " << horizon_x1 << " horizon_y1 == " << horizon_y1 << "\n";
-    std::cout << "horizon_x2 == " << horizon_x2 << " horizon_y2 == " << horizon_y2 << "\n\n\n\n\n\n\n\n";
+    //std::cout << "horizon_x1 == " << horizon_x1 << " horizon_y1 == " << horizon_y1 << "\n";
+    //std::cout << "horizon_x2 == " << horizon_x2 << " horizon_y2 == " << horizon_y2 << "\n\n\n\n\n\n\n\n";
   
- 
-
-
+  
 
 
     
 
     // Важно!!!! frame_num должен быть строго больше нуля !!!!
-    show_and_detect_cycle(frame_num, all_frames_vec, smooth_transforms, all_found_fp_vec, horizon_x1, horizon_y1, horizon_x2, horizon_y2);
+    //show_and_detect_cycle(frame_num, all_frames_vec, smooth_transforms, all_found_fp_vec, horizon_x1, horizon_y1, horizon_x2, horizon_y2);
     
 
 

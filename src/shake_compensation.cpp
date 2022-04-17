@@ -20,7 +20,7 @@ std::vector<transform_parameters> transf_build(VideoCapture cap, long long frame
 	// "Бэкап"-матрица на случай, если estimateRigidTransform ничего не выдаст
 	Mat last_transf;
 
-	std::cout << "frame_num == " << frame_num << "\n";
+	//std::cout << "frame_num == " << frame_num << "\n";
 
 	
     cap.read(prev_frame);
