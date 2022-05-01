@@ -1,3 +1,6 @@
+#ifndef STRUCTURES_H
+#define STRUCTURES_H
+
 #include "opencv2/opencv.hpp"
 #include "opencv2/imgproc.hpp"
 #include "opencv2/highgui.hpp"
@@ -45,3 +48,6 @@ struct trajectory
     double a; 
 
 };
+
+
+#endif //STRUCTURES_H

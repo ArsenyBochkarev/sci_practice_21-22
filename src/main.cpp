@@ -1,12 +1,16 @@
-#include <iostream>  
-#include <cmath> 
+#include <iostream>
+#include <cmath>
 
 #include <QApplication>
 #include <QPushButton>
 #include <QMainWindow>
+#include <QtWidgets>
+//#include <QDesktopWidget>
 
-//#include "window.h"
 
+#include "mainwindow.h"
+
+#include "qmessagebox.h"
 #include "shake_compensation.h"
 #include "Canny_Hough.h"
 #include "Gauss_threshold.h"
@@ -21,7 +25,15 @@ std::vector<std::pair<double, double> > get_horizon_coordinates(Mat src, bool wa
     return std::move((way_to_get_horizon == 0 ? get_coordinates_Canny_Hough(src) : get_coordinates_Gauss_threshold(src)));
 }
 
- 
+
+void mat_to_qimage(const Mat& img, QLabel* img_lbl)
+{
+    cvtColor(img, img, COLOR_BGR2RGB);
+
+    img_lbl->setPixmap(QPixmap::fromImage(QImage(img.data, img.cols, img.rows, img.step, QImage::Format_RGB888)));
+}
+
+
 
 std::vector<transform_parameters> get_smooth_transforms_func(unsigned long long all_frames_num, VideoCapture pre_cap1)
 {
@@ -38,9 +50,9 @@ std::vector<transform_parameters> get_smooth_transforms_func(unsigned long long 
     // Строим "сглаженную" траекторию - к промежуточным суммам применяются moving average filter
     std::vector<trajectory> smooth_trajectory;
 
-    // Радиус для moving average filter 
+    // Радиус для moving average filter
     // В дальнейшем сделать регулируемым
-    int radius{5}; 
+    int radius{5};
 
     smooth_trajectory = smooth(traj, radius);
 
@@ -51,11 +63,11 @@ std::vector<transform_parameters> get_smooth_transforms_func(unsigned long long 
 
 
 
-void show_and_detect_cycle(long long frame_num,  
-    std::vector<Mat> all_frames_vec, std::vector<transform_parameters> smooth_transforms, std::vector< std::vector<Point2f> >all_found_fp_vec, 
-    double horizon_x1, double horizon_y1, double horizon_x2, double horizon_y2)
+void show_and_detect_cycle(unsigned long long frame_num,
+    std::vector<Mat> all_frames_vec, std::vector<transform_parameters> smooth_transforms, std::vector< std::vector<Point2f> >all_found_fp_vec,
+    double horizon_x1, double horizon_y1, double horizon_x2, double horizon_y2, QLabel* img_lbl, QLineEdit* curr_frame)
 {
- 
+
 
     unsigned long long all_frames_num{all_frames_vec.size()};
 
@@ -84,7 +96,7 @@ void show_and_detect_cycle(long long frame_num,
     double max_single_point_horizon_diff{400};
 
 
-    // Наибольшее разрешенное число точек, у которых разница между соответствующими расстояниями до горизонта на 
+    // Наибольшее разрешенное число точек, у которых разница между соответствующими расстояниями до горизонта на
     // первом и втором кадре превышает max_single_point_horizon_diff
     // В дальнейшем сделать регулируемым
     unsigned int max_wrong_fp_num{5};
@@ -92,8 +104,8 @@ void show_and_detect_cycle(long long frame_num,
 
     // Наибольшая разрешенная разница между общим количеством "фич" и числом точек, сместившихся в конкретном направлении (вверх или вниз)
     // В дальнейшем сделать регулируемым
-    long long max_horizon_correctness_diff{20}; 
-    // -------------------------------------------------------------------------------------------------------------------------------------- 
+    unsigned long long max_horizon_correctness_diff{20};
+    // --------------------------------------------------------------------------------------------------------------------------------------
 
 
     Mat current_frame, current_gray_frame;
@@ -105,23 +117,23 @@ void show_and_detect_cycle(long long frame_num,
 
     for(;frame_num < all_frames_num-1; frame_num++)
     {
-        
-        all_frames_vec[frame_num].copyTo(current_frame);
- 
 
-        // Стабилизируем текущий кадр относительно предыдущего (shake compensation) 
+        all_frames_vec[frame_num].copyTo(current_frame);
+
+
+        // Стабилизируем текущий кадр относительно предыдущего (shake compensation)
         get_stabilized_frame(current_frame, smooth_transforms[frame_num]);
         cvtColor(current_frame, current_gray_frame, COLOR_BGR2GRAY);
- 
+
 
         if (frame_num % change_rate == 0)
         {
-            Mat prev_frame, prev_gray_frame;  
-            
-            all_frames_vec[frame_num-1].copyTo(prev_frame);    
+            Mat prev_frame, prev_gray_frame;
+
+            all_frames_vec[frame_num-1].copyTo(prev_frame);
             get_stabilized_frame(prev_frame, smooth_transforms[frame_num-1]);
-            cvtColor(prev_frame, prev_gray_frame, COLOR_BGR2GRAY); 
-    
+            cvtColor(prev_frame, prev_gray_frame, COLOR_BGR2GRAY);
+
             std::vector<Point2f> prev_found_fp{all_found_fp_vec[frame_num]};
 
 
@@ -130,22 +142,22 @@ void show_and_detect_cycle(long long frame_num,
             std::vector <float> err;
             std::vector<Point2f> current_changed_fp;
 
- 
+
             // Считаем optical flow
-            calcOpticalFlowPyrLK(prev_gray_frame, current_gray_frame, prev_found_fp, current_changed_fp, status, err); 
+            calcOpticalFlowPyrLK(prev_gray_frame, current_gray_frame, prev_found_fp, current_changed_fp, status, err);
 
             unsigned long long fp_num{prev_found_fp.size()};
 
 
-            
+
             // Сравним положение "фич" на двух соседних кадрах
             // Если положение "фич" лишь немного изменилось, то пересчитывать горизонт смысла нет, и нужно лишь немного скорректировать его положение
             // Иначе - полностью перестраиваем его
             bool rebuild_horizon{0};
 
-            
+
             // Сравним суммарные расстояния до горизонта, отмеченного на предыдущем кадре
-            // Это делается, чтобы понять, нужно ли пересчитывать горизонт полностью, либо достаточно лишь немного 
+            // Это делается, чтобы понять, нужно ли пересчитывать горизонт полностью, либо достаточно лишь немного
             // подкорректировать его относительно нового положения "фич"
 
             // Считаем коэффициенты в уравнении прямой горизонта
@@ -180,36 +192,36 @@ void show_and_detect_cycle(long long frame_num,
             // Переменная для определения того, куда следует сместить горизонт
             // Если какая-то точка поднялась выше относительно своего положения на предыдущем кадре - прибавляем единицу, если опустилась - отнимаем
             // В случае, если почти все точки были внесены в переменную с одним знаком, можно определить, в какую сторону стоит корректировать горизонт
-            // Если же изменение положения точек будет разнится - корректировать нет смысла 
+            // Если же изменение положения точек будет разнится - корректировать нет смысла
             long long horizon_correctness{0};
 
 
             // Подсчёт расстояния
-            for (long long i{0}; i < fp_num; i++) 
+            for (unsigned long long i{0}; i < fp_num; i++)
             {
                 old_single_point_dist = abs( (A*prev_found_fp[i].x + B*prev_found_fp[i].y + C) / sqrt(A*A + B*B) );
                 new_single_point_dist = abs( (A*current_changed_fp[i].x + B*current_changed_fp[i].y + C) / sqrt(A*A + B*B) );
 
                 // В случае, если хотя бы одна точка "ускакала" куда-то вверх или вниз - запомним её и в случае, если
                 // подобных точек не будет много, просто не будем на них ориентироваться
-                if (abs(old_single_point_dist - new_single_point_dist) >= max_single_point_horizon_diff) 
-                    wrong_fp_num++;  
-                else 
+                if (abs(old_single_point_dist - new_single_point_dist) >= max_single_point_horizon_diff)
+                    wrong_fp_num++;
+                else
                 {
-                    old_sum_horizon_dist += old_single_point_dist;  
-                    new_sum_horizon_dist += new_single_point_dist;  
+                    old_sum_horizon_dist += old_single_point_dist;
+                    new_sum_horizon_dist += new_single_point_dist;
 
 
                     // Вносим точки для проверки корректировки горизонта
                     if (new_single_point_dist > old_single_point_dist)
                         horizon_correctness++;
                     else
-                        horizon_correctness--;                   
+                        horizon_correctness--;
                 }
             }
 
             // Корректируем число "хороших" точек
-            fp_num = fp_num - wrong_fp_num;            
+            fp_num = fp_num - wrong_fp_num;
 
 
             old_avg_single_p_dist = ( (old_sum_horizon_dist) / fp_num );
@@ -218,7 +230,7 @@ void show_and_detect_cycle(long long frame_num,
 
 
 
-            // Если разница в расстояниях до горизонта велика (что равносильно большому количеству "плохих фич") - 
+            // Если разница в расстояниях до горизонта велика (что равносильно большому количеству "плохих фич") -
             // это основание для полной перестройки горизонта
             if ( (abs(new_sum_horizon_dist - old_sum_horizon_dist) > max_sum_horizon_diff) || (wrong_fp_num > max_wrong_fp_num) )
             {
@@ -228,7 +240,7 @@ void show_and_detect_cycle(long long frame_num,
             else
                 // Если можем определить конкретное направление корректировки - делаем ее относительно средней разницы расстояний
                 if ( (abs(horizon_correctness) > fp_num - max_horizon_correctness_diff) && (!rebuild_horizon) )
-                { 
+                {
                     std::cout << "frame number " << frame_num << " asked to correct the horizon !\n\n";
 
                     if (horizon_correctness > 0)
@@ -246,9 +258,9 @@ void show_and_detect_cycle(long long frame_num,
 
 
             if (rebuild_horizon)
-            { 
+            {
                 std::cout << "frame number " << frame_num << " asked to rebuild the horizon !\n\n";
-                
+
                 std::vector<std::pair<double, double> > coords{get_horizon_coordinates(current_frame, horizon_detection_method)};
                 horizon_x1 = coords[0].first;
                 horizon_y1 = coords[0].second;
@@ -271,26 +283,28 @@ void show_and_detect_cycle(long long frame_num,
             std::cout << "old_avg_single_p_dist == " << old_avg_single_p_dist << "\n";
             std::cout << "new_avg_single_p_dist == " << new_avg_single_p_dist << "\n";
             std::cout << "horizon_correctness == " << horizon_correctness << "\n\n";
- 
-        }   
+
+        }
 
         // Рисуем горизонт
         Mat painted_frame;
         current_frame.copyTo(painted_frame);
         line(painted_frame, Point2f(horizon_x1, horizon_y1), Point2f(horizon_x2, horizon_y2), Scalar(0,0,255), 3, 8 );
-        
+
+
+        mat_to_qimage(painted_frame, img_lbl);
 
 
         // Показываем картинку
-        imshow("video_in.AVI", painted_frame); 
-        
+        //imshow("video_in.AVI", painted_frame);
 
 
 
-        // Если пользователь нажмет клавишу "Escape" - цикл прервётся и программа завершится 
+
+        // Если пользователь нажмет клавишу "Escape" - цикл прервётся и программа завершится
         char c{(char)waitKey(25)};
         if (c == 27)
-            break; 
+            break;
 
     }
 }
@@ -298,25 +312,19 @@ void show_and_detect_cycle(long long frame_num,
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-int main(int argc, char **argv)
+int start_process(std::string file_name, QLabel* img_lbl, QLineEdit* curr_frame)
 {
+    std::cout << "Process started!\n\n\n";
+
+
     Mat prev_frame;
-    
- 
-    VideoCapture cap("video_in2.mp4");
-    VideoCapture pre_cap1("video_in2.mp4");
-    VideoCapture pre_cap2("video_in2.mp4");
+
+
+    VideoCapture cap(file_name);
+    VideoCapture pre_cap1(file_name);
+    VideoCapture pre_cap2(file_name);
+
+
 
     if(!cap.isOpened())
     {
@@ -325,8 +333,8 @@ int main(int argc, char **argv)
     }
 
 
-    double horizon_x1, horizon_y1{0};
-    double horizon_x2, horizon_y2{0};
+    double horizon_x1{0}, horizon_y1{0};
+    double horizon_x2{1920}, horizon_y2{0};
 
 
 
@@ -358,7 +366,7 @@ int main(int argc, char **argv)
     for(long long i{0}; i < all_frames_num; i++)
     {
         Mat pre_cap_frame, pre_cap_gray_frame;
-        
+
         pre_cap2.read(pre_cap_frame);
         if (pre_cap_frame.empty())
         {
@@ -375,9 +383,9 @@ int main(int argc, char **argv)
         get_stabilized_frame(pre_cap_frame, smooth_transforms[i]);
         cvtColor(pre_cap_frame, pre_cap_gray_frame, COLOR_BGR2GRAY);
         std::vector<Point2f> tmp_fp;
-        goodFeaturesToTrack(pre_cap_gray_frame, tmp_fp, 300, 0.2, 2); 
+        goodFeaturesToTrack(pre_cap_gray_frame, tmp_fp, 300, 0.2, 2);
         all_found_fp_vec.push_back(tmp_fp);
-    } 
+    }
 
 
 
@@ -402,21 +410,45 @@ int main(int argc, char **argv)
     horizon_y1 = coords[0].second;
 
     horizon_x2 = coords[1].first;
-    horizon_y2 = coords[1].second; 
+    horizon_y2 = coords[1].second;
 
     //std::cout << "horizon_x1 == " << horizon_x1 << " horizon_y1 == " << horizon_y1 << "\n";
     //std::cout << "horizon_x2 == " << horizon_x2 << " horizon_y2 == " << horizon_y2 << "\n\n\n\n\n\n\n\n";
-  
-  
 
 
-    
 
-    // Важно!!!! frame_num должен быть строго больше нуля !!!!
-    //show_and_detect_cycle(frame_num, all_frames_vec, smooth_transforms, all_found_fp_vec, horizon_x1, horizon_y1, horizon_x2, horizon_y2);
-    
+    // Регулируем размер QLabel, в котором будут отображаться кадры
+    std::cout << "prev_frame.rows, prev_frame.cols == " << prev_frame.rows<< " " << prev_frame.cols << "\n";
+    img_lbl->setGeometry(QRect(img_lbl->geometry().left(), img_lbl->geometry().top(), prev_frame.cols, prev_frame.rows));
 
+
+    // Важно! frame_num должен быть строго больше нуля
+    show_and_detect_cycle(frame_num, all_frames_vec, smooth_transforms, all_found_fp_vec, horizon_x1, horizon_y1, horizon_x2, horizon_y2, img_lbl, curr_frame);
+
+
+    std::cout << "Process ended!\n\n\n\n";
 
     cap.release();
     destroyAllWindows();
+
+    return 1;
+}
+
+
+
+
+
+
+
+
+
+
+int main(int argc, char **argv)
+{
+    QApplication a(argc, argv);
+    MainWindow w;
+
+    w.showMaximized();
+
+    return a.exec();
 }
