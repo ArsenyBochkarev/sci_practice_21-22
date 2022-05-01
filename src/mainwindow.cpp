@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     int y{ui->pushButton->geometry().top()};
 
     QScreen *screen = QGuiApplication::primaryScreen();
-    QRect  screenGeometry = screen->geometry();
+    QRect screenGeometry = screen->geometry();
     int width{abs(screenGeometry.width())};
     int height{abs(screenGeometry.height())};
 
@@ -100,7 +100,8 @@ void MainWindow::on_pushButton_10_clicked()
     }
     else
     {
-
+        // тут запуск show_and_detect_cycle(...)
+        process_going = 1;
     }
 }
 
