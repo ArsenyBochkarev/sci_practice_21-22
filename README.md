@@ -3,27 +3,25 @@
 
 # How to run
  Follow these steps to run the project.
- ### First, clone the repo.
- ### If you're on Windows 10.
- ##### Download the Visual Studio Code editor.
- ##### Set up the VS Code.
-   Follow all the steps from [this](https://www.youtube.com/watch?v=m9HBM1m_EMU) video.
- ##### Open the cloned repo in VS Code.
- ##### Click on the "build" button.
- ##### Click on the "run" button.
- ### If you're on Ubuntu.
+ ## Clone the repo.
+ ## Install Qt Creator on your computer.
+ ## Install OpenCV library on your computer.
+ ## Open the .pro file in Qt Creator and press "Build" button.
+ ## Run the output file in the "Build" directory
+
+ ### Alternatively, if you're on Ubuntu, you can try this way.
+ ##### Install Qt Creator on your computer.
  ##### Install OpenCV library on your computer.
-   Follow all the steps from [this](http://www.codebind.com/python/install-opencv-ubuntu-16-04-lts-python/) site.
  ##### Move to cloned repo directory.
  ##### Use the following commands:
   ```console
-  $ rm build
-  $ mkdir build
-  $ cd build 
-  $ cmake ..
+  $ cd src
+  $ qmake sci_practice_21-22
   $ make
   ```
  ##### Run the output file.
+ ###### If there are some problems connecting Qt with OpenCV, try to follow the steps from [this](https://www.youtube.com/watch?v=_PsxwpJnWD0&ab_channel=ComputerVisionLab) video.
+
 
 # License
  Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for the full license text.
