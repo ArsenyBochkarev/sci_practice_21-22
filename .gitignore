@@ -1,5 +1,5 @@
-build/*.AVI
-build/*.mp4
+src/*.AVI
+src/*.mp4
 
 # C++ objects and libs
 *.slo
