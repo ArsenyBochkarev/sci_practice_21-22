@@ -82,6 +82,12 @@ private slots:
     // Кнопка Pause/Run
     void on_pushButton_10_clicked();
 
+    void on_prev_frame_button_clicked();
+
+    void on_next_frame_button_clicked();
+
+    void on_go_to_frame_button_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

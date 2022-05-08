@@ -8,17 +8,32 @@
 #include <regex>
 
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+// Фильтр форматов файлов
+bool filter_formats(const std::string& s)
+{
+    std::regex additional_filter(".*\.(mp4|AVI).*");
+
+    return std::regex_match(s, additional_filter);
+}
+
+
+// Перенос картинки с cv::Mat на QLabel
+void mat_to_qlabel(const Mat& img, QLabel* img_lbl)
+{
+    cvtColor(img, img, COLOR_BGR2RGB);
+
+    img_lbl->setPixmap(QPixmap::fromImage(QImage(img.data, img.cols, img.rows, img.step, QImage::Format_RGB888)));
+}
+
+
+
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
     ui->verticalLayout->setGeometry(QRect(0, 0, ui->verticalLayout->geometry().width(), ui->verticalLayout->geometry().height()));
 
-    //std::cout << "ui->pushButton->geometry().right() == " << ui->pushButton->geometry().right() << "\n";
 
-    // не совсем понятно, почему pushButton увеличивается в два раза, но ок
     int x{ui->pushButton->geometry().right()*2 + 10};
     int y{ui->pushButton->geometry().top()};
 
@@ -30,22 +45,17 @@ MainWindow::MainWindow(QWidget *parent)
     ui->image_label->setGeometry(QRect(x, y, width, height));
 
     // Делаем, чтобы в поле с номером кадра можно было вводить только числа
-    ui->curr_frame_lineEdit->setValidator( new QIntValidator(1, 2147483647, this) );
+    ui->curr_frame_lineEdit->setValidator( new QIntValidator(0, 2147483647, this) );
 
     change_buttons_visibility(0);
 }
+
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
 
-void mat_to_qlabel(const Mat& img, QLabel* img_lbl)
-{
-    cvtColor(img, img, COLOR_BGR2RGB);
-
-    img_lbl->setPixmap(QPixmap::fromImage(QImage(img.data, img.cols, img.rows, img.step, QImage::Format_RGB888)));
-}
 
 void MainWindow::change_buttons_visibility(bool v)
 {
@@ -73,6 +83,8 @@ void MainWindow::change_buttons_visibility(bool v)
     ui->save_button->setVisible(v);
 }
 
+
+// Отрисовка горизонта и вывод текущего кадра
 void MainWindow::show_frame()
 {
     double horizon_y1{all_horizon_coords[frame_num].first};
@@ -94,8 +106,7 @@ void MainWindow::show_frame()
 }
 
 
-
-
+// Отслеживание горизонта на кадре
 std::pair<double, double> MainWindow::detect_on_frame()
 {
     /*
@@ -287,11 +298,9 @@ std::pair<double, double> MainWindow::detect_on_frame()
 }
 
 
+// Пре-проход по всем кадрам
 int MainWindow::start_process()
- {
-     std::cout << "Process started!\n\n\n";
-
-
+{
      Mat prev_frame;
 
      std::string file_name{ui->lineEdit->text().toStdString()};
@@ -326,9 +335,6 @@ int MainWindow::start_process()
      // Строим "сглаженные" матрицы изменений между кадрами, которые в дальнейшем будем применять к каждому отдельно взятому кадру
      std::cout << "Doing shake compensation...\n";
      std::vector<transform_parameters> tmp_smooth_transforms = get_smooth_transforms_func(all_frames_num, pre_cap1);
-
-     //std::cout << "\n\n\n\nall frames number == " << all_frames_num << "\n";
-     //std::cout << "tmp_smooth_transforms size == " << tmp_smooth_transforms.size() << "\n\n\n\n";
 
 
 
@@ -391,7 +397,6 @@ int MainWindow::start_process()
 
 
      // Регулируем размер QLabel, в котором будут отображаться кадры
-     // std::cout << "prev_frame.rows, prev_frame.cols == " << prev_frame.rows<< " " << prev_frame.cols << "\n";
      ui->image_label->setGeometry(QRect(ui->image_label->geometry().left(), ui->image_label->geometry().top(), prev_frame.cols, prev_frame.rows));
 
 
@@ -401,13 +406,13 @@ int MainWindow::start_process()
      MainWindow::all_horizon_coords = tmp_all_horizon_coords;
 
 
-     std::cout << "Process ended!\n\n\n\n";
 
      detect_and_show_cycle();
      return 1;
  }
 
 
+// Цикл по отслеживанию горизонта и выводу картинки на экран
 void MainWindow::detect_and_show_cycle()
 {
     //frame_num = ui->curr_frame_lineEdit->text().toInt();
@@ -425,34 +430,21 @@ void MainWindow::detect_and_show_cycle()
             show_frame();
         }
         else
-        {
             break;
-        }
         waitKey(0);
     }
+
+    // Дошли до конца видео => нужно выполнить все те же самые дейстия, как и в случае нажатия кнопки Pause
+    if (frame_num == all_frames_vec.size())
+        on_pushButton_10_clicked();
 }
-
-
-
-
-
-
-
-
-
-bool filter_formats(const std::string& s)
-{
-    std::regex additional_filter(".*\.(mp4|AVI).*");
-
-    return std::regex_match(s, additional_filter);
-}
-
 
 
 // Кнопка Start
 void MainWindow::on_pushButton_clicked()
 {
     std::string s{ui->lineEdit->text().toStdString()};
+
 
     if ((!process_started) && (filter_formats(s)))
     {
@@ -474,6 +466,12 @@ void MainWindow::on_pushButton_clicked()
         process_going = 0;
         on_pushButton_10_clicked();
     }
+
+    // Более эта кнопка в работе не нужна
+    ui->pushButton->setVisible(0);
+
+
+    std::cout << "all_frames_vec.size() == " << all_frames_vec.size() << "\n";
 }
 
 // Кнопка Browse
@@ -494,6 +492,7 @@ void MainWindow::on_pushButton_2_clicked()
 // Кнопка Pause/Run
 void MainWindow::on_pushButton_10_clicked()
 {
+
     // Процесс идёт и была нажата кнопка
     if (process_going)
     {
@@ -504,9 +503,48 @@ void MainWindow::on_pushButton_10_clicked()
     }
     else
     {
+        // Важно! Нужно, чтобы frame_num был строго больше нуля, если хотим нажимать Run
+        if (frame_num == 0)
+            frame_num++;
+
         ui->pushButton_10->setText("Pause");
         process_going = 1;
         detect_and_show_cycle();
     }
+}
+
+
+// Кнопка перехода на предыдущий кадр
+void MainWindow::on_prev_frame_button_clicked()
+{
+    if ((!process_going) && (frame_num > 0))
+    {
+        frame_num--;
+        ui->curr_frame_lineEdit->setText(QString::number(frame_num));
+        show_frame();
+    }
+}
+
+
+// Кнопка перехода на следующий кадр
+void MainWindow::on_next_frame_button_clicked()
+{
+    if ((!process_going) && (frame_num < all_frames_vec.size() - 1))
+    {
+        frame_num++;
+        ui->curr_frame_lineEdit->setText(QString::number(frame_num));
+        show_frame();
+    }
+
+}
+
+
+// Кнопка перехода на введённый кадр
+void MainWindow::on_go_to_frame_button_clicked()
+{
+    unsigned long long tmp{ui->curr_frame_lineEdit->text().toULongLong()};
+    if (tmp < all_frames_vec.size())
+        frame_num = tmp;
+    show_frame();
 }
 
