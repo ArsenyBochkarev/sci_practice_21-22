@@ -173,8 +173,8 @@ std::vector<std::pair<double, double> > get_coordinates_Canny_Hough(Mat src)
 {
     std::vector<std::pair<double, double> > result;
 
-    double SCREEN_SIZE_X{src.cols};
-    double SCREEN_SIZE_Y{src.rows};
+    double SCREEN_SIZE_X{static_cast<double>(src.cols)};
+    double SCREEN_SIZE_Y{static_cast<double>(src.rows)};
 
     // Getting the lines form the image
     std::vector<std::vector<double>> Lines;

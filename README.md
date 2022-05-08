@@ -9,7 +9,7 @@
  ### Open the .pro file in Qt Creator and press "Build" button.
  ### Run the output file in the "Build" directory
 
- #### Alternatively, if you're on Ubuntu, you can try this way.
+ #### Alternatively, if you're on Ubuntu, you can try the following:
  ##### Install Qt Creator on your computer.
  ##### Install OpenCV library on your computer.
  ##### Move to cloned repo directory.
