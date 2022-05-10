@@ -39,7 +39,7 @@
       <x>0</x>
       <y>0</y>
       <width>285</width>
-      <height>571</height>
+      <height>621</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -54,7 +54,7 @@
           </size>
          </property>
          <property name="text">
-          <string>Start</string>
+          <string>Start pre-process</string>
          </property>
         </widget>
        </item>
@@ -66,62 +66,71 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="curr_frame_lineEdit"/>
-       </item>
-       <item>
-        <widget class="QPushButton" name="go_to_frame_button">
-         <property name="text">
-          <string>Go to frame</string>
+        <widget class="QSpinBox" name="curr_frame_spinBox">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Current frame&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="2" column="1">
-          <widget class="QPushButton" name="next_frame_button">
-           <property name="text">
-            <string>Next frame</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="right_hor_up_button">
-           <property name="text">
-            <string>Right horizon up</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
+         <item row="0" column="0">
           <widget class="QPushButton" name="prev_frame_button">
            <property name="text">
             <string>Prev frame</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
-          <widget class="QPushButton" name="left_hor_up_button">
-           <property name="text">
-            <string>Left horizon up</string>
+         <item row="1" column="0">
+          <widget class="QSpinBox" name="left_hor_spinBox">
+           <property name="maximum">
+            <number>1000000</number>
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QPushButton" name="left_hor_down_button">
+         <item row="0" column="1">
+          <widget class="QPushButton" name="next_frame_button">
            <property name="text">
-            <string>Left horizon down</string>
+            <string>Next frame</string>
            </property>
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QPushButton" name="right_hor_down_button">
-           <property name="text">
-            <string>Right horizon down</string>
+          <widget class="QSpinBox" name="right_hor_spinBox">
+           <property name="maximum">
+            <number>1000000</number>
            </property>
           </widget>
          </item>
         </layout>
        </item>
       </layout>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="delay_spinBox">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set delay between the frames&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="maximum">
+        <number>10000</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="frame_rate_spinBox">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set change frame rate for automatized horizon detection, i.e. how often horizon on frames will be checked&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>100</number>
+       </property>
+       <property name="value">
+        <number>3</number>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="save_button">
@@ -144,7 +153,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="lineEdit">
+       <property name="text">
+        <string>Enter file name</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>

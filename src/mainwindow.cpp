@@ -11,7 +11,7 @@
 // Фильтр форматов файлов
 bool filter_formats(const std::string& s)
 {
-    std::regex additional_filter(".*\.(mp4|AVI).*");
+    std::regex additional_filter(".*\.(mp4|AVI|h264).*");
 
     return std::regex_match(s, additional_filter);
 }
@@ -44,8 +44,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     ui->image_label->setGeometry(QRect(x, y, width, height));
 
-    // Делаем, чтобы в поле с номером кадра можно было вводить только числа
-    ui->curr_frame_lineEdit->setValidator( new QIntValidator(0, 2147483647, this) );
 
     change_buttons_visibility(0);
 }
@@ -63,24 +61,25 @@ void MainWindow::change_buttons_visibility(bool v)
     ui->pushButton_10->setVisible(v);
 
     // Изменяем видимость поля с вводом номера кадра
-    ui->curr_frame_lineEdit->setVisible(v);
+    ui->curr_frame_spinBox->setVisible(v);
 
-    // Изменяем видимость кнопки перехода к введённому кадру
-    ui->pushButton_10->setVisible(v);
-
-    // Изменяем видимость кнопок управления горизонтом
-    ui->left_hor_down_button->setVisible(v);
-    ui->right_hor_down_button->setVisible(v);
-    ui->left_hor_up_button->setVisible(v);
-    ui->right_hor_up_button->setVisible(v);
-
-    // Изменяем видимость кнопок перехода по кадрам
-    ui->go_to_frame_button->setVisible(v);
+    // Изменяем видимость кнопок перехода между кадрами
     ui->next_frame_button->setVisible(v);
     ui->prev_frame_button->setVisible(v);
 
+    // Изменяем видимость полей управления горизонтом
+    ui->left_hor_spinBox->setVisible(v);
+    ui->right_hor_spinBox->setVisible(v);
+
     // Изменяем видимость кнопки Save
     ui->save_button->setVisible(v);
+
+    // Изменяем видимость поля для ввода задержки между кадрами
+    ui->delay_spinBox->setVisible(v);
+
+    // Изменяем видимость поля для ввода change_rate
+    ui->frame_rate_spinBox->setVisible(v);
+
 }
 
 
@@ -100,6 +99,11 @@ void MainWindow::show_frame()
     Mat painted_frame;
     all_frames_vec[frame_num].copyTo(painted_frame);
     line(painted_frame, Point2f(horizon_x1, horizon_y1), Point2f(horizon_x2, horizon_y2), Scalar(0,0,255), 3, 8 );
+
+
+    // Выставляем значения горизонта в QSpinbox'ах
+    ui->left_hor_spinBox->setValue(static_cast<int>(all_horizon_coords[frame_num].first));
+    ui->right_hor_spinBox->setValue(static_cast<int>(all_horizon_coords[frame_num].second));
 
 
     mat_to_qlabel(painted_frame, ui->image_label);
@@ -378,10 +382,13 @@ int MainWindow::start_process()
      // В дальнейшем сделать регулируемым
      bool horizon_detection_method{0};
 
-     // Счётчик кадров
-     // Важно! frame_num должен быть строго больше нуля
+     // Текущий кадр
      frame_num = 1;
 
+
+     // Выставляем максимумы для change_rate и frame_num
+     ui->frame_rate_spinBox->setMaximum(all_frames_num);
+     ui->curr_frame_spinBox->setMaximum(all_frames_num);
 
 
      // Берём первый кадр для того, чтобы пометить горизонт на нём
@@ -400,6 +407,7 @@ int MainWindow::start_process()
      ui->image_label->setGeometry(QRect(ui->image_label->geometry().left(), ui->image_label->geometry().top(), prev_frame.cols, prev_frame.rows));
 
 
+
      MainWindow::all_frames_vec = tmp_all_frames_vec;
      MainWindow::smooth_transforms = tmp_smooth_transforms;
      MainWindow::all_found_fp_vec = tmp_all_found_fp_vec;
@@ -407,7 +415,7 @@ int MainWindow::start_process()
 
 
 
-     detect_and_show_cycle();
+     //detect_and_show_cycle();
      return 1;
  }
 
@@ -415,10 +423,11 @@ int MainWindow::start_process()
 // Цикл по отслеживанию горизонта и выводу картинки на экран
 void MainWindow::detect_and_show_cycle()
 {
-    //frame_num = ui->curr_frame_lineEdit->text().toInt();
+
+    //frame_num = ui->curr_frame_spinBox->text().toInt();
     for (; frame_num < all_frames_vec.size(); frame_num++)
     {
-        ui->curr_frame_lineEdit->setText(QString::number(frame_num));
+        ui->curr_frame_spinBox->setValue(frame_num);
         if (process_going)
         {
             // Процесс не на паузе
@@ -431,12 +440,24 @@ void MainWindow::detect_and_show_cycle()
         }
         else
             break;
-        waitKey(0);
+
+        ui->left_hor_spinBox->setValue(static_cast<int>(all_horizon_coords[frame_num].first));
+        ui->right_hor_spinBox->setValue(static_cast<int>(all_horizon_coords[frame_num].second));
+
+        waitKey(delay);
     }
 
     // Дошли до конца видео => нужно выполнить все те же самые дейстия, как и в случае нажатия кнопки Pause
+    // А также уменьшить frame_num на единицу
     if (frame_num == all_frames_vec.size())
+    {
         on_pushButton_10_clicked();
+        frame_num--;
+    }
+
+
+    ui->left_hor_spinBox->setValue(static_cast<int>(all_horizon_coords[frame_num].first));
+    ui->right_hor_spinBox->setValue(static_cast<int>(all_horizon_coords[frame_num].second));
 }
 
 
@@ -445,40 +466,54 @@ void MainWindow::on_pushButton_clicked()
 {
     std::string s{ui->lineEdit->text().toStdString()};
 
+    std::cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
 
     if ((!process_started) && (filter_formats(s)))
     {
-        process_started = 1;
+
 
         // Запускаем пре-проход по всем кадрам
         int res{start_process()};
 
-        if (!res)
+        if (res < 0)
         {
             (new QErrorMessage(this))->showMessage("Error opening video stream or file!");
             return;
         }
 
 
+        process_started = 1;
+
+
         change_buttons_visibility(1);
 
-        // Запускаем основной цикл
-        process_going = 0;
+
+
+        // Выводим первый кадр на экран
+        frame_num = 0;
+
+        ui->left_hor_spinBox->setValue(static_cast<int>(all_horizon_coords[frame_num].first));
+        ui->right_hor_spinBox->setValue(static_cast<int>(all_horizon_coords[frame_num].second));
+        ui->curr_frame_spinBox->setValue(0);
+
+        show_frame();
+        process_going = 1;
         on_pushButton_10_clicked();
+
+
+        // Более эта кнопка в работе не нужна
+        ui->pushButton->setVisible(0);
+
+
+        std::cout << "all_frames_vec.size() == " << all_frames_vec.size() << "\n";
     }
-
-    // Более эта кнопка в работе не нужна
-    ui->pushButton->setVisible(0);
-
-
-    std::cout << "all_frames_vec.size() == " << all_frames_vec.size() << "\n";
 }
 
 // Кнопка Browse
 void MainWindow::on_pushButton_2_clicked()
 {
     // Возможно, забыл какие-то форматы
-    QString filter{"MP4 (*.mp4) ;; AVI (*.AVI)"};
+    QString filter{"MP4 (*.mp4) ;; AVI (*.AVI) ;; H264 (*.h264)"};
     QString file{QFileDialog::getOpenFileName(this, "Choose a file", QDir::currentPath(), filter)};
 
 
@@ -499,10 +534,25 @@ void MainWindow::on_pushButton_10_clicked()
         // Меняем название
         ui->pushButton_10->setText("Run");
 
+        // Разрешаем изменять значения в QSpinbox'ах
+        ui->delay_spinBox->setReadOnly(0);
+        ui->frame_rate_spinBox->setReadOnly(0);
+        ui->left_hor_spinBox->setReadOnly(0);
+        ui->right_hor_spinBox->setReadOnly(0);
+
+        ui->left_hor_spinBox->setValue(static_cast<int>(all_horizon_coords[frame_num].first));
+        ui->right_hor_spinBox->setValue(static_cast<int>(all_horizon_coords[frame_num].second));
+
         process_going = 0;
     }
     else
     {
+        // Запрещаем изменять значения в QSpinbox
+        ui->delay_spinBox->setReadOnly(1);
+        ui->frame_rate_spinBox->setReadOnly(1);
+        ui->left_hor_spinBox->setReadOnly(1);
+        ui->right_hor_spinBox->setReadOnly(1);
+
         // Важно! Нужно, чтобы frame_num был строго больше нуля, если хотим нажимать Run
         if (frame_num == 0)
             frame_num++;
@@ -520,7 +570,7 @@ void MainWindow::on_prev_frame_button_clicked()
     if ((!process_going) && (frame_num > 0))
     {
         frame_num--;
-        ui->curr_frame_lineEdit->setText(QString::number(frame_num));
+        ui->curr_frame_spinBox->setValue(frame_num);
         show_frame();
     }
 }
@@ -532,19 +582,53 @@ void MainWindow::on_next_frame_button_clicked()
     if ((!process_going) && (frame_num < all_frames_vec.size() - 1))
     {
         frame_num++;
-        ui->curr_frame_lineEdit->setText(QString::number(frame_num));
+        ui->curr_frame_spinBox->setValue(frame_num);
         show_frame();
     }
 
 }
 
 
-// Кнопка перехода на введённый кадр
-void MainWindow::on_go_to_frame_button_clicked()
+void MainWindow::on_delay_spinBox_valueChanged(int arg1)
 {
-    unsigned long long tmp{ui->curr_frame_lineEdit->text().toULongLong()};
-    if (tmp < all_frames_vec.size())
-        frame_num = tmp;
+    delay = arg1;
+}
+
+
+void MainWindow::on_frame_rate_spinBox_valueChanged(int arg1)
+{
+    change_rate = arg1;
+}
+
+
+// Альтернатива кнопкам перехода на следующий кадр -- стрелочки в QSpinbox
+void MainWindow::on_curr_frame_spinBox_valueChanged(int arg1)
+{
+    if ((arg1 >= 0) && (arg1 < all_frames_vec.size()))
+        frame_num = arg1;
+
     show_frame();
+}
+
+
+void MainWindow::on_left_hor_spinBox_valueChanged(int arg1)
+{
+    if (!process_going)
+    {
+        all_horizon_coords[frame_num].first = arg1;
+        show_frame();
+    }
+}
+
+
+
+
+void MainWindow::on_right_hor_spinBox_valueChanged(int arg1)
+{
+    if (!process_going)
+    {
+        all_horizon_coords[frame_num].second = arg1;
+        show_frame();
+    }
 }
 

@@ -5,7 +5,6 @@
 #include <QPushButton>
 #include <QMainWindow>
 #include <QtWidgets>
-//#include <QDesktopWidget>
 
 
 #include "mainwindow.h"
@@ -76,6 +75,9 @@ int main(int argc, char **argv)
 {
     QApplication a(argc, argv);
     MainWindow w;
+
+
+    std::cout << "adsfasdfasdfssadfa\n";
 
     w.showMaximized();
 

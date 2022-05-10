@@ -41,6 +41,10 @@ public:
     bool process_going{false};
 
 
+    // Задержка (в мс) между показами кадров при нажатии кнопки Run
+    int delay{10};
+
+
     // Текущий кадр
     unsigned long long frame_num;
 
@@ -86,7 +90,15 @@ private slots:
 
     void on_next_frame_button_clicked();
 
-    void on_go_to_frame_button_clicked();
+    void on_delay_spinBox_valueChanged(int arg1);
+
+    void on_frame_rate_spinBox_valueChanged(int arg1);
+
+    void on_curr_frame_spinBox_valueChanged(int arg1);
+
+    void on_left_hor_spinBox_valueChanged(int arg1);
+
+    void on_right_hor_spinBox_valueChanged(int arg1);
 
 private:
     Ui::MainWindow *ui;
