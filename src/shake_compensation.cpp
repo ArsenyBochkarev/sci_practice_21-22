@@ -10,7 +10,7 @@ using namespace cv;
 
 
 // Функция подсчёта изменений для каждого кадра
-std::vector<transform_parameters> transf_build(VideoCapture cap, long long frame_num)
+std::vector<transform_parameters> transf_build(VideoCapture cap, long long frame_num, std::vector<std::vector<Point2f> > all_frames_fp)
 {
     Mat prev_frame, prev_gray_frame, current_frame, current_gray_frame, status, err;
 
@@ -41,9 +41,12 @@ std::vector<transform_parameters> transf_build(VideoCapture cap, long long frame
 	    std::vector<Point2f> current_changed_fp;
 
 
-		// Ищем "фичи" на первом кадре
-		goodFeaturesToTrack(prev_gray_frame, prev_found_fp, 200, 0.01, 30); // С характеристиками можно поэкспериментировать
+        // Ищем "фичи"
+        //goodFeaturesToTrack(prev_gray_frame, prev_found_fp, 200, 0.01, 30); // С характеристиками можно поэкспериментировать
 
+
+
+        prev_found_fp = all_frames_fp[i];
 		
         cap.read(current_frame);
         if (current_frame.empty())

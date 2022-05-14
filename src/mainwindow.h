@@ -26,6 +26,7 @@ public:
     ~MainWindow();
 
     void change_buttons_visibility(bool v);
+    void set_objects_size();
 
     void show_frame();
     std::pair<double, double> detect_on_frame();
@@ -46,7 +47,7 @@ public:
 
 
     // Текущий кадр
-    unsigned long long frame_num;
+    unsigned long long frame_num{0};
 
 
     // Следующие параметры вынимаются из соответствующих полей
@@ -99,6 +100,8 @@ private slots:
     void on_left_hor_spinBox_valueChanged(int arg1);
 
     void on_right_hor_spinBox_valueChanged(int arg1);
+
+    void on_detect_horizon_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;

@@ -17,7 +17,7 @@
    <widget class="QLabel" name="image_label">
     <property name="geometry">
      <rect>
-      <x>370</x>
+      <x>500</x>
       <y>120</y>
       <width>221</width>
       <height>221</height>
@@ -38,18 +38,21 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>285</width>
+      <width>421</width>
       <height>621</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetMinimumSize</enum>
+       </property>
        <item>
         <widget class="QPushButton" name="pushButton">
          <property name="minimumSize">
           <size>
-           <width>156</width>
+           <width>256</width>
            <height>25</height>
           </size>
          </property>
@@ -60,6 +63,12 @@
        </item>
        <item>
         <widget class="QPushButton" name="pushButton_10">
+         <property name="minimumSize">
+          <size>
+           <width>256</width>
+           <height>25</height>
+          </size>
+         </property>
          <property name="text">
           <string>Pause</string>
          </property>
@@ -67,6 +76,12 @@
        </item>
        <item>
         <widget class="QSpinBox" name="curr_frame_spinBox">
+         <property name="minimumSize">
+          <size>
+           <width>256</width>
+           <height>25</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Current frame&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
@@ -74,15 +89,27 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
-          <widget class="QPushButton" name="prev_frame_button">
-           <property name="text">
-            <string>Prev frame</string>
+         <item row="1" column="1">
+          <widget class="QSpinBox" name="right_hor_spinBox">
+           <property name="minimumSize">
+            <size>
+             <width>120</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximum">
+            <number>1000000</number>
            </property>
           </widget>
          </item>
          <item row="1" column="0">
           <widget class="QSpinBox" name="left_hor_spinBox">
+           <property name="minimumSize">
+            <size>
+             <width>120</width>
+             <height>25</height>
+            </size>
+           </property>
            <property name="maximum">
             <number>1000000</number>
            </property>
@@ -90,15 +117,27 @@
          </item>
          <item row="0" column="1">
           <widget class="QPushButton" name="next_frame_button">
+           <property name="minimumSize">
+            <size>
+             <width>120</width>
+             <height>25</height>
+            </size>
+           </property>
            <property name="text">
             <string>Next frame</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
-          <widget class="QSpinBox" name="right_hor_spinBox">
-           <property name="maximum">
-            <number>1000000</number>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="prev_frame_button">
+           <property name="minimumSize">
+            <size>
+             <width>120</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Prev frame</string>
            </property>
           </widget>
          </item>
@@ -107,7 +146,26 @@
       </layout>
      </item>
      <item>
+      <widget class="QPushButton" name="detect_horizon_pushButton">
+       <property name="minimumSize">
+        <size>
+         <width>256</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Detect horizon</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QSpinBox" name="delay_spinBox">
+       <property name="minimumSize">
+        <size>
+         <width>256</width>
+         <height>25</height>
+        </size>
+       </property>
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set delay between the frames&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
@@ -118,6 +176,12 @@
      </item>
      <item>
       <widget class="QSpinBox" name="frame_rate_spinBox">
+       <property name="minimumSize">
+        <size>
+         <width>256</width>
+         <height>25</height>
+        </size>
+       </property>
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set change frame rate for automatized horizon detection, i.e. how often horizon on frames will be checked&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
@@ -134,6 +198,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="save_button">
+       <property name="minimumSize">
+        <size>
+         <width>256</width>
+         <height>25</height>
+        </size>
+       </property>
        <property name="text">
         <string>Save</string>
        </property>
@@ -143,7 +213,7 @@
       <widget class="QPushButton" name="pushButton_2">
        <property name="minimumSize">
         <size>
-         <width>158</width>
+         <width>256</width>
          <height>25</height>
         </size>
        </property>
@@ -154,6 +224,12 @@
      </item>
      <item>
       <widget class="QLineEdit" name="lineEdit">
+       <property name="minimumSize">
+        <size>
+         <width>256</width>
+         <height>25</height>
+        </size>
+       </property>
        <property name="text">
         <string>Enter file name</string>
        </property>

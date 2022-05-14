@@ -31,19 +31,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 {
     ui->setupUi(this);
 
-    ui->verticalLayout->setGeometry(QRect(0, 0, ui->verticalLayout->geometry().width(), ui->verticalLayout->geometry().height()));
-
-
-    int x{ui->pushButton->geometry().right()*2 + 10};
-    int y{ui->pushButton->geometry().top()};
-
-    QScreen *screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
-    int width{abs(screenGeometry.width())};
-    int height{abs(screenGeometry.height())};
-
-    ui->image_label->setGeometry(QRect(x, y, width, height));
-
+    set_objects_size();
 
     change_buttons_visibility(0);
 }
@@ -54,7 +42,32 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+// Задаём размеры объектов в зависимости от размера экрана
+void MainWindow::set_objects_size()
+{
+    // Хотим, чтобы "панель" с кнопками занимала в длину примерно 1/8 экрана
+    QScreen *screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
 
+    int screen_width{abs(screenGeometry.width())};
+    int screen_height{abs(screenGeometry.height())};
+
+    int object_width{screen_width/8};
+
+    // Выставляем ограничения на кнопки
+    ui->verticalLayout->setSizeConstraint(QLayout::SetFixedSize);
+    ui->verticalLayout->setGeometry(QRect(0, 0, object_width, ui->verticalLayout->geometry().height()));
+
+
+    // Координаты для image_label
+    int right_x{ui->pushButton->geometry().right()*2 + 10};
+    int top_y{ui->pushButton->geometry().top()};
+    ui->image_label->setGeometry(QRect(right_x, top_y, screen_width, screen_height));
+}
+
+
+
+// Изменение видимости объектов
 void MainWindow::change_buttons_visibility(bool v)
 {
     // Изменяем видимость кнопки Pause/Run
@@ -73,6 +86,9 @@ void MainWindow::change_buttons_visibility(bool v)
 
     // Изменяем видимость кнопки Save
     ui->save_button->setVisible(v);
+
+    // Изменяем видимость кнопки Detect horizon
+    ui->detect_horizon_pushButton->setVisible(v);
 
     // Изменяем видимость поля для ввода задержки между кадрами
     ui->delay_spinBox->setVisible(v);
@@ -305,19 +321,19 @@ std::pair<double, double> MainWindow::detect_on_frame()
 // Пре-проход по всем кадрам
 int MainWindow::start_process()
 {
+
      Mat prev_frame;
 
      std::string file_name{ui->lineEdit->text().toStdString()};
 
      std::cout << "file_name == " << file_name << "\n";
 
-     VideoCapture cap(file_name);
      VideoCapture pre_cap1(file_name);
      VideoCapture pre_cap2(file_name);
+     VideoCapture pre_cap3(file_name);
 
 
-
-     if(!cap.isOpened())
+     if(!pre_cap1.isOpened())
      {
          std::cout << "Error opening video stream or file \n\n\n";
          return -1;
@@ -331,24 +347,18 @@ int MainWindow::start_process()
 
 
 
-     // Пре-проход по всем кадрам для построения матриц перехода и "сглаженных" матриц перехода между кадрами
-     // Нужен для стабилизации видео (shake compensation)
+     // Пре-проход по всем кадрам для сохранения всех кадров и поиска и сохранения "фич" на них
      // Узнаем общее количество кадров в видео
      unsigned long long all_frames_num{static_cast<unsigned long long>(pre_cap1.get(CAP_PROP_FRAME_COUNT))};
 
-     // Строим "сглаженные" матрицы изменений между кадрами, которые в дальнейшем будем применять к каждому отдельно взятому кадру
-     std::cout << "Doing shake compensation...\n";
-     std::vector<transform_parameters> tmp_smooth_transforms = get_smooth_transforms_func(all_frames_num, pre_cap1);
+     // Cоздаём массив с соответствующими парами y-координат горизонта (x-координаты -- левая и правая границы кадра)
+     //std::vector<Mat> tmp_all_frames_vec(all_frames_num);
+     //std::vector<std::vector<Point2f> > tmp_all_found_fp_vec;
+     //std::vector<std::pair<double, double> > tmp_all_horizon_coords(all_frames_num);
 
+     all_frames_vec = std::vector<Mat>(all_frames_num);
+     all_horizon_coords = std::vector<std::pair<double, double> > (all_frames_num);
 
-
-
-     // Второй пре-проход по всем кадрам: сохраняем их и найденные на них фичи в соответствующие массивы.
-     // Также создаём массив с соответствующими парами y-координат горизонта (x-координаты -- левая и правая границы кадра)
-     // Причём неважно, что мы проходим по не стабилизированным кадрам -- стабилизация влияет лишь на работу по отслеживанию перемещений горизонта
-     std::vector<Mat> tmp_all_frames_vec(all_frames_num);
-     std::vector<std::vector<Point2f> > tmp_all_found_fp_vec;
-     std::vector<std::pair<double, double> > tmp_all_horizon_coords(all_frames_num);
 
      std::cout << "Saving all frames and their feature points...\n";
 
@@ -356,34 +366,52 @@ int MainWindow::start_process()
      {
          Mat pre_cap_frame, pre_cap_gray_frame;
 
-         pre_cap2.read(pre_cap_frame);
+         pre_cap1.read(pre_cap_frame);
          if (pre_cap_frame.empty())
          {
              std::cout << "unable to read pre_cap_frame on frame number " << i << "\n";
              return -1;
          }
-         pre_cap_frame.copyTo(tmp_all_frames_vec[i]);
+         pre_cap_frame.copyTo(all_frames_vec[i]);
 
          // Пока что не важно, чем они инициализируются
-         tmp_all_horizon_coords[i].first = horizon_y1;
-         tmp_all_horizon_coords[i].second = horizon_y2;
+         all_horizon_coords[i].first = horizon_y1;
+         all_horizon_coords[i].second = horizon_y2;
 
 
-         get_stabilized_frame(pre_cap_frame, tmp_smooth_transforms[i]);
          cvtColor(pre_cap_frame, pre_cap_gray_frame, COLOR_BGR2GRAY);
          std::vector<Point2f> tmp_fp;
          goodFeaturesToTrack(pre_cap_gray_frame, tmp_fp, 300, 0.2, 2);
-         tmp_all_found_fp_vec.push_back(tmp_fp);
+         all_found_fp_vec.push_back(tmp_fp);
+     }
+
+
+     // Строим "сглаженные" матрицы изменений между кадрами, которые в дальнейшем будем применять к каждому отдельно взятому кадру
+     std::cout << "Doing shake compensation...\n";
+     smooth_transforms = get_smooth_transforms_func(all_frames_num, pre_cap2, all_found_fp_vec);
+
+     // Второй пре-проход по всем кадрам: применяем shake compensation
+     for (unsigned long long i{0}; i < all_frames_num; i++)
+     {
+
+         Mat pre_cap_frame;
+
+         pre_cap3.read(pre_cap_frame);
+         if (pre_cap_frame.empty())
+         {
+             std::cout << "unable to read pre_cap_frame on frame number " << i << "\n";
+             return -1;
+         }
+
+         get_stabilized_frame(pre_cap_frame, smooth_transforms[i]);
      }
 
 
 
-     // Способ построения горизонта
-     // В дальнейшем сделать регулируемым
-     bool horizon_detection_method{0};
+
 
      // Текущий кадр
-     frame_num = 1;
+     frame_num = 0;
 
 
      // Выставляем максимумы для change_rate и frame_num
@@ -392,27 +420,25 @@ int MainWindow::start_process()
 
 
      // Берём первый кадр для того, чтобы пометить горизонт на нём
-     tmp_all_frames_vec[frame_num-1].copyTo(prev_frame);
-
-
+     all_frames_vec[frame_num].copyTo(prev_frame);
 
 
      // Вычисляем горизонт на первом кадре
      std::vector<std::pair<double, double> > coords{get_horizon_coordinates(prev_frame, horizon_detection_method)};
-     tmp_all_horizon_coords[frame_num - 1].first = coords[0].second;
-     tmp_all_horizon_coords[frame_num - 1].second = coords[1].second;
+     all_horizon_coords[frame_num].first = coords[0].second;
+     all_horizon_coords[frame_num].second = coords[1].second;
 
 
      // Регулируем размер QLabel, в котором будут отображаться кадры
      ui->image_label->setGeometry(QRect(ui->image_label->geometry().left(), ui->image_label->geometry().top(), prev_frame.cols, prev_frame.rows));
 
 
-
+     /*
      MainWindow::all_frames_vec = tmp_all_frames_vec;
      MainWindow::smooth_transforms = tmp_smooth_transforms;
      MainWindow::all_found_fp_vec = tmp_all_found_fp_vec;
      MainWindow::all_horizon_coords = tmp_all_horizon_coords;
-
+    */
 
 
      //detect_and_show_cycle();
@@ -425,8 +451,11 @@ void MainWindow::detect_and_show_cycle()
 {
 
     //frame_num = ui->curr_frame_spinBox->text().toInt();
-    for (; frame_num < all_frames_vec.size(); frame_num++)
+    // for (; frame_num < all_frames_vec.size(); frame_num++)
+    while(frame_num < all_frames_vec.size()-1)
     {
+        frame_num++;
+
         ui->curr_frame_spinBox->setValue(frame_num);
         if (process_going)
         {
@@ -449,10 +478,9 @@ void MainWindow::detect_and_show_cycle()
 
     // Дошли до конца видео => нужно выполнить все те же самые дейстия, как и в случае нажатия кнопки Pause
     // А также уменьшить frame_num на единицу
-    if (frame_num == all_frames_vec.size())
+    if (frame_num == all_frames_vec.size()-1)
     {
         on_pushButton_10_clicked();
-        frame_num--;
     }
 
 
@@ -460,6 +488,10 @@ void MainWindow::detect_and_show_cycle()
     ui->right_hor_spinBox->setValue(static_cast<int>(all_horizon_coords[frame_num].second));
 }
 
+
+
+// ----------------------------------------------------------------
+// QPushButton
 
 // Кнопка Start
 void MainWindow::on_pushButton_clicked()
@@ -501,7 +533,7 @@ void MainWindow::on_pushButton_clicked()
         on_pushButton_10_clicked();
 
 
-        // Более эта кнопка в работе не нужна
+        // Более эта кнопка в работе пока что не нужна
         ui->pushButton->setVisible(0);
 
 
@@ -543,6 +575,9 @@ void MainWindow::on_pushButton_10_clicked()
         ui->left_hor_spinBox->setValue(static_cast<int>(all_horizon_coords[frame_num].first));
         ui->right_hor_spinBox->setValue(static_cast<int>(all_horizon_coords[frame_num].second));
 
+        // Чтобы выводить уже корректно отрисованный кадр (не работает, когда прошли все кадры!)
+        if ((frame_num > 0) && (frame_num != all_frames_vec.size()-1))
+            frame_num--;
         process_going = 0;
     }
     else
@@ -553,10 +588,7 @@ void MainWindow::on_pushButton_10_clicked()
         ui->left_hor_spinBox->setReadOnly(1);
         ui->right_hor_spinBox->setReadOnly(1);
 
-        // Важно! Нужно, чтобы frame_num был строго больше нуля, если хотим нажимать Run
-        if (frame_num == 0)
-            frame_num++;
-
+        // Меняем текст и запускаем цикл
         ui->pushButton_10->setText("Pause");
         process_going = 1;
         detect_and_show_cycle();
@@ -589,12 +621,26 @@ void MainWindow::on_next_frame_button_clicked()
 }
 
 
+// Кнопка определения горизонта программно
+void MainWindow::on_detect_horizon_pushButton_clicked()
+{
+    std::vector<std::pair<double, double> > coords{get_horizon_coordinates(all_frames_vec[frame_num], horizon_detection_method)};
+    all_horizon_coords[frame_num].first = coords[0].second;
+    all_horizon_coords[frame_num].second = coords[1].second;
+    show_frame();
+}
+
+
+// ----------------------------------------------------------------
+// QSpinBox
+
+// Изменение значения задержки между кадрами
 void MainWindow::on_delay_spinBox_valueChanged(int arg1)
 {
     delay = arg1;
 }
 
-
+// Изменение значения частоты проверки горизонта на кадре
 void MainWindow::on_frame_rate_spinBox_valueChanged(int arg1)
 {
     change_rate = arg1;
@@ -611,6 +657,7 @@ void MainWindow::on_curr_frame_spinBox_valueChanged(int arg1)
 }
 
 
+// Изменение положение левой точки горизонта
 void MainWindow::on_left_hor_spinBox_valueChanged(int arg1)
 {
     if (!process_going)
@@ -620,9 +667,7 @@ void MainWindow::on_left_hor_spinBox_valueChanged(int arg1)
     }
 }
 
-
-
-
+// Изменение положения правой точки горизонта
 void MainWindow::on_right_hor_spinBox_valueChanged(int arg1)
 {
     if (!process_going)
@@ -631,4 +676,5 @@ void MainWindow::on_right_hor_spinBox_valueChanged(int arg1)
         show_frame();
     }
 }
+
 

@@ -27,13 +27,13 @@ std::vector<std::pair<double, double> > get_horizon_coordinates(Mat src, bool wa
 
 
 
-std::vector<transform_parameters> get_smooth_transforms_func(unsigned long long all_frames_num, VideoCapture pre_cap1)
+std::vector<transform_parameters> get_smooth_transforms_func(unsigned long long all_frames_num, VideoCapture pre_cap1, std::vector<std::vector<Point2f> > all_frames_fp)
 {
     std::vector<transform_parameters> smooth_transforms;
 
     // Строим матрицу изменений между кадрами
     std::vector<transform_parameters> transforms;
-    transforms = transf_build(pre_cap1, all_frames_num-1);
+    transforms = transf_build(pre_cap1, all_frames_num-1, all_frames_fp);
 
     // Строим "траекторию" для каждого кадра - промежуточные суммы изменений по x, y и углу
     std::vector<trajectory> traj;
@@ -74,10 +74,11 @@ std::vector<transform_parameters> get_smooth_transforms_func(unsigned long long 
 int main(int argc, char **argv)
 {
     QApplication a(argc, argv);
+    std::cout << "before creating mainwindow!\n";
     MainWindow w;
 
 
-    std::cout << "adsfasdfasdfssadfa\n";
+    std::cout << "after creating mainwindow\n";
 
     w.showMaximized();
 

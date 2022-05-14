@@ -11,7 +11,7 @@ using namespace cv;
 
 std::vector<std::pair<double, double> > get_horizon_coordinates(Mat src, bool way_to_get_horizon);
 
-std::vector<transform_parameters> get_smooth_transforms_func(unsigned long long all_frames_num, VideoCapture pre_cap1);
+std::vector<transform_parameters> get_smooth_transforms_func(unsigned long long all_frames_num, VideoCapture pre_cap1, std::vector<std::vector<Point2f> > all_frames_fp);
 
 
 int start_process(std::string file_name, QLabel* img_lbl, QLineEdit* curr_frame);
