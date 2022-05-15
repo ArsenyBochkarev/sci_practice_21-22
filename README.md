@@ -10,16 +10,16 @@
  - Run the output file in the "Build" directory
 
  ### Alternatively, if you're on Ubuntu, you can try the following:
- - ### Install Qt Creator on your computer.
- ### - Install OpenCV library on your computer.
- - Move to cloned repo directory.
- - Use the following commands:
+ - #### Install Qt Creator on your computer.
+ - #### Install OpenCV library on your computer.
+ - #### Move to cloned repo directory.
+ - #### Use the following commands:
   ```console
   $ cd src
   $ qmake sci_practice_21-22
   $ make
   ```
- - Run the output file.
+ - #### Run the output file.
  ###### If there are some problems connecting Qt with OpenCV, try to follow the steps from [this](https://www.youtube.com/watch?v=_PsxwpJnWD0&ab_channel=ComputerVisionLab) video.
 
 
