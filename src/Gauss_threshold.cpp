@@ -43,8 +43,8 @@ std::vector<std::pair<double, double> > get_coordinates_Gauss_threshold(Mat src)
             current_pixel[0] = pixel_map[i*closed_dst.cols*channels + j*channels + 0];
             current_pixel[1] = pixel_map[i*closed_dst.cols*channels + j*channels + 1];
             current_pixel[2] = pixel_map[i*closed_dst.cols*channels + j*channels + 2];
-                    
-            //std::cout << "row num " << i << ", sum == " <<  current_pixel[0] + current_pixel[1] + current_pixel[2] << "\n";
+
+
 
             if (current_pixel[0] + current_pixel[1] + current_pixel[2])
                 horizon_y1 = i;
@@ -74,11 +74,6 @@ std::vector<std::pair<double, double> > get_coordinates_Gauss_threshold(Mat src)
             break;
     }
 
-    // line(closed_dst, Point(horizon_x1, horizon_y1), Point(horizon_x2, horizon_y2), Scalar(100, 0, 255, 255));
-
-
-    // imshow("src", closed_dst);
-    // waitKey(0);
 
 
     std::vector<std::pair<double, double> > result = {

@@ -18,9 +18,7 @@ std::vector<transform_parameters> transf_build(VideoCapture cap, long long frame
 	std::vector <transform_parameters> transforms; 
 
 	// "Бэкап"-матрица на случай, если estimateRigidTransform ничего не выдаст
-	Mat last_transf;
-
-	//std::cout << "frame_num == " << frame_num << "\n";
+    Mat last_transf;
 
 	
     cap.read(prev_frame);
@@ -35,14 +33,9 @@ std::vector<transform_parameters> transf_build(VideoCapture cap, long long frame
 
 
 	for(int i{0}; i < frame_num; i++)
-	{  
-		//std::cout << "transf_build is on the frame number " << i << "\n";
+    {
 	    std::vector<Point2f> prev_found_fp;
-	    std::vector<Point2f> current_changed_fp;
-
-
-        // Ищем "фичи"
-        //goodFeaturesToTrack(prev_gray_frame, prev_found_fp, 200, 0.01, 30); // С характеристиками можно поэкспериментировать
+        std::vector<Point2f> current_changed_fp;
 
 
 
@@ -51,8 +44,8 @@ std::vector<transform_parameters> transf_build(VideoCapture cap, long long frame
         cap.read(current_frame);
         if (current_frame.empty())
 	    {
-	    	std::cout << "Unable to open video stream or file in function transf_build() (current_frame) ! \n";
-	        break;
+            std::cout << "Unable to open video stream or file in function transf_build() (current_frame)!\n";
+            return transforms;
 	    }
 
 

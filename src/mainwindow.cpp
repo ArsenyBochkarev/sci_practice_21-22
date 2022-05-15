@@ -155,6 +155,7 @@ void MainWindow::change_buttons_visibility(bool v)
     // Изменяем видимость кнопки для выбора другого файла
     ui->change_file_pushButton->setVisible(v);
 
+
     // ------------------------------------------------------------------------------
 
 
@@ -203,12 +204,6 @@ void MainWindow::show_frame()
 // Отслеживание горизонта на кадре
 std::pair<double, double> MainWindow::detect_on_frame()
 {
-    /*
-    ???
-    double horizon_y1{all_horizon_coords[frame_num].first};
-    double horizon_y2{all_horizon_coords[frame_num].second};
-    */
-
     double horizon_y1{all_horizon_coords[frame_num-1].first};
     double horizon_y2{all_horizon_coords[frame_num-1].second};
 
@@ -260,14 +255,6 @@ std::pair<double, double> MainWindow::detect_on_frame()
     double A{(horizon_x2 - horizon_x1 != 0) ? 1/(horizon_x2 - horizon_x1) : 1/(horizon_x2 + 1 - horizon_x1)};
     double B{(horizon_y2 - horizon_y1 != 0) ? 1/(horizon_y2 - horizon_y1) : 1/(horizon_y2 + 1 - horizon_y1)};
     double C{B - A};
-
-
-
-    /*
-    double A{1/(horizon_x1 - horizon_x2)};
-    double B{1/(horizon_y2 - horizon_y1)};
-    double C{1/(horizon_y1 - horizon_y2) - 1/(horizon_x1 - horizon_x2)};
-    */
 
 
 
@@ -329,16 +316,11 @@ std::pair<double, double> MainWindow::detect_on_frame()
     // Если разница в расстояниях до горизонта велика (что равносильно большому количеству "плохих фич") -
     // это основание для полной перестройки горизонта
     if ( (abs(new_sum_horizon_dist - old_sum_horizon_dist) > max_sum_horizon_diff) || (wrong_fp_num > max_wrong_fp_num) )
-    {
-        std::cout << "rebuild !!! \n";
         rebuild_horizon = 1;
-    }
     else
         // Если можем определить конкретное направление корректировки - делаем ее относительно средней разницы расстояний
         if ( (abs(horizon_correctness) > fp_num - max_horizon_correctness_diff) && (!rebuild_horizon) )
         {
-            std::cout << "frame number " << frame_num << " asked to correct the horizon !\n\n";
-
             if (horizon_correctness > 0)
             {
                 horizon_y1 += abs(old_avg_single_p_dist - new_avg_single_p_dist);
@@ -355,19 +337,12 @@ std::pair<double, double> MainWindow::detect_on_frame()
 
     if (rebuild_horizon)
     {
-        std::cout << "frame number " << frame_num << " asked to rebuild the horizon !\n\n";
-
         std::vector<std::pair<double, double> > coords{get_horizon_coordinates(current_frame, horizon_detection_method)};
         horizon_x1 = coords[0].first;
         horizon_y1 = coords[0].second;
 
         horizon_x2 = coords[1].first;
         horizon_y2 = coords[1].second;
-
-
-        //std::cout << "horizon_x1 == " << horizon_x1 << " horizon_y1 == " << horizon_y1 << "\n";
-        //std::cout << "horizon_x2 == " << horizon_x2 << " horizon_y2 == " << horizon_y2 << "\n\n\n\n\n\n\n\n";
-
     }
 
     std::pair<double, double> res(horizon_y1, horizon_y2);
@@ -375,20 +350,6 @@ std::pair<double, double> MainWindow::detect_on_frame()
     all_horizon_coords[frame_num] = res;
 
     return res;
-
-
-    /*
-    // Вывод технических параметров
-    std::cout << "frame number == " << frame_num << "\n\n";
-    std::cout << "fp_num == " << fp_num << "\n";
-    std::cout << "wrong_fp_num == " << wrong_fp_num << "\n";
-    std::cout << "old_sum_horizon_dist == " << old_sum_horizon_dist << "\n";
-    std::cout << "new_sum_horizon_dist == " << new_sum_horizon_dist << "\n";
-    std::cout << "old_avg_single_p_dist == " << old_avg_single_p_dist << "\n";
-    std::cout << "new_avg_single_p_dist == " << new_avg_single_p_dist << "\n";
-    std::cout << "horizon_correctness == " << horizon_correctness << "\n\n";
-    */
-
 }
 
 
@@ -400,8 +361,6 @@ int MainWindow::start_process()
 
      current_file = ui->lineEdit->text().toStdString();
 
-     std::cout << "file_name == " << current_file << "\n";
-
      VideoCapture pre_cap1(current_file);
      VideoCapture pre_cap2(current_file);
      VideoCapture pre_cap3(current_file);
@@ -409,7 +368,7 @@ int MainWindow::start_process()
 
      if(!pre_cap1.isOpened())
      {
-         std::cout << "Error opening video stream or file \n\n\n";
+         (new QErrorMessage(this))->showMessage("Error opening video stream or file!");
          return -1;
      }
 
@@ -425,25 +384,32 @@ int MainWindow::start_process()
      // Узнаем общее количество кадров в видео
      unsigned long long all_frames_num{static_cast<unsigned long long>(pre_cap1.get(CAP_PROP_FRAME_COUNT))};
 
-     // Cоздаём массив с соответствующими парами y-координат горизонта (x-координаты -- левая и правая границы кадра)
-     //std::vector<Mat> tmp_all_frames_vec(all_frames_num);
-     //std::vector<std::vector<Point2f> > tmp_all_found_fp_vec;
-     //std::vector<std::pair<double, double> > tmp_all_horizon_coords(all_frames_num);
+     all_frames_vec.resize(all_frames_num);
+     all_horizon_coords.resize(all_frames_num);
+     all_found_fp_vec.resize(all_frames_num);
 
-     all_frames_vec = std::vector<Mat>(all_frames_num);
-     all_horizon_coords = std::vector<std::pair<double, double> > (all_frames_num);
-
-
-     std::cout << "Saving all frames and their feature points...\n";
+     // Показываем пользователю, сколько осталось отработать
+     QString text{"Saving all frames and their feature points..."};
+     QProgressDialog progress(text, "Abort", 0, 2*all_frames_num + 1, this);
+     progress.setWindowModality(Qt::WindowModal);
 
      for(unsigned long long i{0}; i < all_frames_num; i++)
      {
+         progress.setValue(i);
+         progress.setLabelText(text + "\nCurrently on frame number " + QString::number(i));
+
+         if (progress.wasCanceled())
+             return -1;
+
+         if ((i  > 100+5359) || (i < 5359-100))
+         {
+
          Mat pre_cap_frame, pre_cap_gray_frame;
 
          pre_cap1.read(pre_cap_frame);
          if (pre_cap_frame.empty())
          {
-             std::cout << "unable to read pre_cap_frame on frame number " << i << "\n";
+             (new QErrorMessage(this))->showMessage("Error opening video stream or file!");
              return -1;
          }
          pre_cap_frame.copyTo(all_frames_vec[i]);
@@ -452,35 +418,48 @@ int MainWindow::start_process()
          all_horizon_coords[i].first = -100;
          all_horizon_coords[i].second = -100;
 
-
          cvtColor(pre_cap_frame, pre_cap_gray_frame, COLOR_BGR2GRAY);
-         std::vector<Point2f> tmp_fp;
-         goodFeaturesToTrack(pre_cap_gray_frame, tmp_fp, 300, 0.2, 2);
-         all_found_fp_vec.push_back(tmp_fp);
+         goodFeaturesToTrack(pre_cap_gray_frame, all_found_fp_vec[i], 300, 0.2, 2);
+         }
      }
 
+     progress.setLabelText("Doing shake compensation...");
 
      // Строим "сглаженные" матрицы изменений между кадрами, которые в дальнейшем будем применять к каждому отдельно взятому кадру
-     std::cout << "Doing shake compensation...\n";
-     smooth_transforms = get_smooth_transforms_func(all_frames_num, pre_cap2, all_found_fp_vec);
+     smooth_transforms = get_smooth_transforms_func(all_frames_num, pre_cap2, all_found_fp_vec );
+
+     if (smooth_transforms.size() != all_frames_num-1)
+     {
+         progress.setValue(2*all_frames_num + 5);
+         (new QErrorMessage(this))->showMessage("Unable to do shake compensation");
+         return -1;
+     }
+
+     progress.setValue(progress.value() + 1);
 
      // Второй пре-проход по всем кадрам: применяем shake compensation
      for (unsigned long long i{0}; i < all_frames_num; i++)
      {
+         progress.setValue(progress.value()+1);
+
+         if (progress.wasCanceled())
+             return -1;
+
 
          Mat pre_cap_frame;
 
          pre_cap3.read(pre_cap_frame);
          if (pre_cap_frame.empty())
          {
-             std::cout << "unable to read pre_cap_frame on frame number " << i << "\n";
+             (new QErrorMessage(this))->showMessage("Unable to read frame with number " + QString::number(i));
              return -1;
          }
 
          get_stabilized_frame(pre_cap_frame, smooth_transforms[i]);
      }
 
-
+     // Выходим из progress
+     progress.setValue(2*all_frames_num + 1);
 
 
 
@@ -519,9 +498,6 @@ int MainWindow::start_process()
 // Цикл по отслеживанию горизонта и выводу картинки на экран
 void MainWindow::detect_and_show_cycle()
 {
-
-    //frame_num = ui->curr_frame_spinBox->text().toInt();
-    // for (; frame_num < all_frames_vec.size(); frame_num++)
     while(frame_num < all_frames_vec.size()-1)
     {
         frame_num++;
@@ -565,11 +541,8 @@ void MainWindow::on_pushButton_clicked()
 {
     std::string s{ui->lineEdit->text().toStdString()};
 
-    std::cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
-
     if ((!process_started) && (filter_formats(s)))
     {
-
 
         // Запускаем пре-проход по всем кадрам
         int res{start_process()};
@@ -598,10 +571,6 @@ void MainWindow::on_pushButton_clicked()
         show_frame();
         process_going = 1;
         on_pushButton_10_clicked();
-
-
-
-        std::cout << "all_frames_vec.size() == " << all_frames_vec.size() << "\n";
     }
 }
 
@@ -642,6 +611,7 @@ void MainWindow::on_pushButton_10_clicked()
         // Чтобы выводить уже корректно отрисованный кадр (не работает, когда прошли все кадры!)
         if ((frame_num > 0) && (frame_num != all_frames_vec.size()-1))
             frame_num--;
+
         process_going = 0;
     }
     else
@@ -715,8 +685,6 @@ void MainWindow::on_save_pushButton_clicked()
 
      QTextStream out(&file);
 
-     //out.setVersion(QDataStream::Qt_5_9);
-
      for (int i{0}; i < all_horizon_coords.size(); i++)
          out << QString::number(all_horizon_coords[i].first) << " " << QString::number(all_horizon_coords[i].second) << Qt::endl;
 
@@ -729,83 +697,76 @@ void MainWindow::on_save_pushButton_clicked()
 // Кнопка Import from file
 void MainWindow::on_import_hor_pushButton_clicked()
 {
- // Сначала предлагаем сохранить текущий файл
- bool continue_or_not{1};
- if (!saved)
-     continue_or_not = save_dialog();
+    // Сначала предлагаем сохранить текущий файл
+    bool continue_or_not{1};
+    if (!saved)
+        continue_or_not = save_dialog();
 
- if (continue_or_not)
- {
-     // Вызываем диалог
-     QString filter{"txt (*.txt) ;; All Files (*)"};
-     QString file_name = QFileDialog::getOpenFileName(this, tr("Import from file"), QDir::currentPath(), filter);
+    if (continue_or_not)
+    {
+        // Вызываем диалог
+        QString filter{"txt (*.txt) ;; All Files (*)"};
+        QString file_name = QFileDialog::getOpenFileName(this, tr("Import from file"), QDir::currentPath(), filter);
 
-     if (file_name.isEmpty())
-         return;
-     else
-     {
+        if (file_name.isEmpty())
+            return;
+        else
+        {
 
-         QFile file(file_name);
+            QFile file(file_name);
 
-         if (!file.open(QIODevice::ReadOnly))
-         {
-             QMessageBox::information(this, tr("Unable to open file"), file.errorString());
-             return;
-         }
+            if (!file.open(QIODevice::ReadOnly))
+            {
+                QMessageBox::information(this, tr("Unable to open file"), file.errorString());
+                return;
+            }
 
-         // Дополнительно проверяем формат файла
-         // Фильтр формата
-         std::regex additional_filter(".*\.txt.*");
+            // Дополнительно проверяем формат файла
+            // Фильтр формата
+            std::regex additional_filter(".*\.txt.*");
 
-         if (!std::regex_match(file_name.toStdString(), additional_filter))
-         {
-             QMessageBox::information(this, file.errorString(), tr("Inappropriate file format"));
-             return;
-         }
+            if (!std::regex_match(file_name.toStdString(), additional_filter))
+            {
+                QMessageBox::information(this, file.errorString(), tr("Inappropriate file format"));
+                return;
+            }
 
 
-         QTextStream in(&file);
+            QTextStream in(&file);
 
-         //in.setVersion(QDataStream::Qt_4_5);
+            std::vector<std::pair<double, double> > tmp_all_horizon_coords;
 
-         std::vector<std::pair<double, double> > tmp_all_horizon_coords;
+            while(!in.atEnd())
+            {
+                double tmp1{-100}, tmp2{-100};
+                in >> tmp1 >> tmp2;
+                tmp_all_horizon_coords.push_back(std::pair(tmp1, tmp2));
+            }
 
-         while(!in.atEnd())
-         {
-             double tmp1{-100}, tmp2{-100};
-             in >> tmp1 >> tmp2;
-             tmp_all_horizon_coords.push_back(std::pair(tmp1, tmp2));
-         }
+            // Всегда получается на один больше чем нужно, поэтому удаляем последний добавленный элемент
+            tmp_all_horizon_coords.erase(tmp_all_horizon_coords.end());
 
-         // Всегда получается на один больше чем нужно, поэтому удаляем последний добавленный элемент
-         tmp_all_horizon_coords.erase(tmp_all_horizon_coords.end());
+            if (tmp_all_horizon_coords.size() != all_horizon_coords.size())
+            {
+                QMessageBox::information(this, file.errorString(), tr("The number of frames in file is not equal to the number of frames in current video"));
+                return;
+            }
 
-         std::cout << "\n\n\ntmp_all_horizon_coords.size() == " << tmp_all_horizon_coords.size() << " all_horizon_coords.size() == " << all_horizon_coords.size() << "\n\n\n";
+            all_horizon_coords = tmp_all_horizon_coords;
+            for (frame_num = 0; frame_num < tmp_all_horizon_coords.size(); frame_num++)
+            {
+                // Выходим на первом кадре, на котором горизонт не определён
+                if ((tmp_all_horizon_coords[frame_num].first == -100) || (tmp_all_horizon_coords[frame_num].first == -100))
+                    break;
+            }
 
-         for (int i{0}; i < tmp_all_horizon_coords.size(); i++)
-             std::cout << tmp_all_horizon_coords[i].first << " " << tmp_all_horizon_coords[i].second << "\n";
+            if (frame_num == tmp_all_horizon_coords.size())
+                frame_num--;
 
-         if (tmp_all_horizon_coords.size() != all_horizon_coords.size())
-         {
-             QMessageBox::information(this, file.errorString(), tr("The number of frames in file is not equal to the number of frames in current video"));
-             return;
-         }
+            file.close();
 
-         all_horizon_coords = tmp_all_horizon_coords;
-         for (frame_num = 0; frame_num < tmp_all_horizon_coords.size(); frame_num++)
-         {
-             // Выходим на первом кадре, на котором горизонт не определён
-             if ((tmp_all_horizon_coords[frame_num].first == -100) || (tmp_all_horizon_coords[frame_num].first == -100))
-                 break;
-         }
-
-         if (frame_num == tmp_all_horizon_coords.size())
-             frame_num--;
-
-         file.close();
-
-         show_frame();
-         }
+            show_frame();
+        }
     }
 }
 
@@ -813,7 +774,6 @@ void MainWindow::on_import_hor_pushButton_clicked()
 // Кнопка смены файла, с которым работаем
 void MainWindow::on_change_file_pushButton_clicked()
 {
-    //QMessageBox::question(this, "Warning", "Your current work will be closed");
 
     QMessageBox msg_box;
     msg_box.setText("Warning");
@@ -838,11 +798,10 @@ void MainWindow::on_change_file_pushButton_clicked()
         // Выбираем новый файл
         on_pushButton_2_clicked();
 
-        // Меняем видимость кнопок
+        // Меняем видимость объектов
         change_buttons_visibility(0);
 
         // Приводим this к изначальному состоянию
-        // Хардкод, увы
         all_found_fp_vec.clear();
         all_frames_vec.clear();
         all_horizon_coords.clear();
