@@ -74,11 +74,7 @@ std::vector<transform_parameters> get_smooth_transforms_func(unsigned long long 
 int main(int argc, char **argv)
 {
     QApplication a(argc, argv);
-    std::cout << "before creating mainwindow!\n";
     MainWindow w;
-
-
-    std::cout << "after creating mainwindow\n";
 
     w.showMaximized();
 

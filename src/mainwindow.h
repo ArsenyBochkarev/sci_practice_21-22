@@ -27,6 +27,8 @@ public:
 
     void change_buttons_visibility(bool v);
     void set_objects_size();
+    bool save_dialog();
+
 
     void show_frame();
     std::pair<double, double> detect_on_frame();
@@ -34,8 +36,14 @@ public:
     void detect_and_show_cycle();
 
 
+    void closeEvent(QCloseEvent *event);
 
-    // Процесс был запущен хотя бы раз
+
+
+    std::string current_file;
+
+
+    // Прe-процесс был запущен хотя бы раз
     bool process_started{false};
 
     // Процесс идёт
@@ -46,11 +54,14 @@ public:
     int delay{10};
 
 
+    // Был ли файл сохранён на данный момент
+    bool saved{0};
+
+
     // Текущий кадр
     unsigned long long frame_num{0};
 
 
-    // Следующие параметры вынимаются из соответствующих полей
     // Раз в сколько кадров будет возможно пересчитывание горизонта - сделано в угоду производительности
     unsigned int change_rate{3};
 
@@ -102,6 +113,10 @@ private slots:
     void on_right_hor_spinBox_valueChanged(int arg1);
 
     void on_detect_horizon_pushButton_clicked();
+
+    void on_save_pushButton_clicked();
+
+    void on_import_hor_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;
