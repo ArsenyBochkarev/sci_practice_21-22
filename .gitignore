@@ -1,5 +1,6 @@
 src/*.AVI
 src/*.mp4
+src/*.h264
 
 # C++ objects and libs
 *.slo

@@ -2,12 +2,12 @@
  Horizon marking based on the video stream.
 
 # How to run
- Follow these steps to run the project.
- ### Clone the repo.
- ### Install Qt Creator on your computer.
- ### Install OpenCV library on your computer.
- ### Open the .pro file in Qt Creator and press "Build" button.
- ### Run the output file in the "Build" directory
+ ## Follow these steps to run the project.
+ - Clone the repo.
+ - Install Qt Creator on your computer.
+ - Install OpenCV library on your computer.
+ - Open the .pro file in Qt Creator and press "Build" button.
+ - Run the output file in the "Build" directory
 
  #### Alternatively, if you're on Ubuntu, you can try the following:
  ##### Install Qt Creator on your computer.
