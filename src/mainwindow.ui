@@ -223,6 +223,19 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="change_file_pushButton">
+       <property name="minimumSize">
+        <size>
+         <width>256</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Choose another video file</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="pushButton_2">
        <property name="minimumSize">
         <size>

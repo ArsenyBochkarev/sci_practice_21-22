@@ -118,6 +118,8 @@ private slots:
 
     void on_import_hor_pushButton_clicked();
 
+    void on_change_file_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
