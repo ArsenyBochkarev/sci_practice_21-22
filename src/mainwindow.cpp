@@ -8,7 +8,7 @@
 #include <regex>
 
 
-// Спросить пользователя, не хочет ли он сохранить свою текущую работу
+/// Спросить пользователя, не хочет ли он сохранить свою текущую работу
 bool MainWindow::save_dialog()
 {
     QMessageBox msg_box;
@@ -57,7 +57,7 @@ void mat_to_qlabel(const Mat& img, QLabel* img_lbl)
     img_lbl->setPixmap(QPixmap::fromImage(QImage(img.data, img.cols, img.rows, img.step, QImage::Format_RGB888)));
 }
 
-
+/// Конструктор
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), process_started(false), process_going(false), delay(10), saved(0), frame_num(0), change_rate(3),
     horizon_detection_method(0), max_sum_horizon_diff(1200), max_single_point_horizon_diff(400), max_wrong_fp_num(5), max_horizon_correctness_diff(20), ui(new Ui::MainWindow)
 {
@@ -73,17 +73,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), process_started(f
     smooth_transforms.clear();
 }
 
-
+/// Деструктор
 MainWindow::~MainWindow()
 {
     delete ui;
 }
 
 
-// Спросить у пользователя, не хочет ли он сохранить свою текущую работу перед выходом из программы (в случае, если она ещё не сохранена)
+/// Спросить у пользователя, не хочет ли он сохранить свою текущую работу перед выходом из программы (в случае, если она ещё не сохранена)
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    // Спрашивать про сохранение только в случае, если пре-процесс уже прошёл (иначе нет смысла)
+    /// Спрашивать про сохранение только в случае, если пре-процесс уже прошёл (иначе нет смысла)
     if ((!saved) && (process_started))
         if (!save_dialog())
         {
@@ -95,10 +95,10 @@ void MainWindow::closeEvent(QCloseEvent *event)
     QMainWindow::closeEvent(event);
 }
 
-// Задаём размеры объектов в зависимости от размера экрана
+/// Задаём размеры объектов в зависимости от размера экрана
 void MainWindow::set_objects_size()
 {
-    // Хотим, чтобы "панель" с кнопками занимала в длину примерно 1/8 экрана
+    /// Хотим, чтобы "панель" с кнопками занимала в длину примерно 1/8 экрана
     QScreen *screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
 
@@ -120,7 +120,7 @@ void MainWindow::set_objects_size()
 
 
 
-// Изменение видимости объектов
+/// Изменение видимости объектов
 void MainWindow::change_buttons_visibility(bool v)
 {
     // Изменяем видимость кнопки Pause/Run
@@ -171,7 +171,7 @@ void MainWindow::change_buttons_visibility(bool v)
 }
 
 
-// Отрисовка горизонта и вывод текущего кадра
+/// Отрисовка горизонта и вывод текущего кадра
 void MainWindow::show_frame()
 {
     double horizon_y1{all_horizon_coords[frame_num].first};
@@ -201,7 +201,7 @@ void MainWindow::show_frame()
 }
 
 
-// Отслеживание горизонта на кадре
+/// Отслеживание горизонта на кадре
 std::pair<double, double> MainWindow::detect_on_frame()
 {
     double horizon_y1{all_horizon_coords[frame_num-1].first};
@@ -241,15 +241,14 @@ std::pair<double, double> MainWindow::detect_on_frame()
 
 
 
-    // Сравним положение "фич" на двух соседних кадрах
-    // Если положение "фич" лишь немного изменилось, то пересчитывать горизонт смысла нет, и нужно лишь немного скорректировать его положение
-    // Иначе - полностью перестраиваем его
+    /// Сравним положение "фич" на двух соседних кадрах.
+    /// Если положение "фич" лишь немного изменилось, то пересчитывать горизонт смысла нет, и нужно лишь немного скорректировать его положение.
+    /// Иначе - полностью перестраиваем его
     bool rebuild_horizon{0};
 
 
-    // Сравним суммарные расстояния до горизонта, отмеченного на предыдущем кадре
-    // Это делается, чтобы понять, нужно ли пересчитывать горизонт полностью, либо достаточно лишь немного
-    // подкорректировать его относительно нового положения "фич"
+    /// Также сравним суммарные расстояния до горизонта, отмеченного на предыдущем кадре.
+    /// Это делается, чтобы понять, нужно ли пересчитывать горизонт полностью, либо достаточно лишь немного подкорректировать его относительно нового положения "фич"
 
     // Считаем коэффициенты в уравнении прямой горизонта
     double A{(horizon_x2 - horizon_x1 != 0) ? 1/(horizon_x2 - horizon_x1) : 1/(horizon_x2 + 1 - horizon_x1)};
@@ -268,7 +267,7 @@ std::pair<double, double> MainWindow::detect_on_frame()
     double new_avg_single_p_dist{0};
 
 
-    // Будем запоминать количество точек, у которых расстояние до горизонта сильно разнится по сравнению с предыдущим кадром
+    /// Будем запоминать количество точек, у которых расстояние до горизонта сильно разнится по сравнению с предыдущим кадром
     unsigned int wrong_fp_num{0};
 
 
@@ -285,8 +284,8 @@ std::pair<double, double> MainWindow::detect_on_frame()
         old_single_point_dist = abs( (A*prev_found_fp[i].x + B*prev_found_fp[i].y + C) / sqrt(A*A + B*B) );
         new_single_point_dist = abs( (A*current_changed_fp[i].x + B*current_changed_fp[i].y + C) / sqrt(A*A + B*B) );
 
-        // В случае, если хотя бы одна точка "ускакала" куда-то вверх или вниз - запомним её и в случае, если
-        // подобных точек не будет много, просто не будем на них ориентироваться
+        /// В случае, если хотя бы одна точка "ускакала" куда-то вверх или вниз - запомним её и в случае, если
+        /// подобных точек не будет много, просто не будем на них ориентироваться
         if (abs(old_single_point_dist - new_single_point_dist) >= max_single_point_horizon_diff)
             wrong_fp_num++;
         else
@@ -313,12 +312,12 @@ std::pair<double, double> MainWindow::detect_on_frame()
 
 
 
-    // Если разница в расстояниях до горизонта велика (что равносильно большому количеству "плохих фич") -
-    // это основание для полной перестройки горизонта
+    /// Если разница в расстояниях до горизонта велика (что равносильно большому количеству "плохих фич") -
+    /// это основание для полной перестройки горизонта
     if ( (abs(new_sum_horizon_dist - old_sum_horizon_dist) > max_sum_horizon_diff) || (wrong_fp_num > max_wrong_fp_num) )
         rebuild_horizon = 1;
     else
-        // Если можем определить конкретное направление корректировки - делаем ее относительно средней разницы расстояний
+        /// Если можем определить конкретное направление корректировки - делаем ее относительно средней разницы расстояний
         if ( (abs(horizon_correctness) > fp_num - max_horizon_correctness_diff) && (!rebuild_horizon) )
         {
             if (horizon_correctness > 0)
@@ -353,7 +352,7 @@ std::pair<double, double> MainWindow::detect_on_frame()
 }
 
 
-// Пре-проход по всем кадрам
+/// Пре-проход по всем кадрам
 int MainWindow::start_process()
 {
 
@@ -378,6 +377,7 @@ int MainWindow::start_process()
      double horizon_x1{0}, horizon_x2{static_cast<double>(abs(screenGeometry.width()))};
      double horizon_y1{0}, horizon_y2{0};
 
+     /// Всего три прохода: один -- для сохранения всех кадров и "фич" на них, вторые два -- для создания и применения shake_compensation
 
 
      // Пре-проход по всем кадрам для сохранения всех кадров и поиска и сохранения "фич" на них
@@ -401,8 +401,6 @@ int MainWindow::start_process()
          if (progress.wasCanceled())
              return -1;
 
-         if ((i  > 100+5359) || (i < 5359-100))
-         {
 
          Mat pre_cap_frame, pre_cap_gray_frame;
 
@@ -414,13 +412,12 @@ int MainWindow::start_process()
          }
          pre_cap_frame.copyTo(all_frames_vec[i]);
 
-         // Инициализируем все координаты как -100, чтобы потом понять, до какого кадра добрались, а до какого нет
+         /// Инициализируем все координаты как -100, чтобы потом понять, до какого кадра добрались, а до какого нет
          all_horizon_coords[i].first = -100;
          all_horizon_coords[i].second = -100;
 
          cvtColor(pre_cap_frame, pre_cap_gray_frame, COLOR_BGR2GRAY);
          goodFeaturesToTrack(pre_cap_gray_frame, all_found_fp_vec[i], 300, 0.2, 2);
-         }
      }
 
      progress.setLabelText("Doing shake compensation...");
@@ -437,7 +434,7 @@ int MainWindow::start_process()
 
      progress.setValue(progress.value() + 1);
 
-     // Второй пре-проход по всем кадрам: применяем shake compensation
+     // Последний пре-проход по всем кадрам: применяем shake compensation
      for (unsigned long long i{0}; i < all_frames_num; i++)
      {
          progress.setValue(progress.value()+1);
@@ -495,7 +492,7 @@ int MainWindow::start_process()
  }
 
 
-// Цикл по отслеживанию горизонта и выводу картинки на экран
+/// Цикл по отслеживанию горизонта и выводу картинки на экран
 void MainWindow::detect_and_show_cycle()
 {
     while(frame_num < all_frames_vec.size()-1)
@@ -536,7 +533,7 @@ void MainWindow::detect_and_show_cycle()
 // ----------------------------------------------------------------
 // QPushButton
 
-// Кнопка Start
+/// Кнопка Start
 void MainWindow::on_pushButton_clicked()
 {
     std::string s{ui->lineEdit->text().toStdString()};
@@ -574,7 +571,7 @@ void MainWindow::on_pushButton_clicked()
     }
 }
 
-// Кнопка Browse
+/// Кнопка Browse
 void MainWindow::on_pushButton_2_clicked()
 {
     QString filter{"MP4 (*.mp4) ;; AVI (*.AVI) ;; H264 (*.h264) ;; All Files (*)"};
@@ -588,7 +585,7 @@ void MainWindow::on_pushButton_2_clicked()
 }
 
 
-// Кнопка Pause/Run
+/// Кнопка Pause/Run
 void MainWindow::on_pushButton_10_clicked()
 {
 
@@ -630,7 +627,7 @@ void MainWindow::on_pushButton_10_clicked()
 }
 
 
-// Кнопка перехода на предыдущий кадр
+/// Кнопка перехода на предыдущий кадр
 void MainWindow::on_prev_frame_button_clicked()
 {
     if ((!process_going) && (frame_num > 0))
@@ -641,7 +638,7 @@ void MainWindow::on_prev_frame_button_clicked()
 }
 
 
-// Кнопка перехода на следующий кадр
+/// Кнопка перехода на следующий кадр
 void MainWindow::on_next_frame_button_clicked()
 {
     if ((!process_going) && (frame_num < all_frames_vec.size() - 1))
@@ -653,7 +650,7 @@ void MainWindow::on_next_frame_button_clicked()
 }
 
 
-// Кнопка определения горизонта программно
+/// Кнопка определения горизонта программно
 void MainWindow::on_detect_horizon_pushButton_clicked()
 {
     std::vector<std::pair<double, double> > coords{get_horizon_coordinates(all_frames_vec[frame_num], horizon_detection_method)};
@@ -664,7 +661,7 @@ void MainWindow::on_detect_horizon_pushButton_clicked()
 
 
 
-// Кнопка Save
+/// Кнопка Save
 void MainWindow::on_save_pushButton_clicked()
 {
  // Вызываем диалог
@@ -694,17 +691,17 @@ void MainWindow::on_save_pushButton_clicked()
 }
 
 
-// Кнопка Import from file
+/// Кнопка Import from file
 void MainWindow::on_import_hor_pushButton_clicked()
 {
-    // Сначала предлагаем сохранить текущий файл
+    /// Сначала предлагаем сохранить текущий файл
     bool continue_or_not{1};
     if (!saved)
         continue_or_not = save_dialog();
 
     if (continue_or_not)
     {
-        // Вызываем диалог
+        /// Потом вызываем диалог
         QString filter{"txt (*.txt) ;; All Files (*)"};
         QString file_name = QFileDialog::getOpenFileName(this, tr("Import from file"), QDir::currentPath(), filter);
 
@@ -771,7 +768,7 @@ void MainWindow::on_import_hor_pushButton_clicked()
 }
 
 
-// Кнопка смены файла, с которым работаем
+/// Кнопка смены файла, с которым работаем
 void MainWindow::on_change_file_pushButton_clicked()
 {
 
@@ -830,20 +827,20 @@ void MainWindow::on_change_file_pushButton_clicked()
 // ----------------------------------------------------------------
 // QSpinBox
 
-// Изменение значения задержки между кадрами
+/// Изменение значения задержки между кадрами
 void MainWindow::on_delay_spinBox_valueChanged(int arg1)
 {
     delay = arg1;
 }
 
-// Изменение значения частоты проверки горизонта на кадре
+/// Изменение значения частоты проверки горизонта на кадре
 void MainWindow::on_frame_rate_spinBox_valueChanged(int arg1)
 {
     change_rate = arg1;
 }
 
 
-// Альтернатива кнопкам перехода на следующий кадр -- стрелочки в QSpinbox
+/// Альтернатива кнопкам перехода на следующий кадр -- стрелочки в QSpinbox
 void MainWindow::on_curr_frame_spinBox_valueChanged(int arg1)
 {
     if ((arg1 >= 0) && (arg1 < all_frames_vec.size()))
@@ -853,7 +850,7 @@ void MainWindow::on_curr_frame_spinBox_valueChanged(int arg1)
 }
 
 
-// Изменение положение левой точки горизонта
+/// Изменение положение левой точки горизонта
 void MainWindow::on_left_hor_spinBox_valueChanged(int arg1)
 {
     if (!process_going)
@@ -865,7 +862,7 @@ void MainWindow::on_left_hor_spinBox_valueChanged(int arg1)
     }
 }
 
-// Изменение положения правой точки горизонта
+/// Изменение положения правой точки горизонта
 void MainWindow::on_right_hor_spinBox_valueChanged(int arg1)
 {
     if (!process_going)

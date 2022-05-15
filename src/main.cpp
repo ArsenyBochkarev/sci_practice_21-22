@@ -21,12 +21,12 @@ std::vector<std::pair<double, double> > get_horizon_coordinates(Mat src, bool wa
 {
     // 0 - метод через Canny/Hough
     // 1 - метод через Gauss/threshold
-    return std::move((way_to_get_horizon == 0 ? get_coordinates_Canny_Hough(src) : get_coordinates_Gauss_threshold(src)));
+    return (way_to_get_horizon == 0 ? get_coordinates_Canny_Hough(src) : get_coordinates_Gauss_threshold(src));
 }
 
 
 
-
+// Функция создания вектора сглаженных кадров
 std::vector<transform_parameters> get_smooth_transforms_func(unsigned long long all_frames_num, VideoCapture pre_cap1,
                                                              std::vector<std::vector<Point2f> > all_frames_fp )
 {

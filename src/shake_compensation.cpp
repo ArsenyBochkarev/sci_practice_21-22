@@ -17,7 +17,7 @@ std::vector<transform_parameters> transf_build(VideoCapture cap, long long frame
 	// Храним изменения между кадрами в этом векторе
 	std::vector <transform_parameters> transforms; 
 
-	// "Бэкап"-матрица на случай, если estimateRigidTransform ничего не выдаст
+    // "Бэкап"-матрица на случай, если estimateRigidTransform ничего не выдаст
     Mat last_transf;
 
 	
@@ -60,7 +60,7 @@ std::vector<transform_parameters> transf_build(VideoCapture cap, long long frame
 		calcOpticalFlowPyrLK(prev_gray_frame, current_gray_frame, prev_found_fp, current_changed_fp, status, err);
 
 
-		// Берём только "хорошие фичи" (т.е. такие, у которых в векторе status стоит единица)
+        // Берём только "хорошие фичи" (т.е. такие, у которых в векторе status стоит единица)
 		auto prev_it{prev_found_fp.begin()}; 
 		auto curr_it{current_changed_fp.begin()}; 
 		for(size_t k{0}; k < status.size(); k++)  
@@ -77,20 +77,20 @@ std::vector<transform_parameters> transf_build(VideoCapture cap, long long frame
 
 
 
-		// Ищем матрицу изменений между предыдущим и текущим кадром
+        // Ищем матрицу изменений между предыдущим и текущим кадром
 		Mat current_transf{estimateRigidTransform(prev_found_fp, current_changed_fp, false)}; 
 
-		// В некоторых редких случаях такая матрица может быть не найдена, так что просто используем последний "бэкап" 
+        // В некоторых редких случаях такая матрица может быть не найдена, так что просто используем последний "бэкап"
 		if (current_transf.data == NULL) 
 			last_transf.copyTo(current_transf);
 		current_transf.copyTo(last_transf);
 
-		// Выбираем нужные нам изменения из матрицы изменений
+        // Выбираем нужные нам изменения из матрицы изменений
 		double dx{current_transf.at<double>(0,2)};
 		double dy{current_transf.at<double>(1,2)}; 
 		double da{atan2(current_transf.at<double>(1,0), current_transf.at<double>(0,0))};
 
-		// Сохраняем эти изменения
+        // Сохраняем эти изменения
 		transforms.push_back(transform_parameters(dx, dy, da));
 
 		// Переходим к следующему кадру
@@ -98,7 +98,7 @@ std::vector<transform_parameters> transf_build(VideoCapture cap, long long frame
 	}
 
 
-	return std::move(transforms);
+    return transforms;
 }
 
 
@@ -125,7 +125,7 @@ std::vector<trajectory> cumulative_sum(std::vector<transform_parameters> &transf
 		traj.push_back(trajectory(x,y,a));
 	}
 
-	return std::move(traj); 
+    return traj;
 }
 
 
@@ -162,7 +162,7 @@ std::vector<trajectory> smooth(std::vector <trajectory>& traj, int radius)
 		smoothed_trajectory.push_back(trajectory(avg_x, avg_y, avg_a));
 	}
 
-	return std::move(smoothed_trajectory); 
+    return smoothed_trajectory;
 }
 
 
@@ -184,12 +184,12 @@ std::vector<transform_parameters> get_smooth_transforms(std::vector<trajectory> 
 
 	for(size_t i{0}; i < transforms.size(); i++)
 	{
-		// Ищем разницу между сглаженной и изначальной траекторией
+        /// Ищем разницу между сглаженной и изначальной траекторией
 		diff_x = smoothed_trajectory[i].x - original_trajectory[i].x;
 		diff_y = smoothed_trajectory[i].y - original_trajectory[i].y;
 		diff_a = smoothed_trajectory[i].a - original_trajectory[i].a;
 
-		// Создаём "сглаженные" изменения для каждого кадра
+        /// Создаём "сглаженные" изменения для каждого кадра
 		dx = transforms[i].dx + diff_x;
 		dy = transforms[i].dy + diff_y;
 		da = transforms[i].da + diff_a;
@@ -197,7 +197,7 @@ std::vector<transform_parameters> get_smooth_transforms(std::vector<trajectory> 
 		transforms_smooth.push_back(transform_parameters(dx, dy, da));
 	}
 
-	return std::move(transforms_smooth);	
+    return transforms_smooth;
 }
 
 
@@ -220,10 +220,10 @@ void get_stabilized_frame(Mat& current_frame, transform_parameters current_frame
 {
 	Mat transforms(2, 3, CV_64F); 
 
-	// По "сглаженным" преобразованиям строим матрицу перехода между кадрами 
+    // По "сглаженным" преобразованиям строим матрицу перехода между кадрами
 	current_frame_transf_smooth.get_transf_mat(transforms); 
 
-	// Применяем аффинные преобразования по построенной матрице к текущему кадру
+    // Применяем аффинные преобразования по построенной матрице к текущему кадру
 	warpAffine(current_frame, current_frame, transforms, current_frame.size());
 
 	fixBorder(current_frame); 

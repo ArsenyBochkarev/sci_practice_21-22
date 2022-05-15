@@ -168,7 +168,7 @@ double* GetVanishingPoint(std::vector<std::vector<double>> Lines, bool first_tim
 
 
 
-
+/// Функция получения координат
 std::vector<std::pair<double, double> > get_coordinates_Canny_Hough(Mat src)
 {
     std::vector<std::pair<double, double> > result;
@@ -186,7 +186,6 @@ std::vector<std::pair<double, double> > get_coordinates_Canny_Hough(Mat src)
     double* VanishingPoint2 = GetVanishingPoint(Lines, 0, VanishingPoint1);
 
 
-    // Подумать, что делать тут при ошибке
     // Checking if vanishing point found
     if ( (VanishingPoint1[0] == -1 && VanishingPoint1[1] == -1) || (VanishingPoint2[0] == -1 && VanishingPoint2[1] == -1))
         std::cout << "Vanishing Point not found. Possible reason is that not enough lines are found in the image for determination of vanishing point." << "\n";

@@ -4,6 +4,7 @@
 
 using namespace cv;
 
+/// Функция получения координат
 std::vector<std::pair<double, double> > get_coordinates_Gauss_threshold(Mat src)
 {
     Mat dst, grey_dst, blurred_dst, thres_dst, closed_dst;
