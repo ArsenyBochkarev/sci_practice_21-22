@@ -23,8 +23,7 @@
  ###### If there are some problems connecting Qt with OpenCV, try to follow the steps from [this](https://www.youtube.com/watch?v=_PsxwpJnWD0&ab_channel=ComputerVisionLab) video.
 
 
-# Documentation
-https://mexanobar.github.io/sci_practice_21-22/
+# Documentation 
 
 
 # License
