@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['qt_5fmeta_5fstringdata_5fmainwindow_5ft_0',['qt_meta_stringdata_MainWindow_t',['../structqt__meta__stringdata___main_window__t.html',1,'']]]
+  ['horizon_5fdetection_5fmethod_0',['horizon_detection_method',['../class_main_window.html#aca9e5a46222a90622234d5f60ede25bf',1,'MainWindow']]]
 ];

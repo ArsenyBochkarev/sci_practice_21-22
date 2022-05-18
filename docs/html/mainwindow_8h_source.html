@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Sci_practice21-22<span id="projectnumber">&#160;1.02</span>
+   <div id="projectname">Sci_practice21-22<span id="projectnumber">&#160;1.3</span>
    </div>
    <div id="projectbrief">Horizon marking based on the video stream</div>
   </td>
@@ -86,25 +86,25 @@ $(document).ready(function(){initNavTree('mainwindow_8h_source.html',''); initRe
   <div class="headertitle"><div class="title">mainwindow.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef MAINWINDOW_H</span></div>
+<a href="mainwindow_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef MAINWINDOW_H</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define MAINWINDOW_H</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;QMainWindow&gt;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;QFileDialog&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;structures.h&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;shake_compensation.h&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;qprogressdialog.h&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="structures_8h.html">structures.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="shake__compensation_8h.html">shake_compensation.h</a>&quot;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>QT_BEGIN_NAMESPACE</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span>Ui { <span class="keyword">class </span><a class="code hl_class" href="class_main_window.html">MainWindow</a>; }</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>QT_END_NAMESPACE</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="class_main_window.html">   14</a></span><span class="keyword">class </span><a class="code hl_class" href="class_main_window.html">MainWindow</a> : <span class="keyword">public</span> QMainWindow</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>{</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    Q_OBJECT</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="comment">// Аргументы для запуска основого цикла</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    std::vector&lt;Mat&gt; all_frames_vec;</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>QT_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="namespace_ui.html">   12</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespace_ui.html">Ui</a> { <span class="keyword">class </span><a class="code hl_class" href="class_ui_1_1_main_window.html">MainWindow</a>; }</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>QT_END_NAMESPACE</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="class_main_window.html">   15</a></span><span class="keyword">class </span><a class="code hl_class" href="class_main_window.html">MainWindow</a> : <span class="keyword">public</span> QMainWindow</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>{</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    Q_OBJECT</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="comment">// Аргументы для запуска основого цикла</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    std::vector&lt;transform_parameters&gt; smooth_transforms;</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    std::vector&lt;std::vector&lt;Point2f&gt; &gt;all_found_fp_vec;</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    std::vector&lt;std::pair&lt;double, double&gt; &gt; all_horizon_coords;</div>
@@ -122,113 +122,122 @@ $(document).ready(function(){initNavTree('mainwindow_8h_source.html',''); initRe
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    std::pair&lt;double, double&gt; <a class="code hl_function" href="class_main_window.html#a3006cdf592e9bdcdfb0164c5df10ba53">detect_on_frame</a>();</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="class_main_window.html#a366be92c9fa0cc433eb3423e70efefbd">start_process</a>();</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_main_window.html#a4d400148da16019632ccdbfaae247687">detect_and_show_cycle</a>();</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="class_main_window.html#a1a9fbe84b9d4f650b8c7933f1f5453ff">   37</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_main_window.html#a1a9fbe84b9d4f650b8c7933f1f5453ff">set_frame</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> arg, Mat&amp; frame_to_set);</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_main_window.html#a4e20a4a065fbb0e4d3532a45a0a91425">closeEvent</a>(QCloseEvent *event);</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_main_window.html#a52151fee04d17a81b4334571394f456b">save_all_frames</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> all_frames_num,   QProgressDialog&amp; progress );</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    std::string current_file;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_main_window.html#a4e20a4a065fbb0e4d3532a45a0a91425">closeEvent</a>(QCloseEvent *event);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="class_main_window.html#acf5a0c15f3344ea5041f1f7982df1184">   47</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="class_main_window.html#acf5a0c15f3344ea5041f1f7982df1184">process_started</a>{<span class="keyword">false</span>};</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="class_main_window.html#a9cd34a9372a438f8f449ba640dfbef59">   46</a></span>    std::string <a class="code hl_variable" href="class_main_window.html#a9cd34a9372a438f8f449ba640dfbef59">current_file</a>;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="class_main_window.html#a2f3c4e2d7895c67129ecf6e84b55c51b">   50</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="class_main_window.html#a2f3c4e2d7895c67129ecf6e84b55c51b">process_going</a>{<span class="keyword">false</span>};</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="class_main_window.html#acf5a0c15f3344ea5041f1f7982df1184">   50</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="class_main_window.html#acf5a0c15f3344ea5041f1f7982df1184">process_started</a>{<span class="keyword">false</span>};</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="class_main_window.html#a6f98723b1d27062a9c5a341c2d945c3b">   54</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="class_main_window.html#a6f98723b1d27062a9c5a341c2d945c3b">delay</a>{10};</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="class_main_window.html#a2f3c4e2d7895c67129ecf6e84b55c51b">   53</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="class_main_window.html#a2f3c4e2d7895c67129ecf6e84b55c51b">process_going</a>{<span class="keyword">false</span>};</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="class_main_window.html#a1346bae9e3b26e60faf1560ac41a9e65">   58</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="class_main_window.html#a1346bae9e3b26e60faf1560ac41a9e65">saved</a>{0};</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="class_main_window.html#a6f98723b1d27062a9c5a341c2d945c3b">   57</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="class_main_window.html#a6f98723b1d27062a9c5a341c2d945c3b">delay</a>{10};</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="class_main_window.html#a7eba3a56f597c05e62e218bf9a703c6a">   62</a></span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <a class="code hl_variable" href="class_main_window.html#a7eba3a56f597c05e62e218bf9a703c6a">frame_num</a>{0};</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="class_main_window.html#a1346bae9e3b26e60faf1560ac41a9e65">   61</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="class_main_window.html#a1346bae9e3b26e60faf1560ac41a9e65">saved</a>{0};</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="class_main_window.html#a45d91dbdf7c5565bf6d387cccc7a15a4">   66</a></span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="class_main_window.html#a45d91dbdf7c5565bf6d387cccc7a15a4">change_rate</a>{3};</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="class_main_window.html#a7eba3a56f597c05e62e218bf9a703c6a">   65</a></span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <a class="code hl_variable" href="class_main_window.html#a7eba3a56f597c05e62e218bf9a703c6a">frame_num</a>{0};</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="class_main_window.html#aca9e5a46222a90622234d5f60ede25bf">   70</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="class_main_window.html#aca9e5a46222a90622234d5f60ede25bf">horizon_detection_method</a>{0};</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="class_main_window.html#a45d91dbdf7c5565bf6d387cccc7a15a4">   69</a></span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="class_main_window.html#a45d91dbdf7c5565bf6d387cccc7a15a4">change_rate</a>{3};</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="class_main_window.html#a7377f026e8008e6df28c714d359983e5">   74</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="class_main_window.html#a7377f026e8008e6df28c714d359983e5">max_sum_horizon_diff</a>{1200};</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="class_main_window.html#aca9e5a46222a90622234d5f60ede25bf">   73</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="class_main_window.html#aca9e5a46222a90622234d5f60ede25bf">horizon_detection_method</a>{0};</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="class_main_window.html#aaccd58d73df72c619240bced33296131">   78</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="class_main_window.html#aaccd58d73df72c619240bced33296131">max_single_point_horizon_diff</a>{400};</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="class_main_window.html#a7377f026e8008e6df28c714d359983e5">   77</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="class_main_window.html#a7377f026e8008e6df28c714d359983e5">max_sum_horizon_diff</a>{1200};</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="class_main_window.html#acb5fcadfc40e1e4ad91b58111ea4d156">   82</a></span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="class_main_window.html#acb5fcadfc40e1e4ad91b58111ea4d156">max_wrong_fp_num</a>{5};</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="class_main_window.html#aaccd58d73df72c619240bced33296131">   81</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="class_main_window.html#aaccd58d73df72c619240bced33296131">max_single_point_horizon_diff</a>{400};</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="class_main_window.html#ab5ea5b1c0817f4bde04a5c7e2ee97bc8">   86</a></span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <a class="code hl_variable" href="class_main_window.html#ab5ea5b1c0817f4bde04a5c7e2ee97bc8">max_horizon_correctness_diff</a>{20};</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="class_main_window.html#acb5fcadfc40e1e4ad91b58111ea4d156">   85</a></span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="class_main_window.html#acb5fcadfc40e1e4ad91b58111ea4d156">max_wrong_fp_num</a>{5};</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="keyword">private</span> slots:</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="comment">// Кнопка Start</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keywordtype">void</span> on_pushButton_clicked();</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="comment">// Кнопка Browse</span></div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keywordtype">void</span> on_pushButton_2_clicked();</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="class_main_window.html#ab5ea5b1c0817f4bde04a5c7e2ee97bc8">   89</a></span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <a class="code hl_variable" href="class_main_window.html#ab5ea5b1c0817f4bde04a5c7e2ee97bc8">max_horizon_correctness_diff</a>{20};</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="keyword">private</span> slots:</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="comment">// Кнопка Start</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keywordtype">void</span> on_pushButton_clicked();</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="comment">// Кнопка Pause/Run</span></div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordtype">void</span> on_pushButton_10_clicked();</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="comment">// Кнопка Browse</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordtype">void</span> on_pushButton_2_clicked();</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keywordtype">void</span> on_prev_frame_button_clicked();</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordtype">void</span> on_next_frame_button_clicked();</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keywordtype">void</span> on_delay_spinBox_valueChanged(<span class="keywordtype">int</span> arg1);</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keywordtype">void</span> on_frame_rate_spinBox_valueChanged(<span class="keywordtype">int</span> arg1);</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keywordtype">void</span> on_curr_frame_spinBox_valueChanged(<span class="keywordtype">int</span> arg1);</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keywordtype">void</span> on_left_hor_spinBox_valueChanged(<span class="keywordtype">int</span> arg1);</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keywordtype">void</span> on_right_hor_spinBox_valueChanged(<span class="keywordtype">int</span> arg1);</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keywordtype">void</span> on_detect_horizon_pushButton_clicked();</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keywordtype">void</span> on_save_pushButton_clicked();</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordtype">void</span> on_import_hor_pushButton_clicked();</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keywordtype">void</span> on_change_file_pushButton_clicked();</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <a class="code hl_class" href="class_ui_1_1_main_window.html">Ui::MainWindow</a> *ui;</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>};</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="preprocessor">#endif </span><span class="comment">// MAINWINDOW_H</span></div>
-<div class="ttc" id="aclass_main_window_html"><div class="ttname"><a href="class_main_window.html">MainWindow</a></div><div class="ttdef"><b>Definition:</b> mainwindow.h:15</div></div>
-<div class="ttc" id="aclass_main_window_html_a0f2627687bd772bde3cec1890eb5ddf1"><div class="ttname"><a href="class_main_window.html#a0f2627687bd772bde3cec1890eb5ddf1">MainWindow::change_buttons_visibility</a></div><div class="ttdeci">void change_buttons_visibility(bool v)</div><div class="ttdoc">Изменение видимости объектов</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:124</div></div>
-<div class="ttc" id="aclass_main_window_html_a1346bae9e3b26e60faf1560ac41a9e65"><div class="ttname"><a href="class_main_window.html#a1346bae9e3b26e60faf1560ac41a9e65">MainWindow::saved</a></div><div class="ttdeci">bool saved</div><div class="ttdoc">Был ли файл сохранён на данный момент</div><div class="ttdef"><b>Definition:</b> mainwindow.h:58</div></div>
-<div class="ttc" id="aclass_main_window_html_a2f3c4e2d7895c67129ecf6e84b55c51b"><div class="ttname"><a href="class_main_window.html#a2f3c4e2d7895c67129ecf6e84b55c51b">MainWindow::process_going</a></div><div class="ttdeci">bool process_going</div><div class="ttdoc">Процесс идёт</div><div class="ttdef"><b>Definition:</b> mainwindow.h:50</div></div>
-<div class="ttc" id="aclass_main_window_html_a3006cdf592e9bdcdfb0164c5df10ba53"><div class="ttname"><a href="class_main_window.html#a3006cdf592e9bdcdfb0164c5df10ba53">MainWindow::detect_on_frame</a></div><div class="ttdeci">std::pair&lt; double, double &gt; detect_on_frame()</div><div class="ttdoc">Отслеживание горизонта на кадре</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:205</div></div>
-<div class="ttc" id="aclass_main_window_html_a366be92c9fa0cc433eb3423e70efefbd"><div class="ttname"><a href="class_main_window.html#a366be92c9fa0cc433eb3423e70efefbd">MainWindow::start_process</a></div><div class="ttdeci">int start_process()</div><div class="ttdoc">Пре-проход по всем кадрам</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:356</div></div>
-<div class="ttc" id="aclass_main_window_html_a45d91dbdf7c5565bf6d387cccc7a15a4"><div class="ttname"><a href="class_main_window.html#a45d91dbdf7c5565bf6d387cccc7a15a4">MainWindow::change_rate</a></div><div class="ttdeci">unsigned int change_rate</div><div class="ttdoc">Раз в сколько кадров будет возможно пересчитывание горизонта - сделано в угоду производительности</div><div class="ttdef"><b>Definition:</b> mainwindow.h:66</div></div>
-<div class="ttc" id="aclass_main_window_html_a4d400148da16019632ccdbfaae247687"><div class="ttname"><a href="class_main_window.html#a4d400148da16019632ccdbfaae247687">MainWindow::detect_and_show_cycle</a></div><div class="ttdeci">void detect_and_show_cycle()</div><div class="ttdoc">Цикл по отслеживанию горизонта и выводу картинки на экран</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:496</div></div>
-<div class="ttc" id="aclass_main_window_html_a4e20a4a065fbb0e4d3532a45a0a91425"><div class="ttname"><a href="class_main_window.html#a4e20a4a065fbb0e4d3532a45a0a91425">MainWindow::closeEvent</a></div><div class="ttdeci">void closeEvent(QCloseEvent *event)</div><div class="ttdoc">Спросить у пользователя, не хочет ли он сохранить свою текущую работу перед выходом из программы (в с...</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:84</div></div>
-<div class="ttc" id="aclass_main_window_html_a6f98723b1d27062a9c5a341c2d945c3b"><div class="ttname"><a href="class_main_window.html#a6f98723b1d27062a9c5a341c2d945c3b">MainWindow::delay</a></div><div class="ttdeci">int delay</div><div class="ttdoc">Задержка (в мс) между показами кадров при нажатии кнопки Run.</div><div class="ttdef"><b>Definition:</b> mainwindow.h:54</div></div>
-<div class="ttc" id="aclass_main_window_html_a7377f026e8008e6df28c714d359983e5"><div class="ttname"><a href="class_main_window.html#a7377f026e8008e6df28c714d359983e5">MainWindow::max_sum_horizon_diff</a></div><div class="ttdeci">double max_sum_horizon_diff</div><div class="ttdoc">Наибольшая разрешенная разница между суммированными расстояниями до горизонта между &quot;фичами&quot; на прошл...</div><div class="ttdef"><b>Definition:</b> mainwindow.h:74</div></div>
-<div class="ttc" id="aclass_main_window_html_a7bdb4edbbd110853a8dce9e607270c0e"><div class="ttname"><a href="class_main_window.html#a7bdb4edbbd110853a8dce9e607270c0e">MainWindow::show_frame</a></div><div class="ttdeci">void show_frame()</div><div class="ttdoc">Отрисовка горизонта и вывод текущего кадра</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:175</div></div>
-<div class="ttc" id="aclass_main_window_html_a7eba3a56f597c05e62e218bf9a703c6a"><div class="ttname"><a href="class_main_window.html#a7eba3a56f597c05e62e218bf9a703c6a">MainWindow::frame_num</a></div><div class="ttdeci">unsigned long long frame_num</div><div class="ttdoc">Текущий кадр</div><div class="ttdef"><b>Definition:</b> mainwindow.h:62</div></div>
-<div class="ttc" id="aclass_main_window_html_a996c5a2b6f77944776856f08ec30858d"><div class="ttname"><a href="class_main_window.html#a996c5a2b6f77944776856f08ec30858d">MainWindow::MainWindow</a></div><div class="ttdeci">MainWindow(QWidget *parent=nullptr)</div><div class="ttdoc">Конструктор</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:61</div></div>
-<div class="ttc" id="aclass_main_window_html_aaccd58d73df72c619240bced33296131"><div class="ttname"><a href="class_main_window.html#aaccd58d73df72c619240bced33296131">MainWindow::max_single_point_horizon_diff</a></div><div class="ttdeci">double max_single_point_horizon_diff</div><div class="ttdoc">Наибольшая разрешенная разница между соответствующими расстояниями до горизонта у одной конкретной &quot;ф...</div><div class="ttdef"><b>Definition:</b> mainwindow.h:78</div></div>
-<div class="ttc" id="aclass_main_window_html_ab254fd198c91386ec4240f5901f81c1f"><div class="ttname"><a href="class_main_window.html#ab254fd198c91386ec4240f5901f81c1f">MainWindow::save_dialog</a></div><div class="ttdeci">bool save_dialog()</div><div class="ttdoc">Спросить пользователя, не хочет ли он сохранить свою текущую работу</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:12</div></div>
-<div class="ttc" id="aclass_main_window_html_ab5ea5b1c0817f4bde04a5c7e2ee97bc8"><div class="ttname"><a href="class_main_window.html#ab5ea5b1c0817f4bde04a5c7e2ee97bc8">MainWindow::max_horizon_correctness_diff</a></div><div class="ttdeci">unsigned long long max_horizon_correctness_diff</div><div class="ttdoc">Наибольшая разрешенная разница между общим количеством &quot;фич&quot; и числом точек, сместившихся в конкретно...</div><div class="ttdef"><b>Definition:</b> mainwindow.h:86</div></div>
-<div class="ttc" id="aclass_main_window_html_ac3c8b359c3e7ee502e4a62747ae86523"><div class="ttname"><a href="class_main_window.html#ac3c8b359c3e7ee502e4a62747ae86523">MainWindow::set_objects_size</a></div><div class="ttdeci">void set_objects_size()</div><div class="ttdoc">Задаём размеры объектов в зависимости от размера экрана</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:99</div></div>
-<div class="ttc" id="aclass_main_window_html_aca9e5a46222a90622234d5f60ede25bf"><div class="ttname"><a href="class_main_window.html#aca9e5a46222a90622234d5f60ede25bf">MainWindow::horizon_detection_method</a></div><div class="ttdeci">bool horizon_detection_method</div><div class="ttdoc">Способ построения горизонта</div><div class="ttdef"><b>Definition:</b> mainwindow.h:70</div></div>
-<div class="ttc" id="aclass_main_window_html_acb5fcadfc40e1e4ad91b58111ea4d156"><div class="ttname"><a href="class_main_window.html#acb5fcadfc40e1e4ad91b58111ea4d156">MainWindow::max_wrong_fp_num</a></div><div class="ttdeci">unsigned int max_wrong_fp_num</div><div class="ttdoc">Наибольшее разрешенное число точек, у которых разница между соответствующими расстояниями до горизонт...</div><div class="ttdef"><b>Definition:</b> mainwindow.h:82</div></div>
-<div class="ttc" id="aclass_main_window_html_acf5a0c15f3344ea5041f1f7982df1184"><div class="ttname"><a href="class_main_window.html#acf5a0c15f3344ea5041f1f7982df1184">MainWindow::process_started</a></div><div class="ttdeci">bool process_started</div><div class="ttdoc">Прe-процесс был запущен хотя бы раз</div><div class="ttdef"><b>Definition:</b> mainwindow.h:47</div></div>
-<div class="ttc" id="aclass_main_window_html_ae98d00a93bc118200eeef9f9bba1dba7"><div class="ttname"><a href="class_main_window.html#ae98d00a93bc118200eeef9f9bba1dba7">MainWindow::~MainWindow</a></div><div class="ttdeci">~MainWindow()</div><div class="ttdoc">Деструктор</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:77</div></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="comment">// Кнопка Pause/Run</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keywordtype">void</span> on_pushButton_10_clicked();</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="keywordtype">void</span> on_prev_frame_button_clicked();</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keywordtype">void</span> on_next_frame_button_clicked();</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordtype">void</span> on_delay_spinBox_valueChanged(<span class="keywordtype">int</span> arg1);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="keywordtype">void</span> on_frame_rate_spinBox_valueChanged(<span class="keywordtype">int</span> arg1);</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keywordtype">void</span> on_curr_frame_spinBox_valueChanged(<span class="keywordtype">int</span> arg1);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordtype">void</span> on_left_hor_spinBox_valueChanged(<span class="keywordtype">int</span> arg1);</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keywordtype">void</span> on_right_hor_spinBox_valueChanged(<span class="keywordtype">int</span> arg1);</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keywordtype">void</span> on_detect_horizon_pushButton_clicked();</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keywordtype">void</span> on_save_pushButton_clicked();</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <span class="keywordtype">void</span> on_import_hor_pushButton_clicked();</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordtype">void</span> on_change_file_pushButton_clicked();</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <a class="code hl_class" href="class_ui_1_1_main_window.html">Ui::MainWindow</a> *ui;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>};</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="preprocessor">#endif </span><span class="comment">// MAINWINDOW_H</span></div>
+<div class="ttc" id="aclass_main_window_html"><div class="ttname"><a href="class_main_window.html">MainWindow</a></div><div class="ttdef"><b>Definition:</b> mainwindow.h:16</div></div>
+<div class="ttc" id="aclass_main_window_html_a0f2627687bd772bde3cec1890eb5ddf1"><div class="ttname"><a href="class_main_window.html#a0f2627687bd772bde3cec1890eb5ddf1">MainWindow::change_buttons_visibility</a></div><div class="ttdeci">void change_buttons_visibility(bool v)</div><div class="ttdoc">Изменение видимости объектов</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:182</div></div>
+<div class="ttc" id="aclass_main_window_html_a1346bae9e3b26e60faf1560ac41a9e65"><div class="ttname"><a href="class_main_window.html#a1346bae9e3b26e60faf1560ac41a9e65">MainWindow::saved</a></div><div class="ttdeci">bool saved</div><div class="ttdoc">Был ли файл сохранён на данный момент</div><div class="ttdef"><b>Definition:</b> mainwindow.h:61</div></div>
+<div class="ttc" id="aclass_main_window_html_a1a9fbe84b9d4f650b8c7933f1f5453ff"><div class="ttname"><a href="class_main_window.html#a1a9fbe84b9d4f650b8c7933f1f5453ff">MainWindow::set_frame</a></div><div class="ttdeci">void set_frame(unsigned long long arg, Mat &amp;frame_to_set)</div></div>
+<div class="ttc" id="aclass_main_window_html_a2f3c4e2d7895c67129ecf6e84b55c51b"><div class="ttname"><a href="class_main_window.html#a2f3c4e2d7895c67129ecf6e84b55c51b">MainWindow::process_going</a></div><div class="ttdeci">bool process_going</div><div class="ttdoc">Процесс идёт</div><div class="ttdef"><b>Definition:</b> mainwindow.h:53</div></div>
+<div class="ttc" id="aclass_main_window_html_a3006cdf592e9bdcdfb0164c5df10ba53"><div class="ttname"><a href="class_main_window.html#a3006cdf592e9bdcdfb0164c5df10ba53">MainWindow::detect_on_frame</a></div><div class="ttdeci">std::pair&lt; double, double &gt; detect_on_frame()</div><div class="ttdoc">Отслеживание горизонта на кадре</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:268</div></div>
+<div class="ttc" id="aclass_main_window_html_a366be92c9fa0cc433eb3423e70efefbd"><div class="ttname"><a href="class_main_window.html#a366be92c9fa0cc433eb3423e70efefbd">MainWindow::start_process</a></div><div class="ttdeci">int start_process()</div><div class="ttdoc">Пре-проход по всем кадрам</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:422</div></div>
+<div class="ttc" id="aclass_main_window_html_a45d91dbdf7c5565bf6d387cccc7a15a4"><div class="ttname"><a href="class_main_window.html#a45d91dbdf7c5565bf6d387cccc7a15a4">MainWindow::change_rate</a></div><div class="ttdeci">unsigned int change_rate</div><div class="ttdoc">Раз в сколько кадров будет возможно пересчитывание горизонта - сделано в угоду производительности</div><div class="ttdef"><b>Definition:</b> mainwindow.h:69</div></div>
+<div class="ttc" id="aclass_main_window_html_a4d400148da16019632ccdbfaae247687"><div class="ttname"><a href="class_main_window.html#a4d400148da16019632ccdbfaae247687">MainWindow::detect_and_show_cycle</a></div><div class="ttdeci">void detect_and_show_cycle()</div><div class="ttdoc">Цикл по отслеживанию горизонта и выводу картинки на экран</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:531</div></div>
+<div class="ttc" id="aclass_main_window_html_a4e20a4a065fbb0e4d3532a45a0a91425"><div class="ttname"><a href="class_main_window.html#a4e20a4a065fbb0e4d3532a45a0a91425">MainWindow::closeEvent</a></div><div class="ttdeci">void closeEvent(QCloseEvent *event)</div><div class="ttdoc">Спросить у пользователя, не хочет ли он сохранить свою текущую работу перед выходом из программы (в с...</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:142</div></div>
+<div class="ttc" id="aclass_main_window_html_a52151fee04d17a81b4334571394f456b"><div class="ttname"><a href="class_main_window.html#a52151fee04d17a81b4334571394f456b">MainWindow::save_all_frames</a></div><div class="ttdeci">void save_all_frames(unsigned long long all_frames_num, QProgressDialog &amp;progress)</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:13</div></div>
+<div class="ttc" id="aclass_main_window_html_a6f98723b1d27062a9c5a341c2d945c3b"><div class="ttname"><a href="class_main_window.html#a6f98723b1d27062a9c5a341c2d945c3b">MainWindow::delay</a></div><div class="ttdeci">int delay</div><div class="ttdoc">Задержка (в мс) между показами кадров при нажатии кнопки Run.</div><div class="ttdef"><b>Definition:</b> mainwindow.h:57</div></div>
+<div class="ttc" id="aclass_main_window_html_a7377f026e8008e6df28c714d359983e5"><div class="ttname"><a href="class_main_window.html#a7377f026e8008e6df28c714d359983e5">MainWindow::max_sum_horizon_diff</a></div><div class="ttdeci">double max_sum_horizon_diff</div><div class="ttdoc">Наибольшая разрешенная разница между суммированными расстояниями до горизонта между &quot;фичами&quot; на прошл...</div><div class="ttdef"><b>Definition:</b> mainwindow.h:77</div></div>
+<div class="ttc" id="aclass_main_window_html_a7bdb4edbbd110853a8dce9e607270c0e"><div class="ttname"><a href="class_main_window.html#a7bdb4edbbd110853a8dce9e607270c0e">MainWindow::show_frame</a></div><div class="ttdeci">void show_frame()</div><div class="ttdoc">Отрисовка горизонта и вывод текущего кадра</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:233</div></div>
+<div class="ttc" id="aclass_main_window_html_a7eba3a56f597c05e62e218bf9a703c6a"><div class="ttname"><a href="class_main_window.html#a7eba3a56f597c05e62e218bf9a703c6a">MainWindow::frame_num</a></div><div class="ttdeci">unsigned long long frame_num</div><div class="ttdoc">Номер текущего кадра</div><div class="ttdef"><b>Definition:</b> mainwindow.h:65</div></div>
+<div class="ttc" id="aclass_main_window_html_a996c5a2b6f77944776856f08ec30858d"><div class="ttname"><a href="class_main_window.html#a996c5a2b6f77944776856f08ec30858d">MainWindow::MainWindow</a></div><div class="ttdeci">MainWindow(QWidget *parent=nullptr)</div><div class="ttdoc">Конструктор</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:110</div></div>
+<div class="ttc" id="aclass_main_window_html_a9cd34a9372a438f8f449ba640dfbef59"><div class="ttname"><a href="class_main_window.html#a9cd34a9372a438f8f449ba640dfbef59">MainWindow::current_file</a></div><div class="ttdeci">std::string current_file</div><div class="ttdef"><b>Definition:</b> mainwindow.h:46</div></div>
+<div class="ttc" id="aclass_main_window_html_aaccd58d73df72c619240bced33296131"><div class="ttname"><a href="class_main_window.html#aaccd58d73df72c619240bced33296131">MainWindow::max_single_point_horizon_diff</a></div><div class="ttdeci">double max_single_point_horizon_diff</div><div class="ttdoc">Наибольшая разрешенная разница между соответствующими расстояниями до горизонта у одной конкретной &quot;ф...</div><div class="ttdef"><b>Definition:</b> mainwindow.h:81</div></div>
+<div class="ttc" id="aclass_main_window_html_ab254fd198c91386ec4240f5901f81c1f"><div class="ttname"><a href="class_main_window.html#ab254fd198c91386ec4240f5901f81c1f">MainWindow::save_dialog</a></div><div class="ttdeci">bool save_dialog()</div><div class="ttdoc">Спросить пользователя, не хочет ли он сохранить свою текущую работу</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:61</div></div>
+<div class="ttc" id="aclass_main_window_html_ab5ea5b1c0817f4bde04a5c7e2ee97bc8"><div class="ttname"><a href="class_main_window.html#ab5ea5b1c0817f4bde04a5c7e2ee97bc8">MainWindow::max_horizon_correctness_diff</a></div><div class="ttdeci">unsigned long long max_horizon_correctness_diff</div><div class="ttdoc">Наибольшая разрешенная разница между общим количеством &quot;фич&quot; и числом точек, сместившихся в конкретно...</div><div class="ttdef"><b>Definition:</b> mainwindow.h:89</div></div>
+<div class="ttc" id="aclass_main_window_html_ac3c8b359c3e7ee502e4a62747ae86523"><div class="ttname"><a href="class_main_window.html#ac3c8b359c3e7ee502e4a62747ae86523">MainWindow::set_objects_size</a></div><div class="ttdeci">void set_objects_size()</div><div class="ttdoc">Задаём размеры объектов в зависимости от размера экрана</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:157</div></div>
+<div class="ttc" id="aclass_main_window_html_aca9e5a46222a90622234d5f60ede25bf"><div class="ttname"><a href="class_main_window.html#aca9e5a46222a90622234d5f60ede25bf">MainWindow::horizon_detection_method</a></div><div class="ttdeci">bool horizon_detection_method</div><div class="ttdoc">Способ построения горизонта</div><div class="ttdef"><b>Definition:</b> mainwindow.h:73</div></div>
+<div class="ttc" id="aclass_main_window_html_acb5fcadfc40e1e4ad91b58111ea4d156"><div class="ttname"><a href="class_main_window.html#acb5fcadfc40e1e4ad91b58111ea4d156">MainWindow::max_wrong_fp_num</a></div><div class="ttdeci">unsigned int max_wrong_fp_num</div><div class="ttdoc">Наибольшее разрешенное число точек, у которых разница между соответствующими расстояниями до горизонт...</div><div class="ttdef"><b>Definition:</b> mainwindow.h:85</div></div>
+<div class="ttc" id="aclass_main_window_html_acf5a0c15f3344ea5041f1f7982df1184"><div class="ttname"><a href="class_main_window.html#acf5a0c15f3344ea5041f1f7982df1184">MainWindow::process_started</a></div><div class="ttdeci">bool process_started</div><div class="ttdoc">Прe-процесс был запущен хотя бы раз</div><div class="ttdef"><b>Definition:</b> mainwindow.h:50</div></div>
+<div class="ttc" id="aclass_main_window_html_ae98d00a93bc118200eeef9f9bba1dba7"><div class="ttname"><a href="class_main_window.html#ae98d00a93bc118200eeef9f9bba1dba7">MainWindow::~MainWindow</a></div><div class="ttdeci">~MainWindow()</div><div class="ttdoc">Деструктор</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:125</div></div>
 <div class="ttc" id="aclass_ui_1_1_main_window_html"><div class="ttname"><a href="class_ui_1_1_main_window.html">Ui::MainWindow</a></div><div class="ttdef"><b>Definition:</b> ui_mainwindow.h:220</div></div>
+<div class="ttc" id="anamespace_ui_html"><div class="ttname"><a href="namespace_ui.html">Ui</a></div><div class="ttdef"><b>Definition:</b> mainwindow.h:12</div></div>
+<div class="ttc" id="ashake__compensation_8h_html"><div class="ttname"><a href="shake__compensation_8h.html">shake_compensation.h</a></div></div>
+<div class="ttc" id="astructures_8h_html"><div class="ttname"><a href="structures_8h.html">structures.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>mainwindow.h</b></li>
+    <li class="navelem"><a class="el" href="mainwindow_8h.html">mainwindow.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
   </ul>
 </div>

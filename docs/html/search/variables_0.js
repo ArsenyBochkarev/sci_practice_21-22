@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['change_5frate_0',['change_rate',['../class_main_window.html#a45d91dbdf7c5565bf6d387cccc7a15a4',1,'MainWindow']]]
+  ['a_0',['a',['../structtrajectory.html#acd52d56fc0065e7eaa408dab85418ba7',1,'trajectory']]]
 ];

@@ -9,7 +9,6 @@
 
 using namespace cv;
 
-
 std::vector<std::pair<double, double> > get_horizon_coordinates(Mat src, bool way_to_get_horizon);
 
 std::vector<transform_parameters> get_smooth_transforms_func(unsigned long long all_frames_num, VideoCapture pre_cap1,

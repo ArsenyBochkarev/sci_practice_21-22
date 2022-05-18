@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['saved_0',['saved',['../class_main_window.html#a1346bae9e3b26e60faf1560ac41a9e65',1,'MainWindow']]]
+  ['image_5flabel_0',['image_label',['../class_ui___main_window.html#a82841e69e5969ca0e600ef08eb1967fb',1,'Ui_MainWindow']]],
+  ['import_5fhor_5fpushbutton_1',['import_hor_pushButton',['../class_ui___main_window.html#a76a1d13b82444893261c997098b65e90',1,'Ui_MainWindow']]]
 ];

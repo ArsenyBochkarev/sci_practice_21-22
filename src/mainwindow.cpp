@@ -8,6 +8,55 @@
 #include <regex>
 
 
+/// Сохраняем все кадры видео в отдельную папку с названием таким же, как у текущего видео
+/// Папка будет располагаться в build директории и удалится в момент закрытия программы
+void MainWindow::save_all_frames(unsigned long long all_frames_num, QProgressDialog& progress)
+{
+    VideoCapture cap(current_file);
+    Mat frame;
+
+    if(!cap.isOpened())
+    {
+        (new QErrorMessage(this))->showMessage("Error opening video stream or file!");
+        return;
+    }
+
+
+    QFileInfo fileInfo(QString::fromStdString(current_file));
+    QString filename{fileInfo.baseName()};
+
+    if ((QDir(filename).exists()) && (QDir(filename).count() == all_frames_num))
+        return;
+
+    if (!QDir(filename).exists())
+            QDir().mkdir(filename);
+
+    QString text{"Saving all frames..."};
+
+    for(unsigned long long i{0}; i < all_frames_num; i++)
+    {
+        progress.setValue(progress.value() + 1);
+        progress.setLabelText(text + "\nCurrently on frame number " + QString::number(i));
+
+        cap.read(frame);
+
+        if (frame.empty())
+        {
+            (new QErrorMessage(this))->showMessage("Error opening video stream or file!");
+            return;
+        }
+
+        imwrite((filename + "/" + QString::number(i) + ".jpg").toStdString(), frame);
+
+        frame.release();
+    }
+
+
+
+    cap.release();
+}
+
+
 /// Спросить пользователя, не хочет ли он сохранить свою текущую работу
 bool MainWindow::save_dialog()
 {
@@ -40,7 +89,7 @@ bool MainWindow::save_dialog()
 }
 
 
-// Фильтр форматов файлов
+/// Фильтр форматов файлов
 bool filter_formats(const std::string& s)
 {
     std::regex additional_filter(".*\.(mp4|AVI|h264).*");
@@ -49,7 +98,7 @@ bool filter_formats(const std::string& s)
 }
 
 
-// Перенос картинки с cv::Mat на QLabel
+/// Перенос картинки с cv::Mat на QLabel
 void mat_to_qlabel(const Mat& img, QLabel* img_lbl)
 {
     cvtColor(img, img, COLOR_BGR2RGB);
@@ -68,7 +117,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), process_started(f
     change_buttons_visibility(0);
 
     all_found_fp_vec.clear();
-    all_frames_vec.clear();
     all_horizon_coords.clear();
     smooth_transforms.clear();
 }
@@ -76,6 +124,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), process_started(f
 /// Деструктор
 MainWindow::~MainWindow()
 {
+    // --------------------------------------------------------------
+    // ????
+
+    QFileInfo fileInfo(QString::fromStdString(current_file));
+    QString filename{fileInfo.baseName()};
+
+    if (QDir(filename).exists())
+        QDir(filename).removeRecursively();
+    // --------------------------------------------------------------
+
     delete ui;
 }
 
@@ -185,7 +243,12 @@ void MainWindow::show_frame()
 
     // Рисуем горизонт
     Mat painted_frame;
-    all_frames_vec[frame_num].copyTo(painted_frame);
+
+    // Берём папку, в которой лежит текущий кадр
+    QFileInfo fileInfo(QString::fromStdString(current_file));
+    QString filename{fileInfo.baseName()};
+
+    painted_frame = imread(filename.toStdString() + "/" + std::to_string(frame_num) + ".jpg");
     line(painted_frame, Point2f(horizon_x1, horizon_y1), Point2f(horizon_x2, horizon_y2), Scalar(0,0,255), 3, 8 );
 
 
@@ -217,11 +280,14 @@ std::pair<double, double> MainWindow::detect_on_frame()
     Mat current_frame, current_gray_frame;
 
 
-    all_frames_vec[frame_num-1].copyTo(prev_frame);
+    QFileInfo fileInfo(QString::fromStdString(current_file));
+    QString filename{fileInfo.baseName()};
+
+    prev_frame = imread(filename.toStdString() + "/" + std::to_string(frame_num - 1) + ".jpg");
     get_stabilized_frame(prev_frame, smooth_transforms[frame_num-1]);
     cvtColor(prev_frame, prev_gray_frame, COLOR_BGR2GRAY);
 
-    all_frames_vec[frame_num].copyTo(current_frame);
+    current_frame = imread(filename.toStdString() + "/" + std::to_string(frame_num) + ".jpg");
     get_stabilized_frame(current_frame, smooth_transforms[frame_num]);
     cvtColor(current_frame, current_gray_frame, COLOR_BGR2GRAY);
 
@@ -362,14 +428,6 @@ int MainWindow::start_process()
 
      VideoCapture pre_cap1(current_file);
      VideoCapture pre_cap2(current_file);
-     VideoCapture pre_cap3(current_file);
-
-
-     if(!pre_cap1.isOpened())
-     {
-         (new QErrorMessage(this))->showMessage("Error opening video stream or file!");
-         return -1;
-     }
 
 
      QScreen *screen = QGuiApplication::primaryScreen();
@@ -377,32 +435,27 @@ int MainWindow::start_process()
      double horizon_x1{0}, horizon_x2{static_cast<double>(abs(screenGeometry.width()))};
      double horizon_y1{0}, horizon_y2{0};
 
-     /// Всего три прохода: один -- для сохранения всех кадров и "фич" на них, вторые два -- для создания и применения shake_compensation
 
-
-     // Пре-проход по всем кадрам для сохранения всех кадров и поиска и сохранения "фич" на них
+     // Пре-проходы по всем кадрам для сохранения всех кадров и поиска и сохранения "фич" на них
      // Узнаем общее количество кадров в видео
      unsigned long long all_frames_num{static_cast<unsigned long long>(pre_cap1.get(CAP_PROP_FRAME_COUNT))};
 
-     all_frames_vec.resize(all_frames_num);
-     all_horizon_coords.resize(all_frames_num);
-     all_found_fp_vec.resize(all_frames_num);
 
-     // Показываем пользователю, сколько осталось отработать
-     QString text{"Saving all frames and their feature points..."};
-     QProgressDialog progress(text, "Abort", 0, 2*all_frames_num + 1, this);
+     QProgressDialog progress("Saving all frames...", "Abort", 0, 2*all_frames_num + 2, this);
      progress.setWindowModality(Qt::WindowModal);
+
+     save_all_frames(all_frames_num, progress);
+
+     QString text{"Saving all feature points..."};
+     Mat pre_cap_frame, pre_cap_gray_frame;
 
      for(unsigned long long i{0}; i < all_frames_num; i++)
      {
-         progress.setValue(i);
+         progress.setValue(progress.value()+1);
          progress.setLabelText(text + "\nCurrently on frame number " + QString::number(i));
 
          if (progress.wasCanceled())
              return -1;
-
-
-         Mat pre_cap_frame, pre_cap_gray_frame;
 
          pre_cap1.read(pre_cap_frame);
          if (pre_cap_frame.empty())
@@ -410,17 +463,21 @@ int MainWindow::start_process()
              (new QErrorMessage(this))->showMessage("Error opening video stream or file!");
              return -1;
          }
-         pre_cap_frame.copyTo(all_frames_vec[i]);
 
          /// Инициализируем все координаты как -100, чтобы потом понять, до какого кадра добрались, а до какого нет
-         all_horizon_coords[i].first = -100;
-         all_horizon_coords[i].second = -100;
+         all_horizon_coords.push_back(std::pair<double, double>(-100, -100));
 
+         std::vector<Point2f> tmp_found_fp;
          cvtColor(pre_cap_frame, pre_cap_gray_frame, COLOR_BGR2GRAY);
-         goodFeaturesToTrack(pre_cap_gray_frame, all_found_fp_vec[i], 300, 0.2, 2);
+         goodFeaturesToTrack(pre_cap_gray_frame, tmp_found_fp, 300, 0.2, 2);
+         all_found_fp_vec.push_back(tmp_found_fp);
+
+         pre_cap_frame.release();
+         pre_cap_gray_frame.release();
      }
 
      progress.setLabelText("Doing shake compensation...");
+     waitKey(0);
 
      // Строим "сглаженные" матрицы изменений между кадрами, которые в дальнейшем будем применять к каждому отдельно взятому кадру
      smooth_transforms = get_smooth_transforms_func(all_frames_num, pre_cap2, all_found_fp_vec );
@@ -434,30 +491,6 @@ int MainWindow::start_process()
 
      progress.setValue(progress.value() + 1);
 
-     // Последний пре-проход по всем кадрам: применяем shake compensation
-     for (unsigned long long i{0}; i < all_frames_num; i++)
-     {
-         progress.setValue(progress.value()+1);
-
-         if (progress.wasCanceled())
-             return -1;
-
-
-         Mat pre_cap_frame;
-
-         pre_cap3.read(pre_cap_frame);
-         if (pre_cap_frame.empty())
-         {
-             (new QErrorMessage(this))->showMessage("Unable to read frame with number " + QString::number(i));
-             return -1;
-         }
-
-         get_stabilized_frame(pre_cap_frame, smooth_transforms[i]);
-     }
-
-     // Выходим из progress
-     progress.setValue(2*all_frames_num + 1);
-
 
 
      // Текущий кадр
@@ -469,8 +502,11 @@ int MainWindow::start_process()
      ui->curr_frame_spinBox->setMaximum(all_frames_num);
 
 
+     QFileInfo fileInfo(QString::fromStdString(current_file));
+     QString filename{fileInfo.baseName()};
+
      // Берём первый кадр для того, чтобы пометить горизонт на нём
-     all_frames_vec[frame_num].copyTo(prev_frame);
+     prev_frame = imread(filename.toStdString() + "/0.jpg", IMREAD_COLOR);
 
 
      // Вычисляем горизонт на первом кадре
@@ -487,7 +523,6 @@ int MainWindow::start_process()
      // Регулируем размер QLabel, в котором будут отображаться кадры
      ui->image_label->setGeometry(QRect(ui->image_label->geometry().left(), ui->image_label->geometry().top(), prev_frame.cols, prev_frame.rows));
 
-
      return 1;
  }
 
@@ -495,7 +530,7 @@ int MainWindow::start_process()
 /// Цикл по отслеживанию горизонта и выводу картинки на экран
 void MainWindow::detect_and_show_cycle()
 {
-    while(frame_num < all_frames_vec.size()-1)
+    while(frame_num < all_found_fp_vec.size()-1)
     {
         frame_num++;
 
@@ -520,7 +555,7 @@ void MainWindow::detect_and_show_cycle()
     }
 
     // Дошли до конца видео => нужно выполнить все те же самые дейстия, как и в случае нажатия кнопки Pause
-    if (frame_num == all_frames_vec.size()-1)
+    if (frame_num == all_found_fp_vec.size()-1)
         on_pushButton_10_clicked();
 
 
@@ -530,13 +565,15 @@ void MainWindow::detect_and_show_cycle()
 
 
 
-// ----------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 // QPushButton
 
 /// Кнопка Start
 void MainWindow::on_pushButton_clicked()
 {
     std::string s{ui->lineEdit->text().toStdString()};
+
+    current_file = s;
 
     if ((!process_started) && (filter_formats(s)))
     {
@@ -606,7 +643,7 @@ void MainWindow::on_pushButton_10_clicked()
 
 
         // Чтобы выводить уже корректно отрисованный кадр (не работает, когда прошли все кадры!)
-        if ((frame_num > 0) && (frame_num != all_frames_vec.size()-1))
+        if ((frame_num > 0) && (frame_num != all_found_fp_vec.size()-1))
             frame_num--;
 
         process_going = 0;
@@ -641,9 +678,10 @@ void MainWindow::on_prev_frame_button_clicked()
 /// Кнопка перехода на следующий кадр
 void MainWindow::on_next_frame_button_clicked()
 {
-    if ((!process_going) && (frame_num < all_frames_vec.size() - 1))
+    if ((!process_going) && (frame_num < all_found_fp_vec.size() - 1))
     {
         frame_num++;
+        detect_on_frame();
         show_frame();
     }
 
@@ -653,7 +691,14 @@ void MainWindow::on_next_frame_button_clicked()
 /// Кнопка определения горизонта программно
 void MainWindow::on_detect_horizon_pushButton_clicked()
 {
-    std::vector<std::pair<double, double> > coords{get_horizon_coordinates(all_frames_vec[frame_num], horizon_detection_method)};
+    Mat frame;
+
+    QFileInfo fileInfo(QString::fromStdString(current_file));
+    QString filename{fileInfo.baseName()};
+
+    frame = imread(filename.toStdString() + "/" + std::to_string(frame_num) + ".jpg");
+
+    std::vector<std::pair<double, double> > coords{get_horizon_coordinates(frame, horizon_detection_method)};
     all_horizon_coords[frame_num].first = coords[0].second;
     all_horizon_coords[frame_num].second = coords[1].second;
     show_frame();
@@ -800,7 +845,6 @@ void MainWindow::on_change_file_pushButton_clicked()
 
         // Приводим this к изначальному состоянию
         all_found_fp_vec.clear();
-        all_frames_vec.clear();
         all_horizon_coords.clear();
         smooth_transforms.clear();
 
@@ -824,7 +868,7 @@ void MainWindow::on_change_file_pushButton_clicked()
 
 
 
-// ----------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 // QSpinBox
 
 /// Изменение значения задержки между кадрами
@@ -843,7 +887,7 @@ void MainWindow::on_frame_rate_spinBox_valueChanged(int arg1)
 /// Альтернатива кнопкам перехода на следующий кадр -- стрелочки в QSpinbox
 void MainWindow::on_curr_frame_spinBox_valueChanged(int arg1)
 {
-    if ((arg1 >= 0) && (arg1 < all_frames_vec.size()))
+    if ((arg1 >= 0) && (arg1 < all_found_fp_vec.size()))
         frame_num = arg1;
 
     show_frame();

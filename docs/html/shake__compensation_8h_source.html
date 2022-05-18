@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Sci_practice21-22<span id="projectnumber">&#160;1.02</span>
+   <div id="projectname">Sci_practice21-22<span id="projectnumber">&#160;1.3</span>
    </div>
    <div id="projectbrief">Horizon marking based on the video stream</div>
   </td>
@@ -86,28 +86,34 @@ $(document).ready(function(){initNavTree('shake__compensation_8h_source.html',''
   <div class="headertitle"><div class="title">shake_compensation.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef SHAKE_COMP_H</span></div>
+<a href="shake__compensation_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef SHAKE_COMP_H</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define SHAKE_COMP_H</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;vector&gt;</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;structures.h&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="structures_8h.html">structures.h</a>&quot;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">using namespace </span>cv;</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>std::vector&lt;transform_parameters&gt; transf_build(VideoCapture cap, <span class="keywordtype">long</span> <span class="keywordtype">long</span> frame_num, std::vector&lt;std::vector&lt;Point2f&gt; &gt; all_frames_fp);</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>std::vector&lt;trajectory&gt; cumulative_sum(std::vector&lt;transform_parameters&gt; &amp;transforms); </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>std::vector&lt;trajectory&gt; smooth(std::vector &lt;trajectory&gt;&amp; traj, <span class="keywordtype">int</span> radius); </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>std::vector&lt;transform_parameters&gt; get_smooth_transforms(std::vector&lt;trajectory&gt; smoothed_trajectory, std::vector&lt;trajectory&gt; original_trajectory, std::vector&lt;transform_parameters&gt; transforms);</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keywordtype">void</span> get_stabilized_frame(Mat&amp; current_frame, <a class="code hl_struct" href="structtransform__parameters.html">transform_parameters</a> current_frame_transf_smooth);</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>std::vector&lt;transform_parameters&gt; <a class="code hl_function" href="shake__compensation_8h.html#a6098e493e8651e8957935b3d920525a8">transf_build</a>(VideoCapture cap, <span class="keywordtype">long</span> <span class="keywordtype">long</span> frame_num, std::vector&lt;std::vector&lt;Point2f&gt; &gt; all_frames_fp);</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>std::vector&lt;trajectory&gt; <a class="code hl_function" href="shake__compensation_8h.html#a14a16f89e8b033c62a60e23cab15fc9a">cumulative_sum</a>(std::vector&lt;transform_parameters&gt; &amp;transforms); </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>std::vector&lt;trajectory&gt; <a class="code hl_function" href="shake__compensation_8h.html#accb0d7c3625b294eec03300e9d972522">smooth</a>(std::vector &lt;trajectory&gt;&amp; traj, <span class="keywordtype">int</span> radius); </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>std::vector&lt;transform_parameters&gt; <a class="code hl_function" href="shake__compensation_8h.html#abb2901d5ad62d33990f58f9cf608aa32">get_smooth_transforms</a>(std::vector&lt;trajectory&gt; smoothed_trajectory, std::vector&lt;trajectory&gt; original_trajectory, std::vector&lt;transform_parameters&gt; transforms);</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keywordtype">void</span> <a class="code hl_function" href="shake__compensation_8h.html#a42fa1da53079490419cfd3834778597c">get_stabilized_frame</a>(Mat&amp; current_frame, <a class="code hl_struct" href="structtransform__parameters.html">transform_parameters</a> current_frame_transf_smooth);</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#endif </span><span class="comment">// SHAKE_COMP_H</span></div>
+<div class="ttc" id="ashake__compensation_8h_html_a14a16f89e8b033c62a60e23cab15fc9a"><div class="ttname"><a href="shake__compensation_8h.html#a14a16f89e8b033c62a60e23cab15fc9a">cumulative_sum</a></div><div class="ttdeci">std::vector&lt; trajectory &gt; cumulative_sum(std::vector&lt; transform_parameters &gt; &amp;transforms)</div><div class="ttdef"><b>Definition:</b> shake_compensation.cpp:109</div></div>
+<div class="ttc" id="ashake__compensation_8h_html_a42fa1da53079490419cfd3834778597c"><div class="ttname"><a href="shake__compensation_8h.html#a42fa1da53079490419cfd3834778597c">get_stabilized_frame</a></div><div class="ttdeci">void get_stabilized_frame(Mat &amp;current_frame, transform_parameters current_frame_transf_smooth)</div><div class="ttdef"><b>Definition:</b> shake_compensation.cpp:219</div></div>
+<div class="ttc" id="ashake__compensation_8h_html_a6098e493e8651e8957935b3d920525a8"><div class="ttname"><a href="shake__compensation_8h.html#a6098e493e8651e8957935b3d920525a8">transf_build</a></div><div class="ttdeci">std::vector&lt; transform_parameters &gt; transf_build(VideoCapture cap, long long frame_num, std::vector&lt; std::vector&lt; Point2f &gt; &gt; all_frames_fp)</div><div class="ttdef"><b>Definition:</b> shake_compensation.cpp:13</div></div>
+<div class="ttc" id="ashake__compensation_8h_html_abb2901d5ad62d33990f58f9cf608aa32"><div class="ttname"><a href="shake__compensation_8h.html#abb2901d5ad62d33990f58f9cf608aa32">get_smooth_transforms</a></div><div class="ttdeci">std::vector&lt; transform_parameters &gt; get_smooth_transforms(std::vector&lt; trajectory &gt; smoothed_trajectory, std::vector&lt; trajectory &gt; original_trajectory, std::vector&lt; transform_parameters &gt; transforms)</div><div class="ttdef"><b>Definition:</b> shake_compensation.cpp:173</div></div>
+<div class="ttc" id="ashake__compensation_8h_html_accb0d7c3625b294eec03300e9d972522"><div class="ttname"><a href="shake__compensation_8h.html#accb0d7c3625b294eec03300e9d972522">smooth</a></div><div class="ttdeci">std::vector&lt; trajectory &gt; smooth(std::vector&lt; trajectory &gt; &amp;traj, int radius)</div><div class="ttdef"><b>Definition:</b> shake_compensation.cpp:136</div></div>
 <div class="ttc" id="astructtransform__parameters_html"><div class="ttname"><a href="structtransform__parameters.html">transform_parameters</a></div><div class="ttdef"><b>Definition:</b> structures.h:13</div></div>
+<div class="ttc" id="astructures_8h_html"><div class="ttname"><a href="structures_8h.html">structures.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>shake_compensation.h</b></li>
+    <li class="navelem"><a class="el" href="shake__compensation_8h.html">shake_compensation.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
   </ul>
 </div>

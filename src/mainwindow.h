@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QFileDialog>
+#include "qprogressdialog.h"
 #include "structures.h"
 #include "shake_compensation.h"
 
@@ -16,7 +17,6 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
     // Аргументы для запуска основого цикла
-    std::vector<Mat> all_frames_vec;
     std::vector<transform_parameters> smooth_transforms;
     std::vector<std::vector<Point2f> >all_found_fp_vec;
     std::vector<std::pair<double, double> > all_horizon_coords;
@@ -34,7 +34,10 @@ public:
     std::pair<double, double> detect_on_frame();
     int start_process();
     void detect_and_show_cycle();
+    void set_frame(unsigned long long arg, Mat& frame_to_set);
 
+
+    void save_all_frames(unsigned long long all_frames_num,   QProgressDialog& progress );
 
     void closeEvent(QCloseEvent *event);
 
@@ -58,7 +61,7 @@ public:
     bool saved{0};
 
 
-    /// Текущий кадр
+    /// Номер текущего кадра
     unsigned long long frame_num{0};
 
 

@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Sci_practice21-22<span id="projectnumber">&#160;1.02</span>
+   <div id="projectname">Sci_practice21-22<span id="projectnumber">&#160;1.3</span>
    </div>
    <div id="projectbrief">Horizon marking based on the video stream</div>
   </td>
@@ -86,39 +86,43 @@ $(document).ready(function(){initNavTree('main_8h_source.html',''); initResizabl
   <div class="headertitle"><div class="title">main.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef MAIN_H</span></div>
+<a href="main_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef MAIN_H</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define MAIN_H</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;QtWidgets&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;structures.h&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="structures_8h.html">structures.h</a>&quot;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">using namespace </span>cv;</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>std::vector&lt;std::pair&lt;double, double&gt; &gt; get_horizon_coordinates(Mat src, <span class="keywordtype">bool</span> way_to_get_horizon);</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>std::vector&lt;transform_parameters&gt; get_smooth_transforms_func(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> all_frames_num, VideoCapture pre_cap1,</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>                                                             std::vector&lt;std::vector&lt;Point2f&gt; &gt; all_frames_fp );</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>std::vector&lt;std::pair&lt;double, double&gt; &gt; <a class="code hl_function" href="main_8h.html#ac4f9b155ed39118b08cb853f3d662c62">get_horizon_coordinates</a>(Mat src, <span class="keywordtype">bool</span> way_to_get_horizon);</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>std::vector&lt;transform_parameters&gt; <a class="code hl_function" href="main_8h.html#a5082208ec45fedd3461255b233009553">get_smooth_transforms_func</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> all_frames_num, VideoCapture pre_cap1,</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                                                             std::vector&lt;std::vector&lt;Point2f&gt; &gt; all_frames_fp );</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keywordtype">int</span> start_process(std::string file_name, QLabel* img_lbl, QLineEdit* curr_frame);</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keywordtype">void</span> show_and_detect_cycle(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> frame_num,</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    std::vector&lt;Mat&gt; all_frames_vec, std::vector&lt;transform_parameters&gt; smooth_transforms, std::vector&lt; std::vector&lt;Point2f&gt; &gt;all_found_fp_vec,</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keywordtype">double</span> horizon_x1, <span class="keywordtype">double</span> horizon_y1, <span class="keywordtype">double</span> horizon_x2, <span class="keywordtype">double</span> horizon_y2, QLabel* img_lbl, QLineEdit* curr_frame);</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="main_8h.html#a1c14f64958abac1a5910ef59c05c98a5">   18</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="main_8h.html#a1c14f64958abac1a5910ef59c05c98a5">start_process</a>(std::string file_name, QLabel* img_lbl, QLineEdit* curr_frame);</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="main_8h.html#aed094eca031c45e6c1df6c6a160ed58d">   20</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="main_8h.html#aed094eca031c45e6c1df6c6a160ed58d">show_and_detect_cycle</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> frame_num,</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    std::vector&lt;Mat&gt; all_frames_vec, std::vector&lt;transform_parameters&gt; smooth_transforms, std::vector&lt; std::vector&lt;Point2f&gt; &gt;all_found_fp_vec,</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordtype">double</span> horizon_x1, <span class="keywordtype">double</span> horizon_y1, <span class="keywordtype">double</span> horizon_x2, <span class="keywordtype">double</span> horizon_y2, QLabel* img_lbl, QLineEdit* curr_frame);</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#endif </span><span class="comment">// MAIN_H</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#endif </span><span class="comment">// MAIN_H</span></div>
+<div class="ttc" id="amain_8h_html_a1c14f64958abac1a5910ef59c05c98a5"><div class="ttname"><a href="main_8h.html#a1c14f64958abac1a5910ef59c05c98a5">start_process</a></div><div class="ttdeci">int start_process(std::string file_name, QLabel *img_lbl, QLineEdit *curr_frame)</div></div>
+<div class="ttc" id="amain_8h_html_a5082208ec45fedd3461255b233009553"><div class="ttname"><a href="main_8h.html#a5082208ec45fedd3461255b233009553">get_smooth_transforms_func</a></div><div class="ttdeci">std::vector&lt; transform_parameters &gt; get_smooth_transforms_func(unsigned long long all_frames_num, VideoCapture pre_cap1, std::vector&lt; std::vector&lt; Point2f &gt; &gt; all_frames_fp)</div><div class="ttdef"><b>Definition:</b> main.cpp:30</div></div>
+<div class="ttc" id="amain_8h_html_ac4f9b155ed39118b08cb853f3d662c62"><div class="ttname"><a href="main_8h.html#ac4f9b155ed39118b08cb853f3d662c62">get_horizon_coordinates</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; double, double &gt; &gt; get_horizon_coordinates(Mat src, bool way_to_get_horizon)</div><div class="ttdef"><b>Definition:</b> main.cpp:20</div></div>
+<div class="ttc" id="amain_8h_html_aed094eca031c45e6c1df6c6a160ed58d"><div class="ttname"><a href="main_8h.html#aed094eca031c45e6c1df6c6a160ed58d">show_and_detect_cycle</a></div><div class="ttdeci">void show_and_detect_cycle(unsigned long long frame_num, std::vector&lt; Mat &gt; all_frames_vec, std::vector&lt; transform_parameters &gt; smooth_transforms, std::vector&lt; std::vector&lt; Point2f &gt; &gt;all_found_fp_vec, double horizon_x1, double horizon_y1, double horizon_x2, double horizon_y2, QLabel *img_lbl, QLineEdit *curr_frame)</div></div>
+<div class="ttc" id="astructures_8h_html"><div class="ttname"><a href="structures_8h.html">structures.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>main.h</b></li>
+    <li class="navelem"><a class="el" href="main_8h.html">main.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
   </ul>
 </div>

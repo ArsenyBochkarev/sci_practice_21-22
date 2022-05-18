@@ -25,6 +25,9 @@
 var NAVTREE =
 [
   [ "Sci_practice21-22", "index.html", [
+    [ "Namespaces", "namespaces.html", [
+      [ "Namespace List", "namespaces.html", "namespaces_dup" ]
+    ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -36,14 +39,22 @@ var NAVTREE =
       ] ]
     ] ],
     [ "Files", "files.html", [
-      [ "File List", "files.html", "files_dup" ]
+      [ "File List", "files.html", "files_dup" ],
+      [ "File Members", "globals.html", [
+        [ "All", "globals.html", "globals_dup" ],
+        [ "Functions", "globals_func.html", null ],
+        [ "Variables", "globals_vars.html", null ],
+        [ "Macros", "globals_defs.html", "globals_defs" ]
+      ] ]
     ] ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"_canny___hough_8h_source.html"
+"_canny___hough_8cpp.html",
+"moc__predefs_8h.html#a5a949d2ee22a649377e5bec02e3e5855",
+"moc__predefs_8h.html#af4eb6c3c4da52a7fe202626ac4dc360e"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
