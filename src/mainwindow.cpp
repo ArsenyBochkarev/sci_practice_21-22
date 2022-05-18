@@ -130,7 +130,7 @@ MainWindow::~MainWindow()
     QFileInfo fileInfo(QString::fromStdString(current_file));
     QString filename{fileInfo.baseName()};
 
-    if (QDir(filename).exists())
+    if ((QDir(filename).exists()) && (QDir(filename).count() == all_frames_num))
         QDir(filename).removeRecursively();
     // --------------------------------------------------------------
 
@@ -842,6 +842,13 @@ void MainWindow::on_change_file_pushButton_clicked()
 
         // Меняем видимость объектов
         change_buttons_visibility(0);
+
+        // Удаляем папку с кадрами (если она есть)
+        QFileInfo fileInfo(QString::fromStdString(current_file));
+        QString filename{fileInfo.baseName()};
+
+        if ((QDir(filename).exists()) && (QDir(filename).count() == all_found_fp_vec.size()))
+            QDir(filename).removeRecursively();
 
         // Приводим this к изначальному состоянию
         all_found_fp_vec.clear();
