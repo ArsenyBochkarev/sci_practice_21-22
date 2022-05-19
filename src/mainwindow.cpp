@@ -124,15 +124,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), process_started(f
 /// Деструктор
 MainWindow::~MainWindow()
 {
-    // --------------------------------------------------------------
-    // ????
-
     QFileInfo fileInfo(QString::fromStdString(current_file));
     QString filename{fileInfo.baseName()};
 
-    if ((QDir(filename).exists()) && (QDir(filename).count() == all_frames_num))
+    std::cout << "QDir(filename).count() == " << QDir(filename).count() << " all_found_fp_vec.size() == " << all_found_fp_vec.size() << "\n";
+
+    if (QDir(filename).exists())
         QDir(filename).removeRecursively();
-    // --------------------------------------------------------------
 
     delete ui;
 }
@@ -249,7 +247,10 @@ void MainWindow::show_frame()
     QString filename{fileInfo.baseName()};
 
     painted_frame = imread(filename.toStdString() + "/" + std::to_string(frame_num) + ".jpg");
-    line(painted_frame, Point2f(horizon_x1, horizon_y1), Point2f(horizon_x2, horizon_y2), Scalar(0,0,255), 3, 8 );
+    if (frame_num % change_rate == 0)
+        line(painted_frame, Point2f(horizon_x1, horizon_y1), Point2f(horizon_x2, horizon_y2), Scalar(0,255,255), 3, 8 );
+    else
+        line(painted_frame, Point2f(horizon_x1, horizon_y1), Point2f(horizon_x2, horizon_y2), Scalar(0,0,255), 3, 8 );
 
 
     // Выставляем значения горизонта в QSpinbox'ах
