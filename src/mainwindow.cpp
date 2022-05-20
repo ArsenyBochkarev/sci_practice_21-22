@@ -682,7 +682,8 @@ void MainWindow::on_next_frame_button_clicked()
     if ((!process_going) && (frame_num < all_found_fp_vec.size() - 1))
     {
         frame_num++;
-        detect_on_frame();
+        if (frame_num % change_rate == 0)
+            detect_on_frame();
         show_frame();
     }
 
