@@ -748,7 +748,7 @@ void MainWindow::on_import_hor_pushButton_clicked()
 
     if (continue_or_not)
     {
-        /// Потом вызываем диалог
+        /// Потом вызываем диалог выбора нового файла
         QString filter{"txt (*.txt) ;; All Files (*)"};
         QString file_name = QFileDialog::getOpenFileName(this, tr("Import from file"), QDir::currentPath(), filter);
 
@@ -849,7 +849,7 @@ void MainWindow::on_change_file_pushButton_clicked()
         QFileInfo fileInfo(QString::fromStdString(current_file));
         QString filename{fileInfo.baseName()};
 
-        if ((QDir(filename).exists()) && (QDir(filename).count() == all_found_fp_vec.size()))
+        if (QDir(filename).exists())
             QDir(filename).removeRecursively();
 
         // Приводим this к изначальному состоянию
