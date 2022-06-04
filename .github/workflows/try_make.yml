@@ -1,0 +1,22 @@
+name: try_make
+on: [push]
+jobs:
+  run_make:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Check out repository code
+        uses: actions/checkout@v2  
+      - name: Install GCC
+        uses: egor-tensin/setup-gcc@v1
+      - name: Install CMake
+        uses: jwlawson/actions-setup-cmake@v1.11
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2
+      - name: Setup OpenCV
+        uses: Dovyski/setup-opencv-action@v1
+      - name: Try make
+        run: |
+          cd src
+          qmake sci_practice_21-22
+          make
+  
