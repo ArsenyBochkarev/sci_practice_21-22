@@ -122,6 +122,8 @@ private slots:
 
     void on_change_file_pushButton_clicked();
 
+    void on_hor_detection_method_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

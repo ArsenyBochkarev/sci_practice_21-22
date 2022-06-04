@@ -116,6 +116,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), process_started(f
 
     change_buttons_visibility(0);
 
+
+    // Выставляем дефолтное значение для поля с названием метода поиска горизонта
+    ui->current_hor_detect_method_label->setText("Current horizon detection method:\nCanny/Hough");
+
+
     all_found_fp_vec.clear();
     all_horizon_coords.clear();
     smooth_transforms.clear();
@@ -210,6 +215,12 @@ void MainWindow::change_buttons_visibility(bool v)
 
     // Изменяем видимость кнопки для выбора другого файла
     ui->change_file_pushButton->setVisible(v);
+
+    // Изменяем видимость поля с названием текущего метода определения горизонта
+    ui->current_hor_detect_method_label->setVisible(v);
+
+    // Изменяем видимость кнопки переключения текущего метода определения горизонта
+    ui->hor_detection_method_pushButton->setVisible(v);
 
 
     // ------------------------------------------------------------------------------
@@ -434,7 +445,7 @@ int MainWindow::start_process()
      QScreen *screen = QGuiApplication::primaryScreen();
      QRect screenGeometry = screen->geometry();
      double horizon_x1{0}, horizon_x2{static_cast<double>(abs(screenGeometry.width()))};
-     double horizon_y1{0}, horizon_y2{0};
+     double horizon_y1{static_cast<double>(abs(screenGeometry.height()))/2}, horizon_y2{static_cast<double>(abs(screenGeometry.height()))/2};
 
 
      // Пре-проходы по всем кадрам для сохранения всех кадров и поиска и сохранения "фич" на них
@@ -512,6 +523,9 @@ int MainWindow::start_process()
 
      // Вычисляем горизонт на первом кадре
      std::vector<std::pair<double, double> > coords{get_horizon_coordinates(prev_frame, horizon_detection_method)};
+
+     if ((coords[0].second < 0 ) && (coords[1].second < 0))
+         coords[0].second = coords[1].second = horizon_y1;
 
      // В случае, если горизонт отличается от записанного ранее -- файл нужно сохранить заново
      if ((coords[0].second != all_horizon_coords[frame_num].first) || (coords[1].second != all_horizon_coords[frame_num].second))
@@ -927,4 +941,13 @@ void MainWindow::on_right_hor_spinBox_valueChanged(int arg1)
     }
 }
 
+
+
+void MainWindow::on_hor_detection_method_pushButton_clicked()
+{
+    horizon_detection_method = (horizon_detection_method+1)%2;
+
+    QString s{"Current horizon detection method:\n"};
+    ui->current_hor_detect_method_label->setText(s + (horizon_detection_method == 0 ? "Canny/Hough" : "Gauss/threshold"));
+}
 

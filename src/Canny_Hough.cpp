@@ -58,7 +58,7 @@ std::vector<std::vector<double>> FilterLines(std::vector<cv::Vec4i> Lines)
         FinalLines = std::vector<std::vector<double>>(FinalLines.begin(), FinalLines.begin() + 15);
     }
 
-    return std::move(FinalLines);
+    return FinalLines;
 }
 
 
@@ -87,7 +87,7 @@ std::vector<std::vector<double>> GetLines(cv::Mat Image)
     std::vector<std::vector<double>> FilteredLines;
     FilteredLines = FilterLines(Lines);
 
-    return std::move(FilteredLines);
+    return FilteredLines ;
 }
 
 
@@ -161,7 +161,7 @@ double* GetVanishingPoint(std::vector<std::vector<double>> Lines, bool first_tim
 
 
 
-    return std::move(VanishingPoint);
+    return VanishingPoint;
 }
 
 
@@ -188,7 +188,10 @@ std::vector<std::pair<double, double> > get_coordinates_Canny_Hough(Mat src)
 
     // Checking if vanishing point found
     if ( (VanishingPoint1[0] == -1 && VanishingPoint1[1] == -1) || (VanishingPoint2[0] == -1 && VanishingPoint2[1] == -1))
+    {
         std::cout << "Vanishing Point not found. Possible reason is that not enough lines are found in the image for determination of vanishing point." << "\n";
+
+    }
 
 
 
@@ -196,7 +199,7 @@ std::vector<std::pair<double, double> > get_coordinates_Canny_Hough(Mat src)
     result.push_back(std::make_pair(SCREEN_SIZE_X, VanishingPoint2[1]));
  
 
-    return std::move(result);
+    return result;
 }
 
 
