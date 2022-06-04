@@ -17,6 +17,6 @@ jobs:
       - name: Try make
         run: |
           cd src
-          qmake sci_practice_21-22
+          qmake sci_practice_21-22.pro
           make
   
